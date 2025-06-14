@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+</head>
+<body class="login-bg">
+    <div class="login-container">
+        <form id="loginForm">
+            <label for="nombre_usuario">Usuario</label>
+            <input type="text" name="nombre_usuario" required>
+            <label for="clave">Contraseña</label>
+            <input type="password" name="clave" autocomplete="new-password" required>
+            <input type="checkbox" id="mostrarContrasena"> Ver contraseña
+            <button type="submit">Entrar</button>
+            <p>¿Olvidaste tu contraseña? <a href="/recuperar">Recuperar</a></p>
+            <br>
+            <p>¿No tienes una cuenta?</p>
+            <a href="/register">Registrate aquí</a>
+        </form>
+    </div>
+    <script src="/js/login.js"></script>
+</body>
+</html>
