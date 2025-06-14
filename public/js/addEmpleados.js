@@ -46,14 +46,28 @@ document.addEventListener('DOMContentLoaded', () => {
         volverButton.style.display = 'none';
 
         try {
-            const response = await fetch('/getEmpleados');
+            const response = await fetch('api/admin/getEmpleados');
             if (!response.ok) throw new Error('Network response was not ok');
             const empleados = await response.json();
             empleados.forEach(empleado => {
-                if (empleado.id_empleado !== 1) { 
-                    const empleadoDiv = document.createElement('div');
-                    empleadoDiv.textContent = `${empleado.nombre1} ${empleado.apellido1}`;
-                    empleadosDiv.appendChild(empleadoDiv);
+                if (empleado.id_empleado !== 1) {
+                    const card = document.createElement('div');
+                    card.style.border = '1px solid #ccc';
+                    card.style.borderRadius = '8px';
+                    card.style.padding = '16px';
+                    card.style.margin = '12px 0';
+                    card.style.boxShadow = '0 2px 6px rgba(0,0,0,0.05)';
+                    card.style.background = '#fafbfc';
+
+                    card.innerHTML = `
+                        <strong>Cédula:</strong> ${empleado.id_empleado}<br>
+                        <strong>Nombre:</strong> ${empleado.nombre1} ${empleado.nombre2 || ''}<br>
+                        <strong>Apellido:</strong> ${empleado.apellido1} ${empleado.apellido2 || ''}<br>
+                        <strong>Teléfono:</strong> ${empleado.telefono}<br>
+                        <strong>Correo:</strong> ${empleado.correo}<br>
+                    `;
+
+                    empleadosDiv.appendChild(card);
                 }
             });
         } catch (error) {
@@ -62,25 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function mostrarFormularioEmpleado() {
+    function mostrarFormularioEmpleado(empleado = null) {
         empleadosDiv.innerHTML = `
-            <h2>Agregar Empleado</h2>
+            <h2>${empleado ? 'Actualizar' : 'Agregar'} Empleado</h2>
             <form id="empleado-form">
                 <label for="id_empleado">Cedula de Identidad:</label>
-                <input type="text" id="id_empleado" name="id_empleado" required>
+                <input type="text" id="id_empleado" name="id_empleado" required value="${empleado ? empleado.id_empleado : ''}" ${empleado ? 'readonly' : ''}>
                 <label for="nombre1">Primer nombre:</label>
-                <input type="text" id="nombre1" name="nombre1" required>
+                <input type="text" id="nombre1" name="nombre1" required value="${empleado ? empleado.nombre1 : ''}">
                 <label for="nombre2">Segundo Nombre:</label>
-                <input type="text" id="nombre2" name="nombre2">
+                <input type="text" id="nombre2" name="nombre2" value="${empleado ? empleado.nombre2 || '' : ''}">
                 <label for="apellido1">Primer Apellido:</label>
-                <input type="text" id="apellido1" name="apellido1" required>
+                <input type="text" id="apellido1" name="apellido1" required value="${empleado ? empleado.apellido1 : ''}">
                 <label for="apellido2">Segundo Apellido:</label>
-                <input type="text" id="apellido2" name="apellido2">
+                <input type="text" id="apellido2" name="apellido2" value="${empleado ? empleado.apellido2 || '' : ''}">
                 <label for="telefono">Telefono:</label>
-                <input type="tel" id="telefono" name="telefono" required>
+                <input type="tel" id="telefono" name="telefono" required value="${empleado ? empleado.telefono : ''}">
                 <label for="correo">Correo:</label>
-                <input type="email" id="correo" name="correo" required>
-                <button type="submit">Agregar Empleado</button>
+                <input type="email" id="correo" name="correo" required value="${empleado ? empleado.correo : ''}">
+                <button type="submit">${empleado ? 'Actualizar' : 'Agregar'} Empleado</button>
             </form>
         `;
         agregarEmpleadoButton.style.display = 'none';
