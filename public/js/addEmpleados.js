@@ -65,6 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>Apellido:</strong> ${empleado.apellido1} ${empleado.apellido2 || ''}<br>
                         <strong>Teléfono:</strong> ${empleado.telefono}<br>
                         <strong>Correo:</strong> ${empleado.correo}<br>
+                        <strong>Vehículo:</strong> ${empleado.placa ? `
+                            <br>&nbsp;&nbsp;<strong>Placa:</strong> ${empleado.placa}
+                            <br>&nbsp;&nbsp;<strong>Marca:</strong> ${empleado.marca}
+                            <br>&nbsp;&nbsp;<strong>Modelo:</strong> ${empleado.modelo}
+                        ` : 'Sin asignar'}
                     `;
 
                     empleadosDiv.appendChild(card);
@@ -94,11 +99,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="tel" id="telefono" name="telefono" required value="${empleado ? empleado.telefono : ''}">
                 <label for="correo">Correo:</label>
                 <input type="email" id="correo" name="correo" required value="${empleado ? empleado.correo : ''}">
+                <label for="id_vehiculo">Vehículo (opcional):</label>
+                <select id="id_vehiculo" name="id_vehiculo">
+                </select>
                 <button type="submit">${empleado ? 'Actualizar' : 'Agregar'} Empleado</button>
             </form>
         `;
         agregarEmpleadoButton.style.display = 'none';
         volverButton.style.display = 'inline-block';
+
+        fetch('/api/admin/vehiculos')
+            .then(res => res.json())
+            .then(vehiculos => {
+                const selectVehiculo = document.getElementById('id_vehiculo');
+                vehiculos.forEach(v => {
+                    const option = document.createElement('option');
+                    option.value = v.id_vehiculo;
+                    option.textContent = `${v.placa} - ${v.marca} ${v.modelo}`;
+                    selectVehiculo.appendChild(option);
+                });
+            });
 
         const form = document.getElementById('empleado-form');
         form.addEventListener('submit', async (event) => {
@@ -113,13 +133,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 telefono: formData.get('telefono'),
                 correo: formData.get('correo')
             };
+            const id_vehiculo = formData.get('id_vehiculo');
+
             try {
-                const response = await fetch('api/admin/empleados', {
+                const response = await fetch('/api/admin/empleados', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(empleadoData)
                 });
-                if (!response.ok) throw new Error('Error al agregar empleado');
+                const result = await response.json();
+
+                if (!response.ok) {
+                    alert(result.error || 'Error al registrar empleado');
+                    return;
+                }
+
+                if (id_vehiculo) {
+                    const asignarRes = await fetch('/api/admin/asignarVehiculo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id_empleado: empleadoData.id_empleado,
+                            id_vehiculo: id_vehiculo
+                        })
+                    });
+                    const asignarResult = await asignarRes.json();
+                    if (!asignarRes.ok) {
+                        alert(asignarResult.error || 'Empleado registrado, pero error al asignar vehículo');
+                        return;
+                    }
+                }
+
+                alert('Empleado registrado correctamente');
                 mostrarListaEmpleados();
             } catch (error) {
                 alert('Error al agregar empleado');

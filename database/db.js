@@ -70,8 +70,23 @@ db.serialize(() => {
       id_vehiculo INTEGER PRIMARY KEY AUTOINCREMENT,
       placa TEXT NOT NULL UNIQUE,
       marca TEXT,
-      modelo TEXT
+      modelo TEXT,
+      estado TEXT DEFAULT 'disponible'
     );
+  `);
+
+  db.run(`
+    INSERT OR IGNORE INTO vehiculos (placa, marca, modelo, estado) VALUES
+      ('MTO123A', 'Bajaj', 'Pulsar NS125', 'disponible'),
+      ('MTO456B', 'Zontes', 'Zontes 125', 'disponible'),
+      ('MTO789C', 'Yamaha', 'YBR 125', 'disponible'),
+      ('MTO234D', 'Bajaj', 'Boxer 150', 'disponible'),
+      ('MTO567E', 'Zontes', 'Zontes 155', 'disponible'),
+      ('CAR123F', 'Chevrolet', 'Spark', 'disponible'),
+      ('CAR456G', 'Hyundai', 'Accent', 'disponible'),
+      ('CAR789H', 'Toyota', 'Corolla', 'disponible'),
+      ('CAM123I', 'Mitsubishi', 'L200', 'disponible'),
+      ('CAM456J', 'Toyota', 'Hilux', 'disponible');
   `);
 
   db.run(`
