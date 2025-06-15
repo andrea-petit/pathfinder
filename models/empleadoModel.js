@@ -13,28 +13,51 @@ const empleadoModel = {
         });
     },
 
-    loginEmpleado: (nombre_usuario, contraseña, callback) => {
-        const sql = `SELECT * FROM usuarios WHERE nombre_usuario = ? AND contraseña = ?`;
-        db.get(sql, [nombre_usuario, contraseña], (err, row) => {
-            if (err) {
-                
-                console.error('Error al realizar la consulta:', err.message);
-                return callback(err);
-            }
-            callback(null, row);
-        });
-    },
-    getInfoById: (id_empleado, callback) => {
-        const sql = `SELECT * FROM empleados WHERE id_empleado = ?`;
-        db.get(sql, [id_empleado], (err, row) => {
-            if (err) {
-                console.error('Error al realizar la consulta:', err.message);
-                return callback(err);
-            }
-            callback(null, row);
+    loginEmpleado: (nombre_usuario, contraseña) => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM usuarios WHERE nombre_usuario = ? AND contraseña = ?`;
+            db.get(sql, [nombre_usuario, contraseña], (err, row) => {
+                if (err) {
+                    console.error('Error al realizar la consulta:', err.message);
+                    return reject(err);
+                }
+                resolve(row);
+            });
         });
     },
 
+    getInfoById: (id_empleado) => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM empleados WHERE id_empleado = ?`;
+            db.get(sql, [id_empleado], (err, row) => {
+                if (err) {
+                    console.error('Error al realizar la consulta:', err.message);
+                    return reject(err);
+                }
+                resolve(row);
+            });
+        });
+    },
+
+    getVehiculo: (id_empleado) => {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT ev.*, v.placa, v.marca, v.modelo
+                FROM empleado_vehiculo ev
+                JOIN vehiculos v ON ev.id_vehiculo = v.id_vehiculo
+                WHERE ev.id_empleado = ?
+                ORDER BY ev.id DESC
+                LIMIT 1
+            `;
+            db.get(sql, [id_empleado], (err, row) => {
+                if (err) {
+                    console.error('Error al realizar la consulta:', err.message);
+                    return reject(err);
+                }
+                resolve(row);
+            });
+        });
+    }
 }
 
 module.exports = empleadoModel;

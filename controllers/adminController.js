@@ -38,6 +38,27 @@ const adminController = {
                 res.status(500).json({ error: 'Error al obtener empleado' });
             });
     },
+    asignVehiculo: (req, res) => {
+        const { id_empleado, id_vehiculo } = req.body;
+        adminModel.asignVehiculo(id_empleado, id_vehiculo)
+            .then(result => {
+                res.status(201).json({ message: 'Vehículo asignado exitosamente', id: result.id });
+            })
+            .catch(err => {
+                console.error('Error al asignar vehículo:', err.message);
+                res.status(500).json({ error: 'Error al asignar vehículo' });
+            });
+    },
+    getVehiculos: (req, res) => {
+        adminModel.getVehiculos()
+            .then(rows => {
+                res.json(rows);
+            })
+            .catch(err => {
+                console.error('Error al obtener vehículos:', err.message);
+                res.status(500).json({ error: 'Error al obtener vehículos' });
+            });
+    }
 };
 
 module.exports = adminController;

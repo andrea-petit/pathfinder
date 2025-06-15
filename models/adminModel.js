@@ -37,6 +37,30 @@ const adminModel = {
         });
     },
 
+    asignVehiculo: (id_empleado, id_vehiculo) => {
+        return new Promise((resolve, reject) => {
+            const sql = `INSERT INTO empleado_vehiculo (id_empleado, id_vehiculo) VALUES (?, ?)`;
+            db.run(sql, [id_empleado, id_vehiculo], function(err) {
+                if (err) {
+                    reject(err);
+                }
+                resolve({ id: this.lastID });
+            });
+        });
+    },
+
+    getVehiculos: () => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM vehiculos`;
+            db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    }
+
 
 };
 

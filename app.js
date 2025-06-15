@@ -39,7 +39,7 @@ app.get('/recuperar', (req, res) => {
 }); 
 
 app.get('/home', auth, (req, res) => {        
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, 'views', 'userIndex.html'));
 });
 
 app.get('/admin', auth, (req, res) => {
