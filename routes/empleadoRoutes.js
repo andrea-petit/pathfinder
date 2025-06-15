@@ -6,6 +6,7 @@ const empleadoController = require('../controllers/empleadoController');
 
 
 router.post('/login', empleadoController.loginEmpleado);
+router.post('/register', empleadoController.registerUser);
 
 
 
