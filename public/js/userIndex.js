@@ -32,59 +32,93 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('cantidad-paquetes').textContent = '0';
     }
 
+    let paquetes = [];
     try {
         const res = await fetch('/api/paquetes/getPaquetes');
-        const paquetes = await res.json();
+        paquetes = await res.json();
         document.getElementById('cantidad-paquetes').textContent = paquetes.length;
-
-        document.getElementById('generar-viajes-btn').addEventListener('click', () => {
-            mostrarPaquetesParaViaje(paquetes);
-        });
     } catch (err) {
         document.getElementById('cantidad-paquetes').textContent = '0';
     }
+
+    document.getElementById('generar-viajes-btn').addEventListener('click', () => {
+        mostrarSeleccionPaquetes(paquetes);
+    });
 });
 
-function mostrarPaquetesParaViaje(paquetes) {
-    let contenedor = document.getElementById('paquetes-viaje');
-    if (!contenedor) {
-        contenedor = document.createElement('div');
-        contenedor.id = 'paquetes-viaje';
-        document.body.appendChild(contenedor);
-    }
+function mostrarSeleccionPaquetes(paquetes) {
+    let contenedor = document.getElementById('seleccion-paquetes');
+    if (contenedor) contenedor.remove();
+
+    contenedor = document.createElement('div');
+    contenedor.id = 'seleccion-paquetes';
     contenedor.innerHTML = '<h3>Selecciona hasta 5 paquetes para el viaje</h3>';
 
-    let seleccionados = new Set();
+    const seleccionados = new Set();
 
     paquetes.forEach(paquete => {
         const div = document.createElement('div');
-        div.style.border = '1px solid #ccc';
-        div.style.margin = '8px 0';
-        div.style.padding = '8px';
         div.innerHTML = `
-            <strong>Código:</strong> ${paquete.codigo}<br>
-            <strong>Dirección:</strong> ${paquete.direccion_entrega}<br>
-            <button class="seleccionar-btn" data-id="${paquete.id_paquete}">Seleccionar</button>
+            <input type="checkbox" class="paquete-checkbox" value="${paquete.id_paquete}">
+            <strong>Código:</strong> ${paquete.id_paquete}<br>
+            <strong>Cliente:</strong> ${paquete.cliente_nombre1} ${paquete.cliente_apellido1}<br>
+            <strong>Teléfono:</strong> ${paquete.cliente_telefono}<br>
+            <strong>Dirección:</strong> ${paquete.sector}, ${paquete.urbanizacion}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
+            <strong>Referencia:</strong> ${paquete.referencia || ''}<br>
         `;
         contenedor.appendChild(div);
+    });
 
-        const btn = div.querySelector('.seleccionar-btn');
-        btn.addEventListener('click', (e) => {
-            const idPaquete = e.target.getAttribute('data-id');
-            if (seleccionados.has(idPaquete)) {
-                seleccionados.delete(idPaquete);
-                btn.textContent = 'Seleccionar';
-                btn.style.background = '';
-            } else {
+    const btnGenerar = document.createElement('button');
+    btnGenerar.textContent = 'Confirmar viaje';
+    btnGenerar.disabled = true;
+    contenedor.appendChild(btnGenerar);
+
+    document.body.appendChild(contenedor);
+
+    const checkboxes = contenedor.querySelectorAll('.paquete-checkbox');
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function () {
+            if (this.checked) {
                 if (seleccionados.size >= 5) {
+                    this.checked = false;
                     alert('Solo puedes seleccionar hasta 5 paquetes.');
-                    return;
+                } else {
+                    seleccionados.add(this.value);
                 }
-                seleccionados.add(idPaquete);
-                btn.textContent = 'Seleccionado';
-                btn.style.background = '#b3e6b3';
+            } else {
+                seleccionados.delete(this.value);
             }
+            btnGenerar.disabled = seleccionados.size === 0;
         });
+    });
+
+    btnGenerar.addEventListener('click', async () => {
+        const id_empleado = window.ID_EMPLEADO || prompt('Ingresa tu ID de empleado:');
+        if (!id_empleado) {
+            alert('No se pudo obtener el ID del empleado.');
+            return;
+        }
+        try {
+            const res = await fetch('/api/paquetes/generarViaje', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_empleado,
+                    ids_paquetes: Array.from(seleccionados)
+                })
+            });
+            const result = await res.json();
+            if (res.ok) {
+                alert('Viaje generado exitosamente');
+                contenedor.remove();
+                location.reload();
+            } else {
+                alert(result.error || 'Error al generar el viaje');
+            }
+        } catch (err) {
+            alert('Error de conexión al generar el viaje');
+        }
     });
 }
 

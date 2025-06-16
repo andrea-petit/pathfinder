@@ -4,10 +4,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const res = await fetch('/api/empleados/preguntasSeguridad');
         const preguntas = await res.json();
-        // Supón que preguntas es un array de objetos con {id, pregunta}
         preguntas.forEach(p => {
             const option = document.createElement('option');
-            option.value = p.id; // <-- Debe ser el id real de la pregunta
+            option.value = p.id;
             option.textContent = p.pregunta;
             selectPregunta.appendChild(option);
         });
