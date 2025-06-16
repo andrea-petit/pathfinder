@@ -1,4 +1,5 @@
-const db= require('../database/db');
+const db = require('../database/db');
+
 
 const adminModel = {
     registerEmpleado: (id_empleado, nombre1, nombre2, apellido1, apellido2, telefono, correo) => {
@@ -50,8 +51,10 @@ const adminModel = {
 
     asignVehiculo: (id_empleado, id_vehiculo) => {
         return new Promise((resolve, reject) => {
-            const sql = `INSERT INTO empleado_vehiculo (id_empleado, id_vehiculo) VALUES (?, ?)`;
-            db.run(sql, [id_empleado, id_vehiculo], function(err) {
+            const nota = 'Afiliación inicial';
+            const fecha_asignacion = new Date().toISOString();
+            const sql = `INSERT INTO empleado_vehiculo (id_empleado, id_vehiculo, nota, fecha_asignacion) VALUES (?, ?, ?, ?)`;
+            db.run(sql, [id_empleado, id_vehiculo, nota, fecha_asignacion], function(err) {
                 if (err) {
                     return reject(err);
                 }
@@ -76,9 +79,19 @@ const adminModel = {
                 resolve(rows);
             });
         });
-    }
+    },
 
-
+    solicitarEntradaPaquetes: (cantidad = 20) => {
+        return new Promise((resolve, reject) => {
+            try {
+                generarPaquetesAleatorios(cantidad)
+                    .then(result => resolve(result))
+                    .catch(err => reject(err));
+            } catch (err) {
+                reject(err);
+            }
+        });
+    },
 };
 
 module.exports = adminModel;

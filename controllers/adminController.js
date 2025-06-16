@@ -58,6 +58,16 @@ const adminController = {
                 console.error('Error al obtener vehículos:', err.message);
                 res.status(500).json({ error: 'Error al obtener vehículos' });
             });
+    },
+    solicitarEntradaPaquetes: async (req, res) => {
+        const cantidad = req.body.cantidad || 20; 
+        try {
+            const paquetes = await adminModel.solicitarEntradaPaquetes(cantidad);
+            res.status(201).json({ message: 'Paquetes generados exitosamente', paquetes });
+        } catch (err) {
+            console.error('Error al generar paquetes:', err.message);
+            res.status(500).json({ error: 'Error al generar paquetes' });
+        }
     }
 };
 

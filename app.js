@@ -7,6 +7,8 @@ const db = require('./database/db');
 const auth = require('./middleware/auth');
 const empleadoRoutes = require('./routes/empleadoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const paquetesRoutes = require('./routes/paquetesRoutes'); 
+
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +23,7 @@ app.use(session({
 
 app.use('/api/empleados', empleadoRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/paquetes', paquetesRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));

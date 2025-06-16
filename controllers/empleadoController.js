@@ -12,6 +12,28 @@ const empleadoController = {
                 res.status(500).json({ error: 'Error al registrar usuario' });
             });
     },
+    getPreguntasSeguridad: (req, res) => {
+        empleadoModel.getPreguntasSeguridad()
+            .then(rows => {
+                res.json(rows);
+            })
+            .catch(err => {
+                console.error('Error al obtener preguntas de seguridad:', err.message);
+                res.status(500).json({ error: 'Error al obtener preguntas de seguridad' });
+            });
+    },
+
+    savePreguntaRespuesta: (req, res) => {
+        const { id_empleado, id_pregunta, respuesta } = req.body;
+        empleadoModel.savePreguntaRespuesta(id_empleado, id_pregunta, respuesta)
+            .then(result => {
+                res.status(201).json({ message: 'Pregunta y respuesta guardadas exitosamente', id: result.id });
+            })
+            .catch(err => {
+                console.error('Error al guardar pregunta y respuesta:', err.message);
+                res.status(500).json({ error: 'Error al guardar pregunta y respuesta' });
+            });
+    },
 
     loginEmpleado: (req, res) => {
         const { nombre_usuario, contraseña } = req.body;
@@ -25,6 +47,7 @@ const empleadoController = {
                 res.json({ message: 'Inicio de sesión exitoso', id_empleado: row.id_empleado, rol: row.rol });
             })
             .catch(err => {
+                console.error('Error en loginEmpleado:', err);
                 res.status(500).json({ error: 'Error al realizar la consulta' });
             });
     },

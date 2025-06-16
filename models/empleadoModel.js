@@ -13,12 +13,38 @@ const empleadoModel = {
         });
     },
 
+    getPreguntasSeguridad: () => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM preguntas_seguridad`;
+            db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error('Error al realizar la consulta:', err.message);
+                    return reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    },
+
+    savePreguntaRespuesta: (id_empleado, id_pregunta, respuesta) => {
+        return new Promise((resolve, reject) => {
+            const sql = `INSERT INTO respuestas_seguridad (id_empleado, id_pregunta, respuesta) VALUES (?, ?, ?)`;
+            db.run(sql, [id_empleado, id_pregunta, respuesta], function(err) {
+                if (err) {
+                    console.error('Error al realizar la inserción:', err.message);
+                    return reject(err);
+                }
+                resolve({ id: this.lastID });
+            });
+        });
+    },
+
     loginEmpleado: (nombre_usuario, contraseña) => {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM usuarios WHERE nombre_usuario = ? AND contraseña = ?`;
             db.get(sql, [nombre_usuario, contraseña], (err, row) => {
                 if (err) {
-                    console.error('Error al realizar la consulta:', err.message);
+                    console.error('Error al realizar la consulta:', err); 
                     return reject(err);
                 }
                 resolve(row);

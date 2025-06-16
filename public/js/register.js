@@ -1,39 +1,75 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('registerForm');
-    form.addEventListener('submit', async (e) => {
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    const selectPregunta = document.getElementById('pregunta');
+    try {
+        const res = await fetch('/api/empleados/preguntasSeguridad');
+        const preguntas = await res.json();
+        // Supón que preguntas es un array de objetos con {id, pregunta}
+        preguntas.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id; // <-- Debe ser el id real de la pregunta
+            option.textContent = p.pregunta;
+            selectPregunta.appendChild(option);
+        });
+    } catch (err) {
+        alert('Error al cargar preguntas de seguridad');
+        console.error(err);
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+        const formData = new FormData(this);
 
-        const id_empleado = form.id_empleado.value.trim();
-        const nombre_usuario = form.nombre_usuario.value.trim();
-        const contraseña = form.contraseña.value;
-        const contraseña2 = form.contraseña2.value;
+        if (formData.get('respuesta') !== formData.get('respuesta2')) {
+            alert('Las respuestas de seguridad no coinciden.');
+            return;
+        }
 
-        if (contraseña !== contraseña2) {
+        if (formData.get('contraseña') !== formData.get('contraseña2')) {
             alert('Las contraseñas no coinciden.');
             return;
         }
+
+        const userData = {
+            id_empleado: formData.get('id_empleado'),
+            nombre_usuario: formData.get('nombre_usuario'),
+            contraseña: formData.get('contraseña')
+        };
+        const preguntaData = {
+            id_empleado: formData.get('id_empleado'),
+            id_pregunta: formData.get('id_pregunta'),
+            respuesta: formData.get('respuesta')
+        };
+
         try {
-            const response = await fetch('/api/empleados/register', {
+            const resUser = await fetch('/api/empleados/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_empleado, nombre_usuario, contraseña })
+                body: JSON.stringify(userData)
             });
+            const resultUser = await resUser.json();
 
-            const result = await response.json();
-
-            if (response.ok) {
-                alert('Usuario registrado exitosamente');
-                window.location.href = '/login';
-            } else {
-                if (result.error) {
-                    alert(result.error);
-                } else {
-                    alert('Error al registrar usuario');
-                }
+            if (!resUser.ok) {
+                alert(resultUser.error || 'Error al registrar usuario');
+                return;
             }
+
+            const resPregunta = await fetch('/api/empleados/savePreguntaRespuesta', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(preguntaData)
+            });
+            const resultPregunta = await resPregunta.json();
+
+            if (!resPregunta.ok) {
+                alert(resultPregunta.error || 'Error al guardar pregunta de seguridad');
+                return;
+            }
+
+            alert('Usuario registrado exitosamente');
+            window.location.href = '/login';
         } catch (err) {
-            alert('Error de conexión con el servidor');
+            alert('Error de conexión');
         }
     });
-
 });
