@@ -121,3 +121,61 @@ function mostrarSeleccionPaquetes(paquetes) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const btnActualizar = document.getElementById('actualizar-datos-btn');
+    btnActualizar.addEventListener('click', mostrarFormularioActualizar);
+});
+
+function mostrarFormularioActualizar() {
+    if (document.getElementById('form-actualizar-datos')) return;
+
+    const seccion = document.querySelector('section');
+    const form = document.createElement('form');
+    form.id = 'form-actualizar-datos';
+    form.innerHTML = `
+        <h3>Actualizar mis datos</h3>
+        <select name="campo" required>
+            <option value="">Selecciona un campo</option>
+            <option value="nombre1">Primer Nombre</option>
+            <option value="nombre2">Segundo Nombre</option>
+            <option value="apellido1">Primer Apellido</option>
+            <option value="apellido2">Segundo Apellido</option>
+            <option value="telefono">Teléfono</option>
+            <option value="correo">Correo</option>
+        </select>
+        <input type="text" name="valor" placeholder="Nuevo valor" required>
+        <button type="submit">Guardar</button>
+        <button type="button" id="cancelar-actualizar">Cancelar</button>
+    `;
+    seccion.appendChild(form);
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const campo = form.campo.value;
+        const valor = form.valor.value;
+        if (!campo || !valor) {
+            alert('Completa todos los campos.');
+            return;
+        }
+        try {
+            const res = await fetch('/api/empleados/updateInfo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ campo, valor })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Datos actualizados correctamente');
+                form.remove();
+                location.reload();
+            } else {
+                alert(data.error || 'No se realizaron cambios');
+            }
+        } catch {
+            alert('Error de conexión');
+        }
+    });
+
+    form.querySelector('#cancelar-actualizar').addEventListener('click', () => form.remove());
+}
+

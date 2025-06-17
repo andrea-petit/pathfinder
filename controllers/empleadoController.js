@@ -81,9 +81,9 @@ const empleadoController = {
     },
     updateInfo: (req, res) => {
         const id_empleado = req.session.id_empleado;
-        const { nombre1, nombre2, apellido1, apellido2, telefono, correo } = req.body;
+        const { campo, valor } = req.body;
 
-        empleadoModel.updateInfo(id_empleado, nombre1, nombre2, apellido1, apellido2, telefono, correo)
+        empleadoModel.updateInfo(id_empleado, campo, valor)
             .then(() => {
                 res.json({ message: 'Información actualizada exitosamente' });
             })
