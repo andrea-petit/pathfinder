@@ -179,3 +179,59 @@ function mostrarFormularioActualizar() {
     form.querySelector('#cancelar-actualizar').addEventListener('click', () => form.remove());
 }
 
+document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {
+    const contenedor = document.createElement('div');
+    contenedor.id = 'form-cambio-vehiculo';
+
+    const existente = document.getElementById('form-cambio-vehiculo');
+    if (existente) existente.remove();
+
+    contenedor.innerHTML = `
+        <h3>Solicitar cambio de vehículo</h3>
+        <select id="vehiculo-nuevo" required>
+            <option value="">Seleccione un vehículo</option>
+        </select>
+        <button id="enviar-solicitud-cambio">Enviar solicitud</button>
+        <button id="cancelar-solicitud-cambio">Cancelar</button>
+    `;
+    document.body.appendChild(contenedor);
+
+    const res = await fetch('/api/admin/vehiculos');
+    const vehiculos = await res.json();
+    const select = document.getElementById('vehiculo-nuevo');
+    vehiculos.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.id_vehiculo;
+        opt.textContent = `${v.placa} - ${v.marca} ${v.modelo}`;
+        select.appendChild(opt);
+    });
+
+    document.getElementById('enviar-solicitud-cambio').onclick = async function() {
+        const id_vehiculo = select.value;
+        console.log('ID Vehículo seleccionado:', id_vehiculo);
+        if (!id_vehiculo) return alert('Seleccione un vehículo');
+        const res = await fetch('/api/empleados/solicitarCambioVehiculo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_vehiculo: id_vehiculo})
+        });
+        const data = await res.json();
+        if (res.ok) {
+            alert('Solicitud enviada');
+            contenedor.remove();
+        } else {
+            alert(data.error || 'Error al enviar la solicitud');
+        }
+    };
+
+    document.getElementById('cancelar-solicitud-cambio').onclick = function() {
+        const contenedor = document.getElementById('form-cambio-vehiculo');
+        if (contenedor) contenedor.remove();
+    };
+});
+
+document.getElementById('paquetes-viaje').style.display = 'none';
+
+const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
+if (cambioVehiculo) cambioVehiculo.remove();
+

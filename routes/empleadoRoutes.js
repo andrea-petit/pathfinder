@@ -14,6 +14,7 @@ router.post('/updateInfo', empleadoController.updateInfo);
 router.post('/cambiarPassword', empleadoController.cambiarContraseña);
 router.post('/getPreguntaSeguridad', empleadoController.getPreguntaSeguridad);
 router.post('/verificarRespuesta', empleadoController.verificarRespuesta);
+router.post('/solicitarCambioVehiculo', empleadoController.solicitarCambioVehiculo);
 
 
 router.get('/info', empleadoController.getInfoById);

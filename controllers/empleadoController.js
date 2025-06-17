@@ -136,7 +136,24 @@ const empleadoController = {
                 console.error('Error al verificar respuesta:', err.message);
                 res.status(500).json({ error: 'Error al verificar respuesta' });
             });
+    },
+    solicitarCambioVehiculo: (req, res) => {
+        const id_empleado = req.session.id_empleado;
+        const object_id_vehiculo = req.body;
+        const id_vehiculo = object_id_vehiculo.id_vehiculo;
+        if (!id_empleado || !id_vehiculo) {
+            return res.status(400).json({ error: 'ID de empleado y vehículo requeridos.' });
+        }
+        empleadoModel.solicitarCambioVehiculo(id_empleado, id_vehiculo)
+            .then(result => {
+                res.status(201).json({ message: 'Solicitud de cambio de vehículo creada exitosamente', id: result.id });
+            })
+            .catch(err => {
+                console.error('Error al solicitar cambio de vehículo:', err.message);
+                res.status(500).json({ error: 'Error al solicitar cambio de vehículo' });
+            });
     }
+
 };
 
 module.exports = empleadoController;

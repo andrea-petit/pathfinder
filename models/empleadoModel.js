@@ -149,6 +149,20 @@ const empleadoModel = {
             });
         });
     },
+    
+    solicitarCambioVehiculo: (id_empleado, id_vehiculo) => {
+        return new Promise((resolve, reject) => {
+            console.log('ID_VEHICULO:', id_vehiculo);
+            const sql = `INSERT INTO solicitudCambioVehiculo (id_empleado, id_vehiculo) VALUES (?, ?)`;
+            db.run(sql, [id_empleado, id_vehiculo], function(err) {
+                if (err) {
+                    console.error('Error al solicitar cambio de vehículo:', err.message);
+                    return reject(err);
+                }
+                resolve({ id: this.lastID });
+            });
+        });
+    },
 }
 
 module.exports = empleadoModel;

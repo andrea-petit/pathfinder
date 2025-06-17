@@ -90,6 +90,46 @@ const adminController = {
             console.error('Error al eliminar empleado:', err.message);
             res.status(500).json({ error: 'Error al eliminar empleado' });
         }
+    },
+    getSolicitudesCambioVehiculo: (req, res) => {
+        adminModel.getSolicitudesCambioVehiculo()
+            .then(rows => res.json(rows))
+            .catch(err => {
+                console.error('Error al obtener solicitudes:', err.message);
+                res.status(500).json({ error: 'Error al obtener solicitudes' });
+            });
+    },
+    aprobarSolicitudVehiculo: (req, res) => {
+        const { id_empleado, id_vehiculo, id_solicitud } = req.body;
+        if (!id_empleado || !id_vehiculo || !id_solicitud) {
+            return res.status(400).json({ error: 'Datos incompletos' });
+        }
+        adminModel.aprobarSolicitudVehiculo(id_empleado, id_vehiculo, id_solicitud)
+            .then(result => res.json(result))  
+            .catch(err => {
+                console.error('Error al aprobar solicitud:', err.message);
+                res.status(500).json({ error: 'Error al aprobar solicitud' });
+            });
+    },
+    rechazarSolicitudVehiculo: (req, res) => {
+        const { id_solicitud } = req.body;
+        if (!id_solicitud) {
+            return res.status(400).json({ error: 'ID de solicitud requerido' });
+        }
+        adminModel.rechazarSolicitudVehiculo(id_solicitud)
+            .then(result => res.json(result))
+            .catch(err => {
+                console.error('Error al rechazar solicitud:', err.message);
+                res.status(500).json({ error: 'Error al rechazar solicitud' });
+            });
+    },
+    getAllVehiculosInfo: (req, res) => {
+        adminModel.getAllVehiculosInfo()
+            .then(rows => res.json(rows))
+            .catch(err => {
+                console.error('Error al obtener información de vehículos:', err.message);
+                res.status(500).json({ error: 'Error al obtener información de vehículos' });
+            });
     }
 };
 
