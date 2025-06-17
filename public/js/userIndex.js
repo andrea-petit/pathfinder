@@ -65,7 +65,7 @@ function mostrarSeleccionPaquetes(paquetes) {
             <strong>Código:</strong> ${paquete.id_paquete}<br>
             <strong>Cliente:</strong> ${paquete.cliente_nombre1} ${paquete.cliente_apellido1}<br>
             <strong>Teléfono:</strong> ${paquete.cliente_telefono}<br>
-            <strong>Dirección:</strong> ${paquete.sector}, ${paquete.urbanizacion}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
+            <strong>Dirección:</strong> ${paquete.sector}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
             <strong>Referencia:</strong> ${paquete.referencia || ''}<br>
         `;
         contenedor.appendChild(div);
@@ -182,9 +182,7 @@ function mostrarFormularioActualizar() {
     form.querySelector('#cancelar-actualizar').addEventListener('click', () => form.remove());
 }
 
-// Mostrar formulario de cambio de vehículo
 document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {
-    // Oculta la selección de paquetes si está abierta
     const seleccionPaquetes = document.getElementById('seleccion-paquetes');
     if (seleccionPaquetes) seleccionPaquetes.remove();
 

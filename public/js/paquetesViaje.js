@@ -32,7 +32,7 @@ function mostrarSeleccionPaquetes(paquetes) {
             <input type="checkbox" class="paquete-checkbox" value="${paquete.id_paquete}">
             <strong>Código:</strong> ${paquete.id_paquete}<br>
             <strong>Cliente:</strong> ${paquete.cliente_nombre1} ${paquete.cliente_apellido1}<br>
-            <strong>Dirección:</strong> ${paquete.sector}, ${paquete.urbanizacion}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
+            <strong>Dirección:</strong> ${paquete.sector}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
             <strong>Referencia:</strong> ${paquete.referencia || ''}<br>
         `;
         contenedor.appendChild(div);

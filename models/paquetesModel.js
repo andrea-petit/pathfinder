@@ -15,7 +15,6 @@ const paquetesModel = {
                     c.apellido2 AS cliente_apellido2,
                     c.telefono AS cliente_telefono,
                     d.sector,
-                    d.urbanizacion,
                     d.calle,
                     d.numero_casa,
                     d.referencia
@@ -23,6 +22,7 @@ const paquetesModel = {
                 JOIN clientes c ON p.id_cliente = c.id_cliente
                 JOIN destinos dest ON dest.id_paquete = p.id_paquete
                 JOIN direccion d ON dest.id_direccion = d.id_direccion
+                ORDER BY p.id_paquete
             `;
             db.all(sql, [], (err, rows) => {
                 if (err) {
