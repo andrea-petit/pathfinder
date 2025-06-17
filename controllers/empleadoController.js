@@ -91,6 +91,51 @@ const empleadoController = {
                 console.error('Error al actualizar información:', err.message);
                 res.status(500).json({ error: 'Error al actualizar información' });
             });
+    },
+    cambiarContraseña: async (req, res) => {
+        const { nombre_usuario, nueva_contraseña } = req.body;
+        if (!nombre_usuario || !nueva_contraseña) {
+            return res.status(400).json({ error: 'Datos incompletos.' });
+        }
+        try {
+            const result = await empleadoModel.cambiarContraseña(nombre_usuario, nueva_contraseña);
+            if (result.changes > 0) {
+                res.json({ cambiada: true });
+            } else {
+                res.json({ cambiada: false, error: 'No se pudo cambiar la contraseña.' });
+            }
+        } catch (err) {
+            res.status(500).json({ error: 'Error al cambiar la contraseña.' });
+        }
+    },
+    getPreguntaSeguridad: (req, res) => {
+        const { nombre_usuario } = req.body;
+        empleadoModel.getPreguntaSeguridad(nombre_usuario)
+            .then(row => {
+                if (!row) {
+                    return res.status(404).json({ error: 'Pregunta de seguridad no encontrada' });
+                }
+                res.json(row);
+            })
+            .catch(err => {
+                console.error('Error al obtener pregunta de seguridad:', err.message);
+                res.status(500).json({ error: 'Error al obtener pregunta de seguridad' });
+            });
+    },
+    verificarRespuesta: (req, res) => {
+        const { nombre_usuario, respuesta } = req.body;
+        empleadoModel.verificarRespuesta(nombre_usuario, respuesta)
+            .then(correcto => {
+                if (correcto) {
+                    res.json({ correcto: true });
+                } else {
+                    res.status(400).json({ error: 'Respuesta incorrecta' });
+                }
+            })
+            .catch(err => {
+                console.error('Error al verificar respuesta:', err.message);
+                res.status(500).json({ error: 'Error al verificar respuesta' });
+            });
     }
 };
 

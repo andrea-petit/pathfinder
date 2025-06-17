@@ -96,7 +96,59 @@ const empleadoModel = {
             });
         });
     },
-    
+    cambiarContraseña: (nombre_usuario, nueva_contraseña) => {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE usuarios SET contraseña = ? WHERE nombre_usuario = ?`;
+            db.run(sql, [nueva_contraseña, nombre_usuario], function(err) {
+                if (err) {
+                    console.error('Error al cambiar la contraseña:', err.message);
+                    return reject(err);
+                }
+                resolve({ changes: this.changes });
+            });
+        });
+        
+    },
+    getPreguntaSeguridad: (nombre_usuario) => {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT ps.pregunta
+                FROM respuestas_seguridad rs
+                JOIN preguntas_seguridad ps ON rs.id_pregunta = ps.id
+                JOIN usuarios u ON rs.id_empleado = u.id_empleado
+                WHERE u.nombre_usuario = ?
+            `;
+            db.get(sql, [nombre_usuario], (err, row) => {
+                if (err) {
+                    console.error('Error al obtener la pregunta de seguridad:', err.message);
+                    return reject(err);
+                }
+                resolve(row ? row.pregunta : null);
+            });
+        });
+    },
+    verificarRespuesta: (nombre_usuario, respuesta) => {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT rs.respuesta
+                FROM respuestas_seguridad rs
+                JOIN usuarios u ON rs.id_empleado = u.id_empleado
+                WHERE u.nombre_usuario = ?
+            `;
+            db.get(sql, [nombre_usuario], (err, row) => {
+                if (err) {
+                    console.error('Error al verificar la respuesta de seguridad:', err.message);
+                    return reject(err);
+                }
+                if (row && row.respuesta && respuesta &&
+                    row.respuesta.trim().toLowerCase() === respuesta.trim().toLowerCase()) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    },
 }
 
 module.exports = empleadoModel;

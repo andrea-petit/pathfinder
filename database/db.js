@@ -192,7 +192,19 @@ db.serialize(() => {
         FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE,
         FOREIGN KEY (id_pregunta) REFERENCES preguntas_seguridad(id)
     );
-`)
+  `)
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS solicitudCambioVehiculo (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_empleado INTEGER NOT NULL,
+      id_vehiculo INTEGER NOT NULL,
+      fecha_solicitud TEXT DEFAULT (datetime('now')),
+      estado TEXT DEFAULT 'pendiente',
+      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE,
+      FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo)
+    );
+  `);
 
 
 
@@ -305,6 +317,8 @@ function generarPaquetesAleatorios(cantidad = 30) {
       });
     }
   });
+
+
 }
 
 // generarPaquetesAleatorios(10);
