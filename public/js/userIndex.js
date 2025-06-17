@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('generar-viajes-btn').addEventListener('click', () => {
+        const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
+        if (cambioVehiculo) cambioVehiculo.remove();
+
         mostrarSeleccionPaquetes(paquetes);
     });
 });
@@ -179,7 +182,12 @@ function mostrarFormularioActualizar() {
     form.querySelector('#cancelar-actualizar').addEventListener('click', () => form.remove());
 }
 
+// Mostrar formulario de cambio de vehículo
 document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {
+    // Oculta la selección de paquetes si está abierta
+    const seleccionPaquetes = document.getElementById('seleccion-paquetes');
+    if (seleccionPaquetes) seleccionPaquetes.remove();
+
     const contenedor = document.createElement('div');
     contenedor.id = 'form-cambio-vehiculo';
 

@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function mostrarSeleccionPaquetes(paquetes) {
+    const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
+    if (cambioVehiculo) cambioVehiculo.remove();
+
     let contenedor = document.getElementById('paquetes-viaje');
     if (!contenedor) {
         contenedor = document.createElement('div');
@@ -54,8 +57,6 @@ function mostrarSeleccionPaquetes(paquetes) {
     btnGenerar.addEventListener('click', async () => {
         const id_empleado = window.ID_EMPLEADO || prompt('Ingresa tu ID de empleado:');
         if (!id_empleado) return alert('ID de empleado requerido.');
-
-        // 1. Generar viaje
         const resViaje = await fetch('/api/paquetes/generarViaje', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -64,8 +65,6 @@ function mostrarSeleccionPaquetes(paquetes) {
         const dataViaje = await resViaje.json();
         if (!resViaje.ok) return alert(dataViaje.error || 'Error al generar viaje');
 
-        // 2. Aquí puedes pasar a la lógica de mapa y TSP usando dataViaje.id_viaje y los paquetes seleccionados
         alert('Viaje generado. Ahora puedes optimizar la ruta.');
-        // window.location.href = `/ruta-a-tu-mapa?id_viaje=${dataViaje.id_viaje}`;
     });
 }
