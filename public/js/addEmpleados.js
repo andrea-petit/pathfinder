@@ -70,7 +70,73 @@ document.addEventListener('DOMContentLoaded', () => {
                             <br>&nbsp;&nbsp;<strong>Marca:</strong> ${empleado.marca}
                             <br>&nbsp;&nbsp;<strong>Modelo:</strong> ${empleado.modelo}
                         ` : 'Sin asignar'}
+                        <br>
+                        <button class="btn-actualizar" data-id="${empleado.id_empleado}">Actualizar</button>
+                        <button class="btn-borrar" data-id="${empleado.id_empleado}">Borrar</button>
+                        <div class="form-actualizar-container"></div>
                     `;
+
+                    card.querySelector('.btn-borrar').addEventListener('click', async function() {
+                        if (confirm('¿Seguro que deseas borrar este empleado?')) {
+                            const res = await fetch(`/api/admin/deleteEmpleado/${empleado.id_empleado}`, { method: 'POST' });
+                            const data = await res.json();
+                            if (res.ok) {
+                                card.remove();
+                                alert('Empleado eliminado');
+                            } else {
+                                alert(data.error || 'Error al eliminar');
+                            }
+                        }
+                    });
+
+                    card.querySelector('.btn-actualizar').addEventListener('click', function() {
+                        const id_empleado = this.getAttribute('data-id');
+                        const formContainer = card.querySelector('.form-actualizar-container');
+
+                        if (formContainer.innerHTML) {
+                            formContainer.innerHTML = '';
+                            return;
+                        }
+
+                        formContainer.innerHTML = `
+                            <form class="form-actualizar">
+                                <select name="campo" required>
+                                    <option value="">Selecciona un campo</option>
+                                    <option value="nombre1">Primer Nombre</option>
+                                    <option value="nombre2">Segundo Nombre</option>
+                                    <option value="apellido1">Primer Apellido</option>
+                                    <option value="apellido2">Segundo Apellido</option>
+                                    <option value="telefono">Teléfono</option>
+                                    <option value="correo">Correo</option>
+                                </select>
+                                <input type="text" name="valor" placeholder="Nuevo valor" required>
+                                <button type="submit">Guardar</button>
+                            </form>
+                        `;
+                        const form = formContainer.querySelector('.form-actualizar');
+                        form.addEventListener('submit', async function(e) {
+                            e.preventDefault();
+                            const campo = form.campo.value;
+                            const valor = form.valor.value;
+                            if (!campo || !valor) {
+                                alert('Completa todos los campos.');
+                                return;
+                            }
+                            const res = await fetch(`/api/admin/updateEmpleado/${id_empleado}`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ campo, valor })
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                                alert('Empleado actualizado correctamente');
+                                formContainer.innerHTML = '';
+                                mostrarListaEmpleados();
+                            } else {
+                                alert(data.error || 'Error al actualizar');
+                            }
+                        });
+                    });
 
                     empleadosDiv.appendChild(card);
                 }

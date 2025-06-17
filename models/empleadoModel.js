@@ -83,7 +83,20 @@ const empleadoModel = {
                 resolve(row);
             });
         });
-    }
+    },
+    updateInfo: (id_empleado, campo, valor) => {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE empleados SET ${campo} = ? WHERE id_empleado = ?`;
+            db.run(sql, [valor, id_empleado], function(err) {
+                if (err) {
+                    console.error('Error al actualizar la información:', err.message);
+                    return reject(err);
+                }
+                resolve({ changes: this.changes });
+            });
+        });
+    },
+    
 }
 
 module.exports = empleadoModel;

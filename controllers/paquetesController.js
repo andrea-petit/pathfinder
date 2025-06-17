@@ -26,18 +26,33 @@ const paquetesController = {
                 res.status(500).json({ error: 'Error al obtener paquete' });
             });
     },
-    generarViaje: (req, res) => {
-        const id_empleado = req.session.id_empleado;
-        const ids_paquetes = req.body.ids_paquetes;
 
-        paquetesModel.generarViaje(id_empleado, ids_paquetes)
-            .then(result => {
-                res.status(201).json({ message: 'Viaje generado exitosamente', id_viaje: result.id });
-            })
-            .catch(err => {
-                console.error('Error al generar viaje:', err.message);
-                res.status(500).json({ error: err.message || 'Error al generar viaje' });
-            });
+    generarViaje: async (req, res) => {
+        const { id_empleado } = req.body;
+        if (!id_empleado) {
+            return res.status(400).json({ error: 'ID de empleado requerido.' });
+        }
+        try {
+            const result = await paquetesModel.generarViaje(id_empleado);
+            res.status(201).json(result);
+        } catch (err) {
+            console.error('Error al generar viaje:', err.message);
+            res.status(500).json({ error: 'Error al generar viaje.' });
+        }
+    },
+
+    guardarViajeDetalles: async (req, res) => {
+        const { id_viaje, detalles } = req.body;
+        if (!id_viaje || !Array.isArray(detalles) || detalles.length === 0) {
+            return res.status(400).json({ error: 'Datos insuficientes para guardar detalles.' });
+        }
+        try {
+            const result = await paquetesModel.guardarViajeDetalles(id_viaje, detalles);
+            res.status(201).json(result);
+        } catch (err) {
+            console.error('Error al guardar detalles de viaje:', err.message);
+            res.status(500).json({ error: 'Error al guardar detalles de viaje.' });
+        }
     }
 }; 
 

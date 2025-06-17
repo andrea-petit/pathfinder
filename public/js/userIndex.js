@@ -32,10 +32,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('cantidad-paquetes').textContent = '0';
     }
 
-    let paquetes = [];
     try {
         const res = await fetch('/api/paquetes/getPaquetes');
-        paquetes = await res.json();
+        const paquetes = await res.json();
         document.getElementById('cantidad-paquetes').textContent = paquetes.length;
     } catch (err) {
         document.getElementById('cantidad-paquetes').textContent = '0';

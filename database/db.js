@@ -62,7 +62,7 @@ db.serialize(() => {
       nombre_usuario TEXT UNIQUE NOT NULL,
       contraseña TEXT NOT NULL,
       rol TEXT NOT NULL,
-      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado)
+      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE
     );
   `);
 
@@ -103,7 +103,7 @@ db.serialize(() => {
       id_vehiculo INTEGER,
       nota TEXT,
       fecha_asignacion TEXT,
-      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE,
       FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo)
     );
   `);
@@ -146,7 +146,7 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       id_empleado INTEGER,
       fecha TEXT,
-      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado)
+      FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE
     );
   `);
 
@@ -189,7 +189,7 @@ db.serialize(() => {
         id_empleado INTEGER NOT NULL,
         id_pregunta INTEGER NOT NULL,
         respuesta TEXT NOT NULL,
-        FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+        FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE,
         FOREIGN KEY (id_pregunta) REFERENCES preguntas_seguridad(id)
     );
 `)
@@ -307,6 +307,6 @@ function generarPaquetesAleatorios(cantidad = 30) {
   });
 }
 
-//generarPaquetesAleatorios(10);
+// generarPaquetesAleatorios(10);
 
 module.exports = db;

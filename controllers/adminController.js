@@ -68,6 +68,28 @@ const adminController = {
             console.error('Error al generar paquetes:', err.message);
             res.status(500).json({ error: 'Error al generar paquetes' });
         }
+    },
+    updateEmpleado: async (req, res) => {
+        const id_empleado = req.params.id_empleado;
+        const { campo, valor } = req.body;
+        try {
+            const result = await adminModel.updateEmpleado(id_empleado, campo, valor);
+            res.json({ message: 'Empleado actualizado exitosamente', id: result.id });
+            console.log(`Empleado ${id_empleado} actualizado: ${campo} = ${valor}`);
+        } catch (err) {
+            console.error('Error al actualizar empleado:', err.message);
+            res.status(500).json({ error: 'Error al actualizar empleado' });
+        }
+    },
+    deleteEmpleado: async (req, res) => {
+        const id_empleado = req.params.id_empleado;
+        try {
+            const result = await adminModel.deleteEmpleado(id_empleado);
+            res.json({ message: 'Empleado eliminado exitosamente', id: result.id });
+        } catch (err) {
+            console.error('Error al eliminar empleado:', err.message);
+            res.status(500).json({ error: 'Error al eliminar empleado' });
+        }
     }
 };
 

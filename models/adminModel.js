@@ -92,6 +92,59 @@ const adminModel = {
             }
         });
     },
+    updateEmpleado: (id_empleado, campo, valor) => {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE empleados SET ${campo} = ? WHERE id_empleado = ?`;
+            db.run(sql, [valor, id_empleado], function(err) {
+                if (err) {
+                    console.error('Error al actualizar empleado:', err.message);
+                    return reject(err);
+                }
+                resolve({ id: id_empleado });
+            });
+        });
+    },
+    deleteEmpleado: (id_empleado) => {
+        return new Promise((resolve, reject) => {
+            const vehiculoSql = `
+                SELECT id_vehiculo FROM empleado_vehiculo
+                WHERE id_empleado = ?
+                ORDER BY id DESC LIMIT 1
+            `;
+            db.get(vehiculoSql, [id_empleado], function(err, row) {
+                if (err) {
+                    console.error('Error al buscar vehículo asignado:', err.message);
+                    return reject(err);
+                }
+                const liberarVehiculo = row && row.id_vehiculo
+                    ? new Promise((res, rej) => {
+                        db.run(
+                            `UPDATE vehiculos SET estado = 'disponible' WHERE id_vehiculo = ?`,
+                            [row.id_vehiculo],
+                            function(err2) {
+                                if (err2) {
+                                    console.error('Error al liberar vehículo:', err2.message);
+                                    return rej(err2);
+                                }
+                                res();
+                            }
+                        );
+                    })
+                    : Promise.resolve();
+
+                liberarVehiculo.then(() => {
+                    const sql = `DELETE FROM empleados WHERE id_empleado = ?`;
+                    db.run(sql, [id_empleado], function(err3) {
+                        if (err3) {
+                            console.error('Error al eliminar empleado:', err3.message);
+                            return reject(err3);
+                        }
+                        resolve({ id: id_empleado });
+                    });
+                }).catch(reject);
+            });
+        });
+    }
 };
 
 module.exports = adminModel;

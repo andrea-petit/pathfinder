@@ -79,6 +79,19 @@ const empleadoController = {
                 res.status(500).json({ error: 'Error al realizar la consulta' });
             });
     },
+    updateInfo: (req, res) => {
+        const id_empleado = req.session.id_empleado;
+        const { nombre1, nombre2, apellido1, apellido2, telefono, correo } = req.body;
+
+        empleadoModel.updateInfo(id_empleado, nombre1, nombre2, apellido1, apellido2, telefono, correo)
+            .then(() => {
+                res.json({ message: 'Información actualizada exitosamente' });
+            })
+            .catch(err => {
+                console.error('Error al actualizar información:', err.message);
+                res.status(500).json({ error: 'Error al actualizar información' });
+            });
+    }
 };
 
 module.exports = empleadoController;

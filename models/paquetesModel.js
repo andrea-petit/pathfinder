@@ -46,56 +46,56 @@ const paquetesModel = {
         });
     },
 
-    generarViaje: (id_empleado, ids_paquetes) => {
+    generarViaje: (id_empleado) => {
         return new Promise((resolve, reject) => {
-            if (!Array.isArray(ids_paquetes) || ids_paquetes.length === 0) {
-                return reject(new Error('Debes seleccionar al menos un paquete.'));
+            if (!id_empleado) {
+                return reject(new Error('ID de empleado no proporcionado.'));
             }
-            if (ids_paquetes.length > 5) {
-                return reject(new Error('No puedes seleccionar más de 5 paquetes.'));
-            }
-
-            db.run(
-                `INSERT INTO viajes (id_empleado, fecha) VALUES (?, datetime('now'))`,
-                [id_empleado],
-                function (err) {
-                    if (err) {
-                        console.error('Error al crear viaje:', err.message);
-                        return reject(err);
-                    }
-                    const id_viaje = this.lastID;
-
-                    const placeholders = ids_paquetes.map(() => '?').join(',');
-                    db.all(
-                        `SELECT id, id_paquete FROM destinos WHERE id_paquete IN (${placeholders})`,
-                        ids_paquetes,
-                        (err, destinos) => {
-                            if (err) {
-                                console.error('Error al obtener destinos:', err.message);
-                                return reject(err);
-                            }
-
-                            let inserts = 0;
-                            destinos.forEach((destino, idx) => {
-                                db.run(
-                                    `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega) VALUES (?, ?, ?)`,
-                                    [id_viaje, destino.id, idx + 1],
-                                    function (err) {
-                                        if (err) {
-                                            console.error('Error al insertar detalle de viaje:', err.message);
-                                            return reject(err);
-                                        }
-                                        inserts++;
-                                        if (inserts === destinos.length) {
-                                            resolve({ id_viaje, paquetes: ids_paquetes });
-                                        }
-                                    }
-                                );
-                            });
-                        }
-                    );
+            const sql = `INSERT INTO viajes (id_empleado, fecha) VALUES (?, datetime('now'))`;
+            db.run(sql, [id_empleado], function (err) {
+                if (err) {
+                    console.error('Error al generar viaje:', err.message);
+                    return reject(err);
                 }
-            );
+                resolve({ id_viaje: this.lastID });
+            });
+        });
+    },
+    
+    guardarViajeDetalles: (id_viaje, detalles) => {
+        return new Promise((resolve, reject) => {
+            if (!id_viaje || !Array.isArray(detalles) || detalles.length === 0) {
+                return reject(new Error('Datos insuficientes para guardar detalles del viaje.'));
+            }
+            let completados = 0;
+            let errorOcurrido = false;
+            detalles.forEach(detalle => {
+                const { id_paquete, orden_entrega, comentario } = detalle;
+                db.get(
+                    `SELECT id FROM destinos WHERE id_paquete = ?`,
+                    [id_paquete],
+                    function (err, row) {
+                        if (err || !row) {
+                            errorOcurrido = true;
+                            return reject(new Error('No se encontró destino para el paquete ' + id_paquete));
+                        }
+                        db.run(
+                            `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega, observacion) VALUES (?, ?, ?, ?)`,
+                            [id_viaje, row.id, orden_entrega, comentario || null],
+                            function (err2) {
+                                if (err2 && !errorOcurrido) {
+                                    errorOcurrido = true;
+                                    return reject(err2);
+                                }
+                                completados++;
+                                if (completados === detalles.length && !errorOcurrido) {
+                                    resolve({ message: 'Detalles de viaje guardados correctamente.' });
+                                }
+                            }
+                        );
+                    }
+                );
+            });
         });
     },
 };
