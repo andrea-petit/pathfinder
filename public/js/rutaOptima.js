@@ -16,6 +16,7 @@ const iconPaquete = (numero) => L.divIcon({
 
 export async function generarRuta(paquetes) {
     const contenedor = document.getElementById('paquetes-viaje');
+    
     contenedor.innerHTML = `<div id="map" style="height: 400px;"></div><button id="btn-optimizar">Optimizar ruta</button><div id="lista-paquetes"></div>`;
 
     const map = L.map('map').setView([BASE.lat, BASE.lon], 13);
@@ -29,12 +30,17 @@ export async function generarRuta(paquetes) {
 
     console.log('Paquetes recibidos:', paquetes);
     paquetes.forEach(paquete => {
-        console.log('LAT:', paquete.LAT, 'LON:', paquete.LON, 'Tipo LAT:', typeof paquete.LAT, 'Tipo LON:', typeof paquete.LON);
+        let telefono = paquete.cliente_telefono || paquete.telefono || '';
+        if (telefono.startsWith('0')) {
+            telefono = '58' + telefono.slice(1);
+        }
         const lat = Number(paquete.LAT);
         const lon = Number(paquete.LON);
 
         if (!isNaN(lat) && !isNaN(lon)) {
-            L.marker([lat, lon]).addTo(map);
+            L.marker([lat, lon])
+                .addTo(map)
+                .bindPopup(`<b>${paquete.cliente_nombre1} ${paquete.cliente_apellido1}</b><br>Tel: ${telefono}`);
         } else {
             console.warn('Coordenadas inválidas para el paquete:', paquete);
         }
@@ -42,13 +48,19 @@ export async function generarRuta(paquetes) {
 
     document.getElementById('btn-optimizar').addEventListener('click', () => {
         const puntos = paquetes
-            .map(p => ({
-                id: p.id_paquete,
-                lat: Number(p.LAT),
-                lon: Number(p.LON),
-                cliente: `${p.cliente_nombre1} ${p.cliente_apellido1}`,
-                telefono: p.cliente_telefono
-            }))
+            .map(p => {
+                let telefono = p.cliente_telefono || p.telefono || '';
+                if (telefono.startsWith('0')) {
+                    telefono = '58' + telefono.slice(1);
+                }
+                return {
+                    id: p.id_paquete,
+                    lat: Number(p.LAT),
+                    lon: Number(p.LON),
+                    cliente: `${p.cliente_nombre1} ${p.cliente_apellido1}`,
+                    telefono: telefono
+                };
+            })
             .filter(p => !isNaN(p.lat) && !isNaN(p.lon));
 
         const ruta = [BASE];
@@ -106,11 +118,17 @@ export async function generarRuta(paquetes) {
         for (let i = 1; i < ruta.length - 1; i++) {
             const p = ruta[i];
 
+            // Formatea el teléfono aquí también
+            let telefono = p.telefono || '';
+            if (telefono.startsWith('0')) {
+                telefono = '58' + telefono.slice(1);
+            }
+
             const div = document.createElement('div');
             div.innerHTML = `
-                <p><strong>#${i}</strong> ${p.cliente} - ${p.telefono}</p>
+                <p><strong>#${i}</strong> ${p.cliente} - ${telefono}</p>
                 <button class="entregado-btn" data-id="${p.id}">Entregado</button>
-                <button onclick="window.open('https://wa.me/${p.telefono}')">Contactar</button>
+                <button onclick="window.open('https://wa.me/${telefono}')">Contactar</button>
                 <input type="text" placeholder="Observación" id="obs-${p.id}" />
                 <hr/>
             `;

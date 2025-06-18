@@ -68,12 +68,18 @@ function mostrarSeleccionPaquetes(paquetes) {
     const seleccionados = new Set();
 
     paquetes.forEach(paquete => {
+        // Modifica el teléfono: quita el primer 0 y agrega 58 al inicio
+        let telefono = paquete.cliente_telefono || '';
+        if (telefono.startsWith('0')) {
+            telefono = '58' + telefono.slice(1);
+        }
+
         const div = document.createElement('div');
         div.innerHTML = `
             <input type="checkbox" class="paquete-checkbox" value="${paquete.id_paquete}">
             <strong>Código:</strong> ${paquete.id_paquete}<br>
             <strong>Cliente:</strong> ${paquete.cliente_nombre1} ${paquete.cliente_apellido1}<br>
-            <strong>Teléfono:</strong> ${paquete.cliente_telefono}<br>
+            <strong>Teléfono:</strong> ${telefono || 'No disponible'}<br>
             <strong>Dirección:</strong> ${paquete.sector}, ${paquete.calle}, Casa ${paquete.numero_casa}<br>
             <strong>Referencia:</strong> ${paquete.referencia || ''}<br>
         `;
@@ -224,9 +230,7 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
     };
 });
 
-document.getElementById('paquetes-viaje').style.display = 'none';
-
-const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
-if (cambioVehiculo) cambioVehiculo.remove();
+const contenedor = document.getElementById('paquetes-viaje');
+contenedor.style.display = '';
 
 
