@@ -117,8 +117,6 @@ export async function generarRuta(paquetes) {
 
         for (let i = 1; i < ruta.length - 1; i++) {
             const p = ruta[i];
-
-            // Formatea el teléfono aquí también
             let telefono = p.telefono || '';
             if (telefono.startsWith('0')) {
                 telefono = '58' + telefono.slice(1);
@@ -126,13 +124,41 @@ export async function generarRuta(paquetes) {
 
             const div = document.createElement('div');
             div.innerHTML = `
-                <p><strong>#${i}</strong> ${p.cliente} - ${telefono}</p>
-                <button class="entregado-btn" data-id="${p.id}">Entregado</button>
-                <button onclick="window.open('https://wa.me/${telefono}')">Contactar</button>
-                <input type="text" placeholder="Observación" id="obs-${p.id}" />
+                <p>
+                    <strong>#${i}</strong> ${p.cliente} - ${telefono}
+                    <button class="entregado-btn" data-id="${p.id}" style="background:#ccc;">
+                        <span class="icono-entrega" style="color:gray;">&#x2714;</span> Entregado
+                    </button>
+                    <button onclick="window.open('https://wa.me/${telefono}')">Contactar</button>
+                    <input type="text" placeholder="Observación" id="obs-${p.id}" />
+                </p>
                 <hr/>
             `;
             lista.appendChild(div);
+
+            div.querySelector('.entregado-btn').addEventListener('click', async function() {
+                const comentario = document.getElementById(`obs-${p.id}`).value;
+                // Llama a tu backend para guardar el detalle
+                await fetch('/api/paquetes/marcarEntregado', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_viaje: idViajeActual, // Debes tener este valor en tu flujo
+                        id_destino: p.id_destino, // Asegúrate de tener este valor en tu objeto
+                        observacion: comentario
+                    })
+                });
+                // Cambia el color del icono y botón
+                this.style.background = '#4caf50';
+                this.querySelector('.icono-entrega').style.color = 'limegreen';
+                this.disabled = true;
+                entregadosSet.add(p.id);
+
+                // Si todos están entregados, muestra la pantalla final
+                if (entregadosSet.size === (ruta.length - 2)) {
+                    mostrarPantallaFinal();
+                }
+            });
 
             viajeData.push({
                 id_paquete: p.id,
@@ -187,4 +213,16 @@ function distancia(lat1, lon1, lat2, lon2) {
 
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
+}
+
+const entregadosSet = new Set();
+
+function mostrarPantallaFinal() {
+    document.body.innerHTML = `
+        <div style="text-align:center; margin-top:50px;">
+            <h2>¡Viaje completado!</h2>
+            <p>Todos los paquetes han sido entregados.</p>
+            <button onclick="window.location.reload()">Volver al inicio</button>
+        </div>
+    `;
 }
