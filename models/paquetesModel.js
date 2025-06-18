@@ -17,7 +17,9 @@ const paquetesModel = {
                     d.sector,
                     d.calle,
                     d.numero_casa,
-                    d.referencia
+                    d.referencia,
+                    d.lat AS LAT,
+                    d.lon AS LON
                 FROM paquetes p
                 JOIN clientes c ON p.id_cliente = c.id_cliente
                 JOIN destinos dest ON dest.id_paquete = p.id_paquete
@@ -36,7 +38,30 @@ const paquetesModel = {
 
     getPaqueteById: (id_paquete) => {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM paquetes WHERE id_paquete = ?`;
+            const sql = `
+                SELECT 
+                    p.*,
+                    c.id_cliente,
+                    c.nombre1 AS cliente_nombre1,
+                    c.nombre2 AS cliente_nombre2,
+                    c.apellido1 AS cliente_apellido1,
+                    c.apellido2 AS cliente_apellido2,
+                    c.telefono AS cliente_telefono,
+                    d.id_direccion,
+                    d.sector,
+                    d.calle,
+                    d.estado,
+                    d.pais,
+                    d.numero_casa,
+                    d.referencia,
+                    d.LAT,
+                    d.LON
+                FROM paquetes p
+                JOIN clientes c ON p.id_cliente = c.id_cliente
+                JOIN destinos dest ON dest.id_paquete = p.id_paquete
+                JOIN direccion d ON dest.id_direccion = d.id_direccion
+                WHERE p.id_paquete = ?
+            `;
             db.get(sql, [id_paquete], (err, row) => {
                 if (err) {
                     reject(err);

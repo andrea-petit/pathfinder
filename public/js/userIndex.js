@@ -1,7 +1,19 @@
+import { generarRuta } from './rutaOptima.js';
+
+let paquetes = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const res = await fetch('/api/paquetes/getPaquetes');
+        paquetes = await res.json();
+        document.getElementById('cantidad-paquetes').textContent = paquetes.length;
+    } catch (err) {
+        document.getElementById('cantidad-paquetes').textContent = '0';
+    }
     try {
         const resEmpleado = await fetch('/api/empleados/info');
         const empleado = await resEmpleado.json();
+
 
         if (resEmpleado.ok) {
             document.querySelector('#info-repartidor').innerHTML = `
@@ -41,9 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('generar-viajes-btn').addEventListener('click', () => {
-        const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
-        if (cambioVehiculo) cambioVehiculo.remove();
-
         mostrarSeleccionPaquetes(paquetes);
     });
 });
@@ -96,31 +105,10 @@ function mostrarSeleccionPaquetes(paquetes) {
     });
 
     btnGenerar.addEventListener('click', async () => {
-        const id_empleado = window.ID_EMPLEADO || prompt('Ingresa tu ID de empleado:');
-        if (!id_empleado) {
-            alert('No se pudo obtener el ID del empleado.');
-            return;
-        }
-        try {
-            const res = await fetch('/api/paquetes/generarViaje', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id_empleado,
-                    ids_paquetes: Array.from(seleccionados)
-                })
-            });
-            const result = await res.json();
-            if (res.ok) {
-                alert('Viaje generado exitosamente');
-                contenedor.remove();
-                location.reload();
-            } else {
-                alert(result.error || 'Error al generar el viaje');
-            }
-        } catch (err) {
-            alert('Error de conexión al generar el viaje');
-        }
+        const seleccionadosArray = Array.from(seleccionados).map(id =>
+            paquetes.find(p => p.id_paquete == id)
+        );
+        generarRuta(seleccionadosArray);
     });
 }
 
@@ -240,4 +228,5 @@ document.getElementById('paquetes-viaje').style.display = 'none';
 
 const cambioVehiculo = document.getElementById('form-cambio-vehiculo');
 if (cambioVehiculo) cambioVehiculo.remove();
+
 

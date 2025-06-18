@@ -28,7 +28,7 @@ const paquetesController = {
     },
 
     generarViaje: async (req, res) => {
-        const { id_empleado } = req.body;
+        const { id_empleado } = req.session.id_empleado
         if (!id_empleado) {
             return res.status(400).json({ error: 'ID de empleado requerido.' });
         }
