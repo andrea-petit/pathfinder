@@ -99,15 +99,42 @@ export async function generarRuta(paquetes) {
 
   const list = document.getElementById('lista-paquetes');
   list.innerHTML = `<h3>Paquetes seleccionados</h3>`;
+  let viajeData = [];
+
   paquetes.forEach((p, i) => {
     const tel = p.cliente_telefono.replace(/^0/, '58');
     const div = document.createElement('div');
     div.innerHTML = `
       <p>
         <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+        <button class="entregado-btn" data-id="${p.id_paquete}">Entregar</button>
+        <button onclick="window.open('https://wa.me/${tel}')">Contactar</button>
+        <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
       </p>
       <hr>`;
     list.appendChild(div);
+
+    viajeData.push({ id_paquete: p.id_paquete, orden_entrega: i + 1, comentario: '' });
+  });
+
+  document.querySelectorAll('.entregado-btn').forEach(btn => {
+    btn.onclick = async () => {
+      const id = btn.dataset.id;
+      const idx = viajeData.findIndex(v => v.id_paquete == id);
+      if (idx < 0) return alert('Paquete no encontrado');
+      viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
+
+      // Aqui se debe guardar en backend
+
+      btn.disabled = true;
+      btn.style.background = '#4caf50';
+      const m = marcadores.get(parseInt(id));
+      if (m) m.setIcon(iconCamion);
+
+      if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
+        setTimeout(() => alert('Viaje completado'), 500);
+      }
+    };
   });
 
   document.getElementById('btn-optimizar').onclick = async () => {
@@ -189,7 +216,7 @@ export async function generarRuta(paquetes) {
 
     list.style.display = '';
     list.innerHTML = `<h3>Ruta optimizada${modoDemo ? ' (DEMO: por aire)' : ''}</h3>`;
-    let viajeData = [];
+    viajeData = [];
 
     ordenPaquetes.forEach((p, i) => {
       const tel = p.cliente_telefono.replace(/^0/, '58');

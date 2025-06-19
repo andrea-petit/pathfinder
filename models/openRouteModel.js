@@ -1,10 +1,14 @@
+require('dotenv').config();
+
+const ORS_API_KEY = process.env.ORS_API_KEY;
+
 const openRouteModel = {
   getDistanceMatrix: async (locations, metrics, units) => {
     const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
     const response = await fetch('https://api.openrouteservice.org/v2/matrix/driving-car', {
       method: 'POST',
       headers: {
-        'Authorization': '5b3ce3597851110001cf62488f5c52d5a56f4f209b6b76718839d551',
+        'Authorization': ORS_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -25,7 +29,7 @@ const openRouteModel = {
     const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
       method: 'POST',
       headers: {
-        'Authorization': '5b3ce3597851110001cf62488f5c52d5a56f4f209b6b76718839d551',
+        'Authorization': ORS_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ coordinates })
