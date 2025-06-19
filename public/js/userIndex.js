@@ -68,7 +68,6 @@ function mostrarSeleccionPaquetes(paquetes) {
     const seleccionados = new Set();
 
     paquetes.forEach(paquete => {
-        // Modifica el teléfono: quita el primer 0 y agrega 58 al inicio
         let telefono = paquete.cliente_telefono || '';
         if (telefono.startsWith('0')) {
             telefono = '58' + telefono.slice(1);

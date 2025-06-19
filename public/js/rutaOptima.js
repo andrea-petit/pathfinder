@@ -69,12 +69,31 @@ export async function generarRuta(paquetes) {
     }
   });
 
+  // Muestra la lista de paquetes solo antes de optimizar
+  const list = document.getElementById('lista-paquetes');
+  list.innerHTML = `<h3>Paquetes seleccionados</h3>`;
+  paquetes.forEach((p, i) => {
+    const tel = p.cliente_telefono.replace(/^0/, '58');
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <p>
+        <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+      </p>
+      <hr>`;
+    list.appendChild(div);
+  });
+
   document.getElementById('btn-optimizar').onclick = async () => {
+    // Oculta la lista de paquetes seleccionados al optimizar
+    list.style.display = 'none';
+
+    // 1. Construye el array de coordenadas [lon, lat]
     const coords = [
       [BASE.lon, BASE.lat],
       ...paquetes.map(p => [Number(p.LON), Number(p.LAT)])
     ];
 
+    // 2. Solicita la matriz de distancias reales a ORS (a través de tu backend)
     const matrixRes = await fetch('/api/openr/ors-matrix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -85,26 +104,29 @@ export async function generarRuta(paquetes) {
       })
     });
     const matrixData = await matrixRes.json();
+    if (!matrixData.distances) {
+      alert('No se pudo obtener la matriz de distancias. Intenta de nuevo.');
+      return;
+    }
     const distMatrix = matrixData.distances;
 
+    // 3. TSP greedy sobre la matriz usando problemaViajanteTSP
     const ordenIndices = problemaViajanteTSP(distMatrix);
+    // El primer elemento es el almacén (índice 0), los demás son paquetes (índice -1)
     const ordenPaquetes = ordenIndices.slice(1).map(i => paquetes[i - 1]);
 
+    // 4. Dibuja la ruta optimizada
     const coordsRuta = [
       [BASE.lon, BASE.lat],
       ...ordenPaquetes.map(p => [Number(p.LON), Number(p.LAT)]),
-      [BASE.lon, BASE.lat] 
+      [BASE.lon, BASE.lat]
     ];
 
-    const res = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+    const res = await fetch('/api/openr/ors-directions', {
       method: 'POST',
-      headers: {
-        'Authorization': '5b3ce3597851110001cf62488f5c52d5a56f4f209b6b76718839d551',
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ coordinates: coordsRuta })
     });
-
     const data = await res.json();
     const geo = data.features[0].geometry;
     const dur = Math.round(data.features[0].properties.summary.duration / 60);
@@ -115,7 +137,8 @@ export async function generarRuta(paquetes) {
 
     L.marker([BASE.lat, BASE.lon], { icon: iconBase }).addTo(map).bindPopup("Almacén");
 
-    L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map).fitBounds(L.geoJSON(geo).getBounds());
+    const geoLayer = L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map);
+    map.fitBounds(geoLayer.getBounds());
 
     ordenPaquetes.forEach((p, i) => {
       const oldMarker = marcadores.get(p.id_paquete);
@@ -126,7 +149,7 @@ export async function generarRuta(paquetes) {
       marcadores.set(p.id_paquete, m);
     });
 
-    const list = document.getElementById('lista-paquetes');
+    list.style.display = '';
     list.innerHTML = `<h3>Ruta optimizada (ETA: ${dur} min)</h3>`;
     let viajeData = [];
 
@@ -134,7 +157,7 @@ export async function generarRuta(paquetes) {
       const tel = p.cliente_telefono.replace(/^0/, '58');
       const div = document.createElement('div');
       div.innerHTML = `
-        <p><strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+        <p><strong#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
           <button class="entregado-btn" data-id="${p.id_paquete}">Entregado</button>
           <button onclick="window.open('https://wa.me/${tel}')">WhatsApp</button>
           <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
