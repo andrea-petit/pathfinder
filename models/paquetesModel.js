@@ -24,6 +24,9 @@ const paquetesModel = {
                 JOIN clientes c ON p.id_cliente = c.id_cliente
                 JOIN destinos dest ON dest.id_paquete = p.id_paquete
                 JOIN direccion d ON dest.id_direccion = d.id_direccion
+                LEFT JOIN viaje_detalles vd ON vd.id_destino = dest.id
+                WHERE p.estado = 'pendiente'
+                  AND (vd.estado IS NULL OR vd.estado != 'entregado')
                 ORDER BY p.id_paquete
             `;
             db.all(sql, [], (err, rows) => {
@@ -105,17 +108,27 @@ const paquetesModel = {
                             return reject(new Error('No se encontró destino para el paquete ' + id_paquete));
                         }
                         db.run(
-                            `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega, observacion) VALUES (?, ?, ?, ?)`,
+                            `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega, observacion, estado) VALUES (?, ?, ?, ?, 'entregado')`,
                             [id_viaje, row.id, orden_entrega, comentario || null],
                             function (err2) {
                                 if (err2 && !errorOcurrido) {
                                     errorOcurrido = true;
                                     return reject(err2);
                                 }
-                                completados++;
-                                if (completados === detalles.length && !errorOcurrido) {
-                                    resolve({ message: 'Detalles de viaje guardados correctamente.' });
-                                }
+                                db.run(
+                                    `UPDATE paquetes SET estado = 'entregado' WHERE id_paquete = ?`,
+                                    [id_paquete],
+                                    function (err3) {
+                                        if (err3 && !errorOcurrido) {
+                                            errorOcurrido = true;
+                                            return reject(err3);
+                                        }
+                                        completados++;
+                                        if (completados === detalles.length && !errorOcurrido) {
+                                            resolve({ message: 'Detalles de viaje guardados y paquetes marcados como entregados.' });
+                                        }
+                                    }
+                                );
                             }
                         );
                     }

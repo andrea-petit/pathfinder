@@ -124,15 +124,16 @@ export async function generarRuta(paquetes) {
       if (idx < 0) return alert('Paquete no encontrado');
       viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
 
-      // Aqui se debe guardar en backend
-
       btn.disabled = true;
       btn.style.background = '#4caf50';
       const m = marcadores.get(parseInt(id));
       if (m) m.setIcon(iconCamion);
 
       if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
-        setTimeout(() => alert('Viaje completado'), 500);
+        setTimeout(() => {
+          alert('Viaje completado');
+          window.location.href = '/home';
+        }, 500);
       }
     };
   });
@@ -223,7 +224,7 @@ export async function generarRuta(paquetes) {
       const div = document.createElement('div');
       div.innerHTML = `
         <p><strong#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
-          <button class="entregado-btn" data-id="${p.id_paquete}">Entregado</button>
+          <button class="entregado-btn" data-id="${p.id_paquete}" ${i !== 0 ? 'disabled' : ''}>Entregado</button>
           <button onclick="window.open('https://wa.me/${tel}')">WhatsApp</button>
           <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
         </p><hr>`;
@@ -232,38 +233,38 @@ export async function generarRuta(paquetes) {
       viajeData.push({ id_paquete: p.id_paquete, orden_entrega: i + 1, comentario: '' });
     });
 
-    let id_viaje = 1;
-    if (!modoDemo) {
-      const resViaje = await fetch('/api/paquetes/generarViaje', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await resViaje.json();
-      id_viaje = data.id_viaje;
-    }
+    const resViaje = await fetch('/api/paquetes/generarViaje', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+    });
+    const { id_viaje } = await resViaje.json();
 
-    document.querySelectorAll('.entregado-btn').forEach(btn => {
+    document.querySelectorAll('.entregado-btn').forEach((btn, idx, btns) => {
       btn.onclick = async () => {
         const id = btn.dataset.id;
-        const idx = viajeData.findIndex(v => v.id_paquete == id);
-        if (idx < 0) return alert('Paquete no encontrado');
+        const idxData = viajeData.findIndex(v => v.id_paquete == id);
+        if (idxData < 0) return alert('Paquete no encontrado');
+        viajeData[idxData].comentario = document.getElementById(`obs-${id}`).value;
 
-        viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
-
-        if (!modoDemo) {
-          const guard = await fetch('/api/paquetes/guardarViajeDetalles', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_viaje, detalles: [viajeData[idx]] })
-          });
-          if (!guard.ok) return alert('Error al guardar');
-        }
+        const guard = await fetch('/api/paquetes/guardarViajeDetalles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_viaje, detalles: [viajeData[idxData]] })
+        });
+        if (!guard.ok) return alert('Error al guardar');
 
         btn.disabled = true;
         btn.style.background = '#4caf50';
         const m = marcadores.get(parseInt(id));
         if (m) m.setIcon(iconCamion);
 
+        if (btns[idx + 1]) btns[idx + 1].disabled = false;
+
         if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
-          setTimeout(() => alert('Viaje completado'), 500);
+          setTimeout(() => {
+            alert('Viaje completado');
+            window.location.href = '/home';
+          }, 500);
+          
         }
       };
     });
