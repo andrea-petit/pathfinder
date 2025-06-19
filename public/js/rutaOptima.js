@@ -44,6 +44,34 @@ function problemaViajanteTSP(matriz) {
   return ruta;
 }
 
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371e3;
+  const toRad = x => x * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function matrizHaversine(puntos) {
+  const n = puntos.length;
+  const matriz = Array.from({length: n}, () => Array(n).fill(0));
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i !== j) {
+        matriz[i][j] = haversine(
+          Number(puntos[i].LAT), Number(puntos[i].LON),
+          Number(puntos[j].LAT), Number(puntos[j].LON)
+        );
+      }
+    }
+  }
+  return matriz;
+}
+
 export async function generarRuta(paquetes) {
   const cont = document.getElementById('paquetes-viaje');
   cont.style.display = 'block';
@@ -69,7 +97,6 @@ export async function generarRuta(paquetes) {
     }
   });
 
-  // Muestra la lista de paquetes solo antes de optimizar
   const list = document.getElementById('lista-paquetes');
   list.innerHTML = `<h3>Paquetes seleccionados</h3>`;
   paquetes.forEach((p, i) => {
@@ -84,61 +111,72 @@ export async function generarRuta(paquetes) {
   });
 
   document.getElementById('btn-optimizar').onclick = async () => {
-    // Oculta la lista de paquetes seleccionados al optimizar
     list.style.display = 'none';
 
-    // 1. Construye el array de coordenadas [lon, lat]
     const coords = [
       [BASE.lon, BASE.lat],
       ...paquetes.map(p => [Number(p.LON), Number(p.LAT)])
     ];
 
-    // 2. Solicita la matriz de distancias reales a ORS (a través de tu backend)
-    const matrixRes = await fetch('/api/openr/ors-matrix', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        locations: coords,
-        metrics: ['distance'],
-        units: 'm'
-      })
-    });
-    const matrixData = await matrixRes.json();
-    if (!matrixData.distances) {
-      alert('No se pudo obtener la matriz de distancias. Intenta de nuevo.');
-      return;
-    }
-    const distMatrix = matrixData.distances;
-
-    // 3. TSP greedy sobre la matriz usando problemaViajanteTSP
-    const ordenIndices = problemaViajanteTSP(distMatrix);
-    // El primer elemento es el almacén (índice 0), los demás son paquetes (índice -1)
-    const ordenPaquetes = ordenIndices.slice(1).map(i => paquetes[i - 1]);
-
-    // 4. Dibuja la ruta optimizada
-    const coordsRuta = [
-      [BASE.lon, BASE.lat],
-      ...ordenPaquetes.map(p => [Number(p.LON), Number(p.LAT)]),
-      [BASE.lon, BASE.lat]
+    const puntos = [
+      { LAT: BASE.lat, LON: BASE.lon },
+      ...paquetes.map(p => ({ LAT: p.LAT, LON: p.LON }))
     ];
 
-    const res = await fetch('/api/openr/ors-directions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ coordinates: coordsRuta })
-    });
-    const data = await res.json();
-    const geo = data.features[0].geometry;
-    const dur = Math.round(data.features[0].properties.summary.duration / 60);
+    let distMatrix;
+    let modoDemo = false;
 
-    map.eachLayer(l => {
-      if (l instanceof L.Polyline) map.removeLayer(l);
-    });
+    try {
+      const matrixRes = await fetch('/api/openr/ors-matrix', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          locations: coords,
+          metrics: ['distance'],
+          units: 'm'
+        })
+      });
+      const matrixData = await matrixRes.json();
+      if (!matrixData.distances) throw new Error('ORS no disponible');
+      distMatrix = matrixData.distances;
+    } catch (e) {
+      modoDemo = true;
+      alert('Servicio de rutas no disponible, usando modo demo (distancia por aire).');
+      distMatrix = matrizHaversine(puntos);
+    }
 
-    L.marker([BASE.lat, BASE.lon], { icon: iconBase }).addTo(map).bindPopup("Almacén");
+    const ordenIndices = problemaViajanteTSP(distMatrix);
+    const ordenPaquetes = ordenIndices.slice(1).map(i => paquetes[i - 1]);
 
-    const geoLayer = L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map);
-    map.fitBounds(geoLayer.getBounds());
+    let geoLayer;
+    if (!modoDemo) {
+      try {
+        const res = await fetch('/api/openr/ors-directions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ coordinates: [
+            [BASE.lon, BASE.lat],
+            ...ordenPaquetes.map(p => [Number(p.LON), Number(p.LAT)]),
+            [BASE.lon, BASE.lat]
+          ] })
+        });
+        const data = await res.json();
+        const geo = data.features[0].geometry;
+        geoLayer = L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map);
+        map.fitBounds(geoLayer.getBounds());
+      } catch (e) {
+        modoDemo = true;
+      }
+    }
+    if (modoDemo) {
+      const latlngs = [
+        [BASE.lat, BASE.lon],
+        ...ordenPaquetes.map(p => [Number(p.LAT), Number(p.LON)]),
+        [BASE.lat, BASE.lon]
+      ];
+      geoLayer = L.polyline(latlngs, { color: 'red', weight: 4, dashArray: '5,10' }).addTo(map);
+      map.fitBounds(geoLayer.getBounds());
+    }
 
     ordenPaquetes.forEach((p, i) => {
       const oldMarker = marcadores.get(p.id_paquete);
@@ -150,7 +188,7 @@ export async function generarRuta(paquetes) {
     });
 
     list.style.display = '';
-    list.innerHTML = `<h3>Ruta optimizada (ETA: ${dur} min)</h3>`;
+    list.innerHTML = `<h3>Ruta optimizada${modoDemo ? ' (DEMO: por aire)' : ''}</h3>`;
     let viajeData = [];
 
     ordenPaquetes.forEach((p, i) => {
@@ -167,10 +205,14 @@ export async function generarRuta(paquetes) {
       viajeData.push({ id_paquete: p.id_paquete, orden_entrega: i + 1, comentario: '' });
     });
 
-    const resViaje = await fetch('/api/paquetes/generarViaje', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-    });
-    const { id_viaje } = await resViaje.json();
+    let id_viaje = 1;
+    if (!modoDemo) {
+      const resViaje = await fetch('/api/paquetes/generarViaje', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await resViaje.json();
+      id_viaje = data.id_viaje;
+    }
 
     document.querySelectorAll('.entregado-btn').forEach(btn => {
       btn.onclick = async () => {
@@ -180,12 +222,13 @@ export async function generarRuta(paquetes) {
 
         viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
 
-        const guard = await fetch('/api/paquetes/guardarViajeDetalles', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id_viaje, detalles: [viajeData[idx]] })
-        });
-
-        if (!guard.ok) return alert('Error al guardar');
+        if (!modoDemo) {
+          const guard = await fetch('/api/paquetes/guardarViajeDetalles', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_viaje, detalles: [viajeData[idx]] })
+          });
+          if (!guard.ok) return alert('Error al guardar');
+        }
 
         btn.disabled = true;
         btn.style.background = '#4caf50';
@@ -199,4 +242,3 @@ export async function generarRuta(paquetes) {
     });
   };
 }
-
