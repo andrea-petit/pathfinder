@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (resEmpleado.ok) {
             document.querySelector('#info-repartidor').innerHTML = `
+                <h2>Información Personal</h2>
                 <p><strong>Nombre:</strong> ${empleado.nombre1} ${empleado.nombre2 || ''} ${empleado.apellido1} ${empleado.apellido2 || ''}</p>
                 <p><strong>Cédula:</strong> ${empleado.id_empleado}</p>
                 <p><strong>Correo:</strong> ${empleado.correo}</p>
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (resVehiculo.ok && vehiculo) {
             document.querySelector('#info-vehiculo').innerHTML = `
+                <h3>Vehículo Asignado</h3>
                 <p><strong>Placa:</strong> ${vehiculo.placa}</p>
                 <p><strong>Modelo:</strong> ${vehiculo.modelo}</p>
                 <p><strong>Tipo:</strong> ${vehiculo.marca}</p>
@@ -95,6 +97,10 @@ function mostrarSeleccionPaquetes(paquetes) {
     btnGenerar.disabled = true;
     contenedor.appendChild(btnGenerar);
 
+    const btnCancelar = document.createElement('button');
+    btnCancelar.textContent = 'Cancelar';
+    contenedor.appendChild(btnCancelar);
+
     document.body.appendChild(contenedor);
 
     const checkboxes = contenedor.querySelectorAll('.paquete-checkbox');
@@ -118,10 +124,17 @@ function mostrarSeleccionPaquetes(paquetes) {
         const seleccionadosArray = Array.from(seleccionados).map(id =>
             paquetes.find(p => p.id_paquete == id)
         );
-        confirm = window.confirm(`¿Estás seguro de generar un viaje con ${seleccionadosArray.length} paquetes?`);
-        if (!confirm) return;
+        const confirmacion = window.confirm(`¿Estás seguro de generar un viaje con ${seleccionadosArray.length} paquetes?`);
+        if (!confirmacion) return;
         document.querySelector('#info-repartidor').style.display = 'none'
         generarRuta(seleccionadosArray);
+        contenedor.remove();
+    });
+
+    btnCancelar.addEventListener('click', () => {
+        contenedor.remove();
+        document.querySelector('#info-repartidor').style.display = 'block';
+        document.querySelector('#info-vehiculo').style.display = 'block';
     });
 }
 
@@ -265,5 +278,7 @@ const info = document.getElementById('info-container');
 if (info) {
   info.style.display = 'none';
 }
+
+
 
 

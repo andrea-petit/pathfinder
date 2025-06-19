@@ -115,7 +115,8 @@ export async function generarRuta(paquetes) {
       <hr>`;
     list.appendChild(div);
 
-    if (i === 0) div.style.background = '#fffbe6';
+    // if (i === 0) div.style.background = '#fffbe6'; 
+    // ESTO CAMBIA EL COLOR DEL PROXIMO A ENTREGAR, cambiale el color si quieres
 
     viajeData.push({
       id_paquete: p.id_paquete,
@@ -272,7 +273,8 @@ export async function generarRuta(paquetes) {
           <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
         </p>
         <hr>`;
-      if (i === 0) div.style.background = '#fffbe6';
+      // if (i === 0) div.style.background = '#fffbe6';
+      // lo mismo lo mismo, cambia el color si quieres
       list.appendChild(div);
 
       viajeData.push({
