@@ -4,6 +4,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "node": "^24.2.0",
+    "node-fetch": "^3.3.2",
+    "openrouteservice-js": "^0.4.1",
     "sqlite3": "^5.1.7"
   }
 }

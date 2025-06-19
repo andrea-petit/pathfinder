@@ -8,6 +8,7 @@ const auth = require('./middleware/auth');
 const empleadoRoutes = require('./routes/empleadoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const paquetesRoutes = require('./routes/paquetesRoutes'); 
+const openrRoutes = require('./routes/openrRoutes');
 
 
 app.use(cors());
@@ -24,6 +25,7 @@ app.use(session({
 app.use('/api/empleados', empleadoRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/paquetes', paquetesRoutes);
+app.use('/api/openr', openrRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));
