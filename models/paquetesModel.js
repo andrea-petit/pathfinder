@@ -98,7 +98,7 @@ const paquetesModel = {
             let completados = 0;
             let errorOcurrido = false;
             detalles.forEach(detalle => {
-                const { id_paquete, orden_entrega, comentario } = detalle;
+                const { id_paquete, orden_entrega, comentario, eta_estimada } = detalle; // <-- agrega eta_estimada
                 db.get(
                     `SELECT id FROM destinos WHERE id_paquete = ?`,
                     [id_paquete],
@@ -108,8 +108,8 @@ const paquetesModel = {
                             return reject(new Error('No se encontró destino para el paquete ' + id_paquete));
                         }
                         db.run(
-                            `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega, observacion, estado) VALUES (?, ?, ?, ?, 'entregado')`,
-                            [id_viaje, row.id, orden_entrega, comentario || null],
+                            `INSERT INTO viaje_detalles (id_viaje, id_destino, orden_entrega, observacion, estado, eta_estimada) VALUES (?, ?, ?, ?, 'entregado', ?)`,
+                            [id_viaje, row.id, orden_entrega, comentario || null, eta_estimada || null], // <-- agrega eta_estimada aquí
                             function (err2) {
                                 if (err2 && !errorOcurrido) {
                                     errorOcurrido = true;

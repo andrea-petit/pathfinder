@@ -2,7 +2,9 @@ import { generarRuta } from './rutaOptima.js';
 
 let paquetes = [];
 
+
 document.addEventListener('DOMContentLoaded', async () => {
+    
     try {
         const res = await fetch('/api/paquetes/getPaquetes');
         paquetes = await res.json();
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p><strong>Cédula:</strong> ${empleado.id_empleado}</p>
                 <p><strong>Correo:</strong> ${empleado.correo}</p>
             `;
+            document.querySelector('#info-repartidor').style.display = 'block'
         } else {
             document.querySelector('#info-repartidor').innerHTML = `<p>Error al cargar información personal.</p>`;
         }
@@ -53,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('generar-viajes-btn').addEventListener('click', () => {
+        document.querySelector('#info-repartidor').style.display = 'none';
+        document.querySelector('#info-vehiculo').style.display = 'none';
         mostrarSeleccionPaquetes(paquetes);
     });
 });
@@ -113,6 +118,9 @@ function mostrarSeleccionPaquetes(paquetes) {
         const seleccionadosArray = Array.from(seleccionados).map(id =>
             paquetes.find(p => p.id_paquete == id)
         );
+        confirm = window.confirm(`¿Estás seguro de generar un viaje con ${seleccionadosArray.length} paquetes?`);
+        if (!confirm) return;
+        document.querySelector('#info-repartidor').style.display = 'none'
         generarRuta(seleccionadosArray);
     });
 }
@@ -230,6 +238,32 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
 });
 
 const contenedor = document.getElementById('paquetes-viaje');
-contenedor.style.display = '';
+if (contenedor) {
+  contenedor.style.display = '';
+}
+
+const lista = document.getElementById('lista-paquetes');
+if (lista) {
+  lista.innerHTML = '';
+}
+
+paquetes.forEach((p, i) => {
+  const tel = p.cliente_telefono.replace(/^0/, '58');
+  const div = document.createElement('div');
+  div.className = 'paquete-item';
+  div.innerHTML = `
+    <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+    <button class="entregado-btn" data-id="${p.id_paquete}">Entregar</button>
+    <button onclick="window.open('https://wa.me/${tel}')">Contactar</button>
+    <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
+    <hr>
+  `;
+  lista.appendChild(div);
+});
+
+const info = document.getElementById('info-container');
+if (info) {
+  info.style.display = 'none';
+}
 
 

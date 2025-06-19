@@ -1,4 +1,5 @@
 const BASE = { lat: 11.650851303959218, lon: -70.22056764245828 };
+let modoDemo = false;
 
 const iconBase = L.icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177361.png',
@@ -114,7 +115,14 @@ export async function generarRuta(paquetes) {
       <hr>`;
     list.appendChild(div);
 
-    viajeData.push({ id_paquete: p.id_paquete, orden_entrega: i + 1, comentario: '' });
+    if (i === 0) div.style.background = '#fffbe6';
+
+    viajeData.push({
+      id_paquete: p.id_paquete,
+      orden_entrega: i + 1,
+      comentario: '',
+      eta_estimada: null
+    });
   });
 
   document.querySelectorAll('.entregado-btn').forEach(btn => {
@@ -139,6 +147,7 @@ export async function generarRuta(paquetes) {
   });
 
   document.getElementById('btn-optimizar').onclick = async () => {
+    let modoDemo = false;
     list.style.display = 'none';
 
     const coords = [
@@ -152,8 +161,6 @@ export async function generarRuta(paquetes) {
     ];
 
     let distMatrix;
-    let modoDemo = false;
-
     try {
       const matrixRes = await fetch('/api/openr/ors-matrix', {
         method: 'POST',
@@ -175,24 +182,33 @@ export async function generarRuta(paquetes) {
 
     const ordenIndices = problemaViajanteTSP(distMatrix);
     const ordenPaquetes = ordenIndices.slice(1).map(i => paquetes[i - 1]);
+    const coordsRuta = [
+      [BASE.lon, BASE.lat],
+      ...ordenPaquetes.map(p => [Number(p.LON), Number(p.LAT)]),
+      [BASE.lon, BASE.lat]
+    ];
 
-    let geoLayer;
+    let geoLayer, segments, dur = 0, duraciones = [], total = 0;
     if (!modoDemo) {
+      console.log('Voy a pedir la ruta a ORS directions...');
       try {
         const res = await fetch('/api/openr/ors-directions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ coordinates: [
-            [BASE.lon, BASE.lat],
-            ...ordenPaquetes.map(p => [Number(p.LON), Number(p.LAT)]),
-            [BASE.lon, BASE.lat]
-          ] })
+          body: JSON.stringify({ coordinates: coordsRuta })
         });
         const data = await res.json();
-        const geo = data.features[0].geometry;
-        geoLayer = L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map);
-        map.fitBounds(geoLayer.getBounds());
+        if (data && data.features && data.features[0]) {
+          const geo = data.features[0].geometry;
+          segments = data.features[0].properties.segments;
+          dur = Math.round(data.features[0].properties.summary.duration / 60);
+          geoLayer = L.geoJSON(geo, { style: { color: 'blue', weight: 4 } }).addTo(map);
+          map.fitBounds(geoLayer.getBounds());
+        } else {
+          throw new Error('Respuesta directions inválida');
+        }
       } catch (e) {
+        console.error('Error directions:', e);
         modoDemo = true;
       }
     }
@@ -204,6 +220,14 @@ export async function generarRuta(paquetes) {
       ];
       geoLayer = L.polyline(latlngs, { color: 'red', weight: 4, dashArray: '5,10' }).addTo(map);
       map.fitBounds(geoLayer.getBounds());
+      // Calcular duraciones y total en modo demo
+      const VELOCIDAD_PROMEDIO = 30000 / 60; // 30 km/h en m/min
+      for (let i = 0; i < ordenIndices.length - 1; i++) {
+        const d = distMatrix[ordenIndices[i]][ordenIndices[i + 1]];
+        const minutos = Math.round(d / VELOCIDAD_PROMEDIO);
+        duraciones.push(minutos);
+        total += minutos;
+      }
     }
 
     ordenPaquetes.forEach((p, i) => {
@@ -216,34 +240,64 @@ export async function generarRuta(paquetes) {
     });
 
     list.style.display = '';
-    list.innerHTML = `<h3>Ruta optimizada${modoDemo ? ' (DEMO: por aire)' : ''}</h3>`;
+    list.innerHTML = `
+      <h3>Ruta optimizada (ETA: ${!modoDemo ? dur : total} min)</h3>
+      <p>Duración total estimada: ${!modoDemo ? dur : total} min</p>
+      <p style="font-weight:bold;color:#007bff;">
+        Orden de entrega sugerido (sigue los números en la lista y en el mapa):
+      </p>
+    `;
     viajeData = [];
 
     ordenPaquetes.forEach((p, i) => {
+      let duracionStr = '';
+      let eta = null;
+      if (!modoDemo && segments && segments[i]) {
+        const minutos = Math.round(segments[i].duration / 60);
+        duracionStr = ` (~${minutos} min)`;
+        eta = minutos;
+      } else if (modoDemo && duraciones[i] !== undefined) {
+        duracionStr = ` (~${duraciones[i]} min)`;
+        eta = duraciones[i];
+      }
       const tel = p.cliente_telefono.replace(/^0/, '58');
       const div = document.createElement('div');
       div.innerHTML = `
-        <p><strong#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+        <p>
+          <span style="font-size:1.5em;font-weight:bold;color:#007bff;">#${i + 1}</span>
+          ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+          ${duracionStr}
           <button class="entregado-btn" data-id="${p.id_paquete}" ${i !== 0 ? 'disabled' : ''}>Entregado</button>
           <button onclick="window.open('https://wa.me/${tel}')">WhatsApp</button>
           <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
-        </p><hr>`;
+        </p>
+        <hr>`;
+      if (i === 0) div.style.background = '#fffbe6';
       list.appendChild(div);
 
-      viajeData.push({ id_paquete: p.id_paquete, orden_entrega: i + 1, comentario: '' });
+      viajeData.push({
+        id_paquete: p.id_paquete,
+        orden_entrega: i + 1,
+        comentario: '',
+        eta_estimada: eta 
+      });
     });
 
-    const resViaje = await fetch('/api/paquetes/generarViaje', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-    });
-    const { id_viaje } = await resViaje.json();
-
+    let id_viaje = null;
     document.querySelectorAll('.entregado-btn').forEach((btn, idx, btns) => {
       btn.onclick = async () => {
         const id = btn.dataset.id;
         const idxData = viajeData.findIndex(v => v.id_paquete == id);
         if (idxData < 0) return alert('Paquete no encontrado');
         viajeData[idxData].comentario = document.getElementById(`obs-${id}`).value;
+
+        if (id_viaje === null) {
+          const resViaje = await fetch('/api/paquetes/generarViaje', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+          });
+          const data = await resViaje.json();
+          id_viaje = data.id_viaje;
+        }
 
         const guard = await fetch('/api/paquetes/guardarViajeDetalles', {
           method: 'POST',
@@ -264,9 +318,20 @@ export async function generarRuta(paquetes) {
             alert('Viaje completado');
             window.location.href = '/home';
           }, 500);
-          
         }
       };
     });
   };
+}
+
+let duraciones = [];
+let total = 0;
+if (modoDemo) {
+  const VELOCIDAD_PROMEDIO = 30000 / 60; 
+  for (let i = 0; i < ordenIndices.length - 1; i++) {
+    const d = distMatrix[ordenIndices[i]][ordenIndices[i + 1]];
+    const minutos = Math.round(d / VELOCIDAD_PROMEDIO);
+    duraciones.push(minutos);
+    total += minutos;
+  }
 }
