@@ -14,10 +14,10 @@ const iconPaquete = i => L.divIcon({
   iconAnchor: [12, 12]
 });
 
-const iconCamion = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/679/679720.png',
-  iconSize: [30, 30],
-  iconAnchor: [15, 15]
+const iconEntregado = L.icon({
+  iconUrl: './icons/entregado.png',
+  iconSize: [34, 34],
+  iconAnchor: [16, 16]
 });
 
 
@@ -136,7 +136,7 @@ export async function generarRuta(paquetes) {
       btn.disabled = true;
       btn.style.background = '#4caf50';
       const m = marcadores.get(parseInt(id));
-      if (m) m.setIcon(iconCamion);
+      if (m) m.setIcon(iconEntregado);
 
       if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
         setTimeout(() => {
@@ -311,7 +311,7 @@ export async function generarRuta(paquetes) {
         btn.disabled = true;
         btn.style.background = '#4caf50';
         const m = marcadores.get(parseInt(id));
-        if (m) m.setIcon(iconCamion);
+        if (m) m.setIcon(iconEntregado);
 
         if (btns[idx + 1]) btns[idx + 1].disabled = false;
 
