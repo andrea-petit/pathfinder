@@ -89,9 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             const data = await res.json();
                             if (res.ok) {
                                 card.remove();
-                                alert('Empleado eliminado');
+                                Swal.fire({
+                                    title: "Empleado eliminado",
+                                    icon: "success",
+                                    });;
                             } else {
-                                alert(data.error || 'Error al eliminar');
+                                Swal.fire({
+                                    title: "Error al eliminar empleado",
+                                    text: data.error,
+                                    icon: "error",
+                                });
                             }
                         }
                     });
@@ -126,7 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             const campo = form.campo.value;
                             const valor = form.valor.value;
                             if (!campo || !valor) {
-                                alert('Completa todos los campos.');
+                                Swal.fire({
+                                    title: "Completa todos los campos",
+                                    icon: "warning",
+                                    });;
                                 return;
                             }
                             const res = await fetch(`/api/admin/updateEmpleado/${id_empleado}`, {
@@ -136,11 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             const data = await res.json();
                             if (res.ok) {
-                                alert('Empleado actualizado correctamente');
+                                Swal.fire({
+                                    title: "Empleado actualizado",
+                                    icon: "success",
+                                    });;
                                 formContainer.innerHTML = '';
                                 mostrarListaEmpleados();
                             } else {
-                                alert(data.error || 'Error al actualizar');
+                                Swal.fire({
+                                    title: "Error al actualizar empleado",
+                                    text: data.error || 'Error desconocido',
+                                    icon: "error",
+                                    });;
                             }
                         });
                     });
@@ -219,7 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (!response.ok) {
-                    alert(result.error || 'Error al registrar empleado');
+                    Swal.fire({
+                                    title: "Error al registrar empleado",
+                                    text: result.error || 'Error desconocido',
+                                    icon: "error",
+                                    });
                     return;
                 }
 
@@ -234,15 +255,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     const asignarResult = await asignarRes.json();
                     if (!asignarRes.ok) {
-                        alert(asignarResult.error || 'Empleado registrado, pero error al asignar vehículo');
+                        Swal.fire({
+                                    title: "Error al asignar vehículo",
+                                    text: asignarResult.error || 'Error desconocido',
+                                    icon: "error",
+                                    });
                         return;
                     }
                 }
 
-                alert('Empleado registrado correctamente');
+                Swal.fire({
+                            title: "Empleado actualizado",
+                            icon: "success",
+                            });
                 mostrarListaEmpleados();
             } catch (error) {
-                alert('Error al agregar empleado');
+                Swal.fire({
+                            title: "Error al actualizar empleado",
+                            text: error.message || 'Error desconocido',
+                            icon: "error",
+                            });;
             }
         });
     }

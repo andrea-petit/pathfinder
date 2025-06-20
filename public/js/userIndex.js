@@ -109,7 +109,12 @@ function mostrarSeleccionPaquetes(paquetes) {
             if (this.checked) {
                 if (seleccionados.size >= 5) {
                     this.checked = false;
-                    alert('Solo puedes seleccionar hasta 5 paquetes.');
+                    Swal.fire({
+                        title: "Límite alcanzado",
+                        text: "Solo puedes seleccionar hasta 5 paquetes.",
+                        icon: "warning",
+                    });
+                    
                 } else {
                     seleccionados.add(this.value);
                 }
@@ -146,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function mostrarFormularioActualizar() {
     if (document.getElementById('form-actualizar-datos')) return;
 
-    const seccion = document.querySelector('section');
+    const updateDiv= document.getElementById('update-data');
     const form = document.createElement('form');
     form.id = 'form-actualizar-datos';
     form.innerHTML = `
@@ -164,14 +169,18 @@ function mostrarFormularioActualizar() {
         <button type="submit">Guardar</button>
         <button type="button" id="cancelar-actualizar">Cancelar</button>
     `;
-    seccion.appendChild(form);
+    updateDiv.appendChild(form);
 
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         const campo = form.campo.value;
         const valor = form.valor.value;
         if (!campo || !valor) {
-            alert('Completa todos los campos.');
+            Swal.fire({
+                title: "Campos incompletos",
+                text: "Por favor, completa todos los campos.",
+                icon: "warning",
+            });
             return;
         }
         try {
@@ -182,14 +191,25 @@ function mostrarFormularioActualizar() {
             });
             const data = await res.json();
             if (res.ok) {
-                alert('Datos actualizados correctamente');
+                Swal.fire({
+                    title: "Datos actualizados",
+                    icon: "success",
+                });
                 form.remove();
                 location.reload();
             } else {
-                alert(data.error || 'No se realizaron cambios');
+                Swal.fire({
+                    title: "Error al actualizar",
+                    text: data.error || 'Error al actualizar los datos',
+                    icon: "error",
+                });
             }
         } catch {
-            alert('Error de conexión');
+            Swal.fire({
+                title: "Error de conexión",
+                text: 'No se pudo conectar al servidor',
+                icon: "error",
+            });
         }
     });
 
@@ -229,7 +249,13 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
     document.getElementById('enviar-solicitud-cambio').onclick = async function() {
         const id_vehiculo = select.value;
         console.log('ID Vehículo seleccionado:', id_vehiculo);
-        if (!id_vehiculo) return alert('Seleccione un vehículo');
+        if (!id_vehiculo){
+            Swal.fire({
+                title: "Seleccione un vehículo",
+                text: "Por favor, seleccione un vehículo para solicitar el cambio.",
+                icon: "warning",
+            });
+        } 
         const res = await fetch('/api/empleados/solicitarCambioVehiculo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -237,10 +263,18 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
         });
         const data = await res.json();
         if (res.ok) {
-            alert('Solicitud enviada');
+            Swal.fire({
+                title: "Solicitud enviada",
+                text: "Su solicitud de cambio de vehículo ha sido enviada exitosamente.",
+                icon: "success",
+            });
             contenedor.remove();
         } else {
-            alert(data.error || 'Error al enviar la solicitud');
+            Swal.fire({
+                title: "Error al enviar solicitud",
+                text: data.error || 'Error al enviar la solicitud de cambio de vehículo',
+                icon: "error",
+            });
         }
     };
 

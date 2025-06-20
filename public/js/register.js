@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             selectPregunta.appendChild(option);
         });
     } catch (err) {
-        alert('Error al cargar preguntas de seguridad');
+        Swal.fire({
+                    title: "Error al cargar preguntas de seguridad",
+                    icon: "error",
+                    });
         console.error(err);
     }
 
@@ -20,12 +23,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const formData = new FormData(this);
 
         if (formData.get('respuesta') !== formData.get('respuesta2')) {
-            alert('Las respuestas de seguridad no coinciden.');
+            Swal.fire({
+                    title: "Las respuestas de seguridad no coinciden",
+                    icon: "error",
+                    });
             return;
         }
 
         if (formData.get('contraseña') !== formData.get('contraseña2')) {
-            alert('Las contraseñas no coinciden.');
+            Swal.fire({
+                    title: "Las contraseñas no coinciden",
+                    icon: "error",
+                    });
             return;
         }
 
@@ -49,7 +58,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const resultUser = await resUser.json();
 
             if (!resUser.ok) {
-                alert(resultUser.error || 'Error al registrar usuario');
+                Swal.fire({
+                    title: "Error al registrar usuario",
+                    text: resultUser.error || 'Error al registrar el usuario',
+                    icon: "error",
+                });
                 return;
             }
 
@@ -61,14 +74,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             const resultPregunta = await resPregunta.json();
 
             if (!resPregunta.ok) {
-                alert(resultPregunta.error || 'Error al guardar pregunta de seguridad');
+                Swal.fire({
+                    title: "Error al guardar pregunta de seguridad",
+                    text: resultPregunta.error || 'Error al guardar la pregunta de seguridad',
+                    icon: "error",
+                });
                 return;
             }
 
-            alert('Usuario registrado exitosamente');
+            Swal.fire({
+                    title: "Registro exitoso!",
+                    icon: "success",
+                    });
             window.location.href = '/login';
         } catch (err) {
-            alert('Error de conexión');
+            Swal.fire({
+                title: "Error de conexión",
+                text: 'No se pudo conectar al servidor',
+                icon: "error",
+            });
+            console.error(err);
         }
     });
 });
