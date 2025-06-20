@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function mostrarFormularioActualizar() {
     if (document.getElementById('form-actualizar-datos')) return;
 
-    const seccion = document.querySelector('section');
+    const updateDiv= document.getElementById('update-data');
     const form = document.createElement('form');
     form.id = 'form-actualizar-datos';
     form.innerHTML = `
@@ -169,7 +169,7 @@ function mostrarFormularioActualizar() {
         <button type="submit">Guardar</button>
         <button type="button" id="cancelar-actualizar">Cancelar</button>
     `;
-    seccion.appendChild(form);
+    updateDiv.appendChild(form);
 
     form.addEventListener('submit', async function(e) {
         e.preventDefault();

@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <strong>Placa:</strong> ${v.placa}<br>
                     <strong>Marca:</strong> ${v.marca}<br>
                     <strong>Modelo:</strong> ${v.modelo}<br>
-                    <strong>Tipo:</strong> ${v.tipo}<br>
                     <strong>Estado:</strong> ${v.estado}<br>
                     <strong>Empleado asignado:</strong> ${v.nombre1 ? v.nombre1 + ' ' + (v.apellido1 || '') : 'Sin asignar'}
                 `;
@@ -98,16 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await res.json();
                     if (res.ok) {
                         Swal.fire({
-                                    title: "Solicitud aprobada",
-                                    icon: "success",
-                                    });;
-                        div.remove();
+                            title: "Solicitud aprobada",
+                            icon: "success",
+                        });
+                        renderVehiculos();
                     } else {
                         Swal.fire({
-                                    title: "Error al aprobar",
-                                    text: data.error || 'Error al aprobar la solicitud',
-                                    icon: "error",
-                                    });
+                            title: "Error al aprobar",
+                            text: data.error || 'Error al aprobar la solicitud',
+                            icon: "error",
+                        });
                     }
                 });
 
