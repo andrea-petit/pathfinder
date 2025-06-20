@@ -1,6 +1,8 @@
 const BASE = { lat: 11.650851303959218, lon: -70.22056764245828 };
 let modoDemo = false;
 
+
+
 const iconBase = L.icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177361.png',
   iconSize: [35, 35],
@@ -130,7 +132,12 @@ export async function generarRuta(paquetes) {
     btn.onclick = async () => {
       const id = btn.dataset.id;
       const idx = viajeData.findIndex(v => v.id_paquete == id);
-      if (idx < 0) return alert('Paquete no encontrado');
+      if (idx < 0){
+        Swal.fire({
+                    title: "Paquete no encontrado",
+                    icon: "error",
+                    });
+      } 
       viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
 
       btn.disabled = true;
@@ -140,7 +147,11 @@ export async function generarRuta(paquetes) {
 
       if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
         setTimeout(() => {
-          alert('Viaje completado');
+          Swal.fire({
+            title: "Viaje completado",
+            icon: "success",
+            confirmButtonText: 'Aceptar'
+          });
           window.location.href = '/home';
         }, 500);
       }
@@ -177,7 +188,12 @@ export async function generarRuta(paquetes) {
       distMatrix = matrixData.distances;
     } catch (e) {
       modoDemo = true;
-      alert('Servicio de rutas no disponible, usando modo demo (distancia por aire).');
+      Swal.fire({
+                  title: "Servicio de rutas no disponible, usando modo demo",
+                  text: "Calculando distancias por haversine (distancia por aire).",
+                  icon: "warning",
+                  confirmButtonText: 'Aceptar',
+                  });
       distMatrix = matrizHaversine(puntos);
     }
 
@@ -290,7 +306,13 @@ export async function generarRuta(paquetes) {
       btn.onclick = async () => {
         const id = btn.dataset.id;
         const idxData = viajeData.findIndex(v => v.id_paquete == id);
-        if (idxData < 0) return alert('Paquete no encontrado');
+        if (idxData < 0){
+          Swal.fire({
+                      title: "Paquete no encontrado",
+                      icon: "error",
+                      });
+          return;
+                    }
         viajeData[idxData].comentario = document.getElementById(`obs-${id}`).value;
 
         if (id_viaje === null) {
@@ -306,7 +328,14 @@ export async function generarRuta(paquetes) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id_viaje, detalles: [viajeData[idxData]] })
         });
-        if (!guard.ok) return alert('Error al guardar');
+        if (!guard.ok){
+          Swal.fire({
+            title: "Error al guardar el viaje",
+            text: 'No se pudo guardar el detalle del viaje',
+            icon: "error"
+          });
+          return;
+        }
 
         btn.disabled = true;
         btn.style.background = '#4caf50';
@@ -317,7 +346,11 @@ export async function generarRuta(paquetes) {
 
         if (document.querySelectorAll('.entregado-btn:enabled').length === 0) {
           setTimeout(() => {
-            alert('Viaje completado');
+            Swal.fire({
+              title: "Viaje completado",
+              icon: "success",
+              confirmButtonText: 'Aceptar'
+            });
             window.location.href = '/home';
           }, 500);
         }

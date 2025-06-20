@@ -25,14 +25,25 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                     window.location.href = '/home';
                 }
             } else {
-                alert('Usuario o contraseña incorrectos');
+                Swal.fire({
+                                    title: "Usuario o contraseña incorrectos",
+                                    icon: "error",
+                                    });;
             }
             
         } else {
-            alert(result.error);
+            Swal.fire({
+                title: "Error de inicio de sesión",
+                text: result.error || 'Error al iniciar sesión',
+                icon: "error",
+            });
         }
     } catch (err) {
-        alert('Error de conexión con el servidor');
+        Swal.fire({
+            title: "Error de conexión",
+            text: 'No se pudo conectar al servidor',
+            icon: "error",
+        });
     }
 });
 

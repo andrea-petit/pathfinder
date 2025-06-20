@@ -97,10 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        alert('Solicitud aprobada');
+                        Swal.fire({
+                                    title: "Solicitud aprobada",
+                                    icon: "success",
+                                    });;
                         div.remove();
                     } else {
-                        alert(data.error || 'Error al aprobar');
+                        Swal.fire({
+                                    title: "Error al aprobar",
+                                    text: data.error || 'Error al aprobar la solicitud',
+                                    icon: "error",
+                                    });
                     }
                 });
 
@@ -112,10 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        alert('Solicitud rechazada');
+                        Swal.fire({
+                                    title: "Solicitud rechazada",
+                                    icon: "warning",
+                                    });
                         div.remove();
                     } else {
-                        alert(data.error || 'Error al rechazar');
+                        Swal.fire({
+                                    title: "Error al rechazar",
+                                    text: data.error || 'Error al rechazar la solicitud',
+                                    icon: "error",
+                                    });
                     }
                 });
 

@@ -68,7 +68,10 @@ document.getElementById('cambiar-btn').addEventListener('click', async function(
         });
         const data = await res.json();
         if (res.ok && data.cambiada) {
-            alert('Contraseña cambiada exitosamente.');
+            Swal.fire({
+                        title: "Contraseña cambiada exitosamente",
+                        icon: "success",
+                        });
             window.location.href = '/login';
         } else {
             mensaje.textContent = data.error || 'No se pudo cambiar la contraseña.';
