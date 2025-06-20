@@ -4,7 +4,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const form = e.target;
     const data = {
         nombre_usuario: form.nombre_usuario.value,
-        contraseña: form.clave.value
+        contraseña: form.contraseña.value
     };
 
     try {

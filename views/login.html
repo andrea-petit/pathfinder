@@ -3,28 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/login.css">
     <title>Iniciar Sesión</title>
 </head>
 <body class="login-bg">
     <div class="login-container">
-        <div class="logo-title">
-            <h1>
-                <span>Next</span>
-                <span>Package</span>
-            </h1>
-        </div>
         <form id="loginForm">
-            <label for="nombre_usuario">Usuario</label>
-            <input type="text" name="nombre_usuario" required>
-            <label for="clave">Contraseña</label>
-            <input type="password" name="clave" autocomplete="new-password" required>
-            <input type="checkbox" id="mostrarContrasena"> Ver contraseña
-            <button type="submit">Entrar</button>
-            <p>¿Olvidaste tu contraseña? <a href="/recuperar">Recuperar</a></p>
-            <br>
-            <p>¿No tienes una cuenta?</p>
-            <a href="/register">Registrate aquí</a>
+            <div class="Form">
+                <div class="logo-title">
+                    <h1 style="word-spacing: -10px;">
+                        <span style="color: #EF3962;">Next</span>
+                        <span style="color: #0172B6; font-size: 45px;">PACKAGE</span>
+                    </h1>
+                    <img src="/icons/entrega (1).png" width="70px">
+                </div><hr>
+                <div class="fields">
+                    <input type="text" name="nombre_usuario" placeholder="Usuario" required>
+                    <input type="password" name="contraseña" autocomplete="new-password" placeholder="Contraseña">
+                    <div class="mostrarPass">
+                        <p>Mostrar Contraseña</p>
+                        <input type="checkbox" id="mostrarContrasena">
+                    </div>
+                </div>
+                <button type="submit">Entrar</button>
+                <br>
+                <div class="fgt-pass">
+                    <p>¿Olvidaste tu contraseña?</p>
+                    <a href="/recuperar">Recuperar</a>
+                </div>
+                <div class="register">
+                <p>¿No tienes una cuenta?</p>
+                <a href="/register">Registrate aquí</a>
+                </div>
+                
+            </div>
+            
         </form>
     </div>
     <footer>
