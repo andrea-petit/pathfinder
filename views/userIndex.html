@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/userIndex.css">
+    <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
     <title>Panel de Usuario</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -9,43 +11,54 @@
 
 </head>
 <body>
-    <header>
-        <h1>Pathfinder</h1>
-    </header>
     <section id="nav-bar">
         <nav id="nav-bar- options">
-            <button id="generar-viajes-btn">Generar viajes</button>
-            <button id="resumen-individual-btn">Resumen individual</button>
-            <button id="solicitar-cambio-vehiculo-btn">Solicitar cambio de vehículo</button>
-            <button id="actualizar-datos-btn">Actualizar datos</button>
+            <div class="logo-title">
+                <h1 style="word-spacing: -10px;">
+                    <span style="color: #ffffff; font-weight: lighter;">Next</span>
+                    <span style="color: #ffffff; font-size: 45px;">PACKAGE</span>
+                </h1>
+                <img src="/icons/entrega (3).png" width="70px">
+            </div>
+            <div class="list">
+                <button id="generar-viajes-btn">Generar viajes</button>
+                <button id="resumen-individual-btn">Resumen individual</button>
+                <button id="solicitar-cambio-vehiculo-btn">Solicitar cambio de vehículo</button>
+                <button id="actualizar-datos-btn">Actualizar datos</button>
+            </div>
         </nav>
     </section>
-    <section>
-        <div id="info-repartidor">
-            <h2>Información del Repartidor</h2>
-            <p><strong>Nombre:</strong></p>
-            <p><strong>Cédula:</strong></p>
-            <p><strong>Correo:</strong></p>
-        </div>
-        <div id="info-vehiculo">
-            <h3>Vehículo Asignado</h3>
-            <p><strong>Placa:</strong></p>
-            <p><strong>Modelo:</strong></p>
-            <p><strong>Tipo:</strong></p>
-        </div>
-    </section>
-
-    <section>
-        <div id="paquetes-contenedor">
-            <h2>Paquetes en Almacén</h2>
-            <p>Actualmente: <span id="cantidad-paquetes">0</span></p>
-        </div>
-    </section>
+    <div class="main-sections">
+        <section class="section-rep" >
+            <div id="info-repartidor">
+                <h2>Información del Repartidor</h2>
+                <p><strong>Nombre:</strong></p>
+                <p><strong>Cédula:</strong></p>
+                <p><strong>Correo:</strong></p>
+            </div>
+            <div id="info-vehiculo">
+                <h3>Vehículo Asignado</h3>
+                <p><strong>Placa:</strong></p>
+                <p><strong>Modelo:</strong></p>
+                <p><strong>Tipo:</strong></p>
+            </div>
+        </section>
+    
+        <section class="section-paq">
+            <div id="paquetes-contenedor">
+                <h2>Paquetes en Almacén</h2>
+                <p>Actualmente: <span id="cantidad-paquetes">0</span></p>
+            </div>
+        </section>
+    </div>
 
     
 
     <div id="paquetes-viaje" style="display:none"></div>
     <div id="lista-paquetes"></div>
+    <footer>
+        <p>&copy; 2025 NextPackage. Todos los derechos reservados, RIF J-3082850-7.</p>
+    </footer>
     <script type="module" src="/js/userIndex.js"></script>
 </body>
 </html>

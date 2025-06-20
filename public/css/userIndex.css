@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto", sans-serif;
+}
+
+
+nav .logo-title h1, img {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+
+nav {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 0 3%;
+    height: 80px;
+    background-color: #0172B6;
+}
+
+
+nav .logo-title {
+    display: flex;
+    font-family: "Anton", sans-serif;
+    font-style: normal;
+    letter-spacing: 2px;
+    float: left;
+    align-items: center;
+    height: 100%;
+}
+
+
+nav .list {
+    float: right;
+    padding: 0;
+    margin: 0;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+nav .list button {
+    display: block;
+    color: white;
+    border: none;
+    background-color: transparent;
+    padding: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+.main-sections {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 110px;
+    gap: 40px; /* Espacio entre las secciones */
+}
+
+
+.section-rep {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    padding: 50px;
+    box-shadow: 0 0 10px 1px #000033;
+    border-radius: 38px;}  
+
+
+.section-paq {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 80px;
+}
+
+
+
+
+
+footer{
+    background-color: #EF3962;
+    color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    min-height: 30px;
+    position: relative;
+    z-index: 2;
+}

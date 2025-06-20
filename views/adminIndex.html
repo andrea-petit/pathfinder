@@ -2,23 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/adminIndex.css">
+    <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
     <title>Panel de Administrador</title>
 </head>
 <body>
-    <header>
-        <h1>Panel Principal</h1>
-    </header>
-    <nav>
-        <button id="empleados-button">Empleados</button>
-        <button>Paquetes</button>
-        <button>Reportes</button>
-        <button>Vehículos</button>
+    <nav >
+        <div class="logo-title">
+            <h1 style="word-spacing: -10px;">
+                <span style="color: #ffffff; font-weight: lighter;">Next</span>
+                <span style="color: #ffffff; font-size: 45px;">PACKAGE</span>
+            </h1>
+            <img src="/icons/entrega (3).png" width="70px">
+        </div>
+        <div class="list">
+            <button id="empleados-button">Empleados</button>
+            <button>Paquetes</button>
+            <button>Reportes</button>
+            <button>Vehículos</button>
+        </div>
     </nav>
     <main>
         <section id="empleados-container" style:"display: block;">
-            <h2>Empleados</h2>
-            <p>Gestión y consulta de empleados.</p>
-            </form>
+            <h1>Empleados</h1>
+            <p>Gestión y consulta de empleados.</p><hr>
         </section>
         <section id="paquetes-container" style="display: none;">
             <h2>Paquetes</h2>
@@ -33,6 +40,9 @@
             <p>Control y registro de vehículos.</p>
         </section>
     </main>
+    <footer>
+        <p>&copy; 2025 NextPackage. Todos los derechos reservados, RIF J-3082850-7.</p>
+    </footer>
     <script src="/js/addEmpleados.js"></script>
     <script src="/js/adminIndex.js"></script>
 </body>

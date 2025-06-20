@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const volverButton = document.createElement('button');
     volverButton.textContent = 'Volver';
+    volverButton.id = "volverbtn"
     volverButton.style.display = 'none';
     empleadosContainer.appendChild(volverButton);
 
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function mostrarListaEmpleados() {
-        empleadosDiv.innerHTML = '<h2>Lista de Empleados</h2>';
+        empleadosDiv.innerHTML = '<h2 style="margin-top: 1rem">Lista de Empleados</h2>';
         agregarEmpleadoButton.style.display = 'inline-block';
         volverButton.style.display = 'none';
 
@@ -54,26 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     const card = document.createElement('div');
                     card.style.border = '1px solid #ccc';
                     card.style.borderRadius = '8px';
-                    card.style.padding = '16px';
+                    card.style.padding = '20px';
                     card.style.margin = '12px 0';
                     card.style.boxShadow = '0 2px 6px rgba(0,0,0,0.05)';
                     card.style.background = '#fafbfc';
 
                     card.innerHTML = `
+                        <div class="card">
                         <strong>Cédula:</strong> ${empleado.id_empleado}<br>
                         <strong>Nombre:</strong> ${empleado.nombre1} ${empleado.nombre2 || ''}<br>
                         <strong>Apellido:</strong> ${empleado.apellido1} ${empleado.apellido2 || ''}<br>
                         <strong>Teléfono:</strong> ${empleado.telefono}<br>
                         <strong>Correo:</strong> ${empleado.correo}<br>
                         <strong>Vehículo:</strong> ${empleado.placa ? `
-                            <br>&nbsp;&nbsp;<strong>Placa:</strong> ${empleado.placa}
-                            <br>&nbsp;&nbsp;<strong>Marca:</strong> ${empleado.marca}
-                            <br>&nbsp;&nbsp;<strong>Modelo:</strong> ${empleado.modelo}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Placa:</strong> ${empleado.placa}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Marca:</strong> ${empleado.marca}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Modelo:</strong> ${empleado.modelo}
                         ` : 'Sin asignar'}
                         <br>
                         <button class="btn-actualizar" data-id="${empleado.id_empleado}">Actualizar</button>
                         <button class="btn-borrar" data-id="${empleado.id_empleado}">Borrar</button>
                         <div class="form-actualizar-container"></div>
+                        </div>
                     `;
 
                     card.querySelector('.btn-borrar').addEventListener('click', async function() {
@@ -149,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function mostrarFormularioEmpleado(empleado = null) {
         empleadosDiv.innerHTML = `
-            <h2>${empleado ? 'Actualizar' : 'Agregar'} Empleado</h2>
+            <h2 style="margin-top:20px; margin-bottom:20px">${empleado ? 'Actualizar' : 'Agregar'} Empleado</h2>
             <form id="empleado-form">
                 <label for="id_empleado">Cedula de Identidad:</label>
                 <input type="text" id="id_empleado" name="id_empleado" required value="${empleado ? empleado.id_empleado : ''}" ${empleado ? 'readonly' : ''}>

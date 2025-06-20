@@ -2,35 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/register.css">
     <title>Registrar Usuario</title>
 </head>
 <body>
-    <h2>Registrar Usuario</h2>
-    <form id="registerForm" method="POST" action="/api/empleados/register">
-        <label for="id_empleado">Cédula de Identidad</label>
-        <input type="text" id="id_empleado" name="id_empleado" required>
-        <br>
-        <label for="nombre_usuario">Nombre de Usuario</label>
-        <input type="text" id="nombre_usuario" name="nombre_usuario" required>
-        <br>
-        <label for="contraseña">Contraseña</label>
-        <input type="password" id="contraseña" name="contraseña" required>
-        <label for="contraseña2">Confirme su contraseña</label>
-        <input type="password" id="contraseña2" name="contraseña2" required>
-        <br>
-        <label for="pregunta">Pregunta de seguridad:</label>
-        <select id="pregunta" name="id_pregunta" required>
-        </select>
-        <br>
-        <label for="respuesta">Respuesta:</label>
-        <input type="text" id="respuesta" name="respuesta" required>
-        <br>
-        <label for="respuesta2">Confirmar respuesta:</label>
-        <input type="text" id="respuesta2" name="respuesta2" required>
-        <br>
-        <button type="submit">Registrar</button>
-    </form>
-    <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a></p>
+    <div class="register-container">
+        <div class="logo-title">
+            <h1 style="word-spacing: -10px;">
+                <span style="color: #EF3962;">Next</span>
+                <span style="color: #0172B6; font-size: 45px;">PACKAGE<span>
+            </h1>
+            <img src="/icons/entrega (1).png" width="70px">
+        </div>
+        <!--<h2>Registrar Usuario</h2>-->
+        <hr><br>
+        <form id="registerForm" method="POST" action="/api/empleados/register">
+            <div class="form-group">
+                <label for="id_empleado">Cédula de Identidad:</label>
+                <input type="text" id="id_empleado" name="id_empleado" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre_usuario">Nombre de Usuario:</label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="contraseña">Contraseña:</label>
+                <input type="password" id="contraseña" name="contraseña" required>
+            </div>
+            <div class="form-group">
+                <label for="contraseña2">Confirme su contraseña:</label>
+                <input type="password" id="contraseña2" name="contraseña2" required>
+            </div>
+            <div class="form-group">
+                <label for="pregunta">Pregunta de seguridad:</label>
+                <select id="pregunta" name="id_pregunta" required></select>
+            </div>
+            <div class="form-group">
+                <label for="respuesta">Respuesta:</label>
+                <input type="text" id="respuesta" name="respuesta" required>
+            </div>
+            <div class="form-group">
+                <label for="respuesta2">Confirmar respuesta:</label>
+                <input type="text" id="respuesta2" name="respuesta2" required>
+            </div>
+            <div class="form-button">
+                <button type="submit">Registrar</button>
+            </div>
+        </form>
+        <div class="login">
+            <p>¿Ya tienes una cuenta?</p>
+            <a href="/login">Inicia sesión aquí</a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 NextPackage. Todos los derechos reservados, RIF J-3082850-7.</p>
+
+
+
+</html></body>    </footer>    </footer>
     <script src="/js/register.js"></script>
 </body>
 </html>

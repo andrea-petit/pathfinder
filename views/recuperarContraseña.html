@@ -2,29 +2,46 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/recuperarContraseña.css">
+    <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
     <title>Recuperar Contraseña</title>
 </head>
 <body>
-    <h2>Recuperar Contraseña</h2>
-    <form id="recuperar-form">
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required>
-        <button type="submit">Buscar</button>
-    </form>
-    <div id="pregunta-seguridad" style="display:none;">
-        <p id="pregunta"></p>
-        <input type="text" id="respuesta" placeholder="Respuesta" required>
-        <button id="verificar-btn">Verificar</button>
+    <div class="recoverpass-container">
+        <div class="logo-title">
+            <h1 style="word-spacing: -10px;">
+                <span style="color: #EF3962;">Next</span>
+                <span style="color: #0172B6; font-size: 45px;">PACKAGE<span>
+            </h1>
+            <img src="/icons/entrega (1).png" width="70px">
+        </div>
+        <h2>Recuperar Contraseña</h2><hr><br>
+        <form id="recuperar-form">
+            <!--<label for="usuario">Usuario:</label>-->
+            <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+            <div id="mensaje"></div>
+            <button type="submit">Buscar</button>
+        </form>
+        <form class="form2">
+            <div id="pregunta-seguridad" style="display:none;">
+                <p id="pregunta"></p>
+                <input type="text" id="respuesta" placeholder="Respuesta" required>
+                <button id="verificar-btn">Verificar</button>
+            </div>
+            <div class="div" id="nueva-clave" style="display:none;">
+                <label for="clave">Nueva Contraseña:</label>
+                <input type="password" id="clave" required>
+                <br>
+                <label for="clave2">Repite la Contraseña:</label>
+                <input type="password" id="clave2" required>
+                <button id="cambiar-btn">Cambiar Contraseña</button>
+            </div>
+        </form>
+        
     </div>
-    <div id="nueva-clave" style="display:none;">
-        <label for="clave">Nueva Contraseña:</label>
-        <input type="password" id="clave" required>
-        <br>
-        <label for="clave2">Repite la Contraseña:</label>
-        <input type="password" id="clave2" required>
-        <button id="cambiar-btn">Cambiar Contraseña</button>
-    </div>
-    <div id="mensaje"></div>
+    <footer>
+        <p>&copy; 2025 NextPackage. Todos los derechos reservados, RIF J-3082850-7.</p>
+    </footer>
     <script src="/js/recuperarPassword.js"></script>
 </body>
 </html>
