@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
         agregarEmpleadoButton.style.display = 'inline-block';
         volverButton.style.display = 'none';
 
+        const grid = document.createElement('div');
+        grid.className = 'cards-grid';
+
         try {
             const response = await fetch('api/admin/getEmpleados');
             if (!response.ok) throw new Error('Network response was not ok');
@@ -53,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             empleados.forEach(empleado => {
                 if (empleado.id_empleado !== 1) {
                     const card = document.createElement('div');
+                    card.className = 'card';
                     card.style.border = '1px solid #ccc';
                     card.style.borderRadius = '8px';
                     card.style.padding = '20px';
@@ -141,9 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     });
 
-                    empleadosDiv.appendChild(card);
+
+                    grid.appendChild(card);
                 }
             });
+            empleadosDiv.appendChild(grid);
         } catch (error) {
             empleadosDiv.innerHTML += '<p>Error al cargar empleados.</p>';
             console.error('Error fetching empleados:', error);
