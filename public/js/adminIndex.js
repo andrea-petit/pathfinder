@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderVehiculos() {
         vehiculosContainer.innerHTML = `
-            <h2>Vehículos</h2>
+            <h1>Vehículos</h1>
             <p>Control y registro de vehículos.</p>
             <button id="ver-todos-vehiculos">Ver todos los vehículos</button>
             <button id="ver-solicitudes-cambio">Ver solicitudes de cambio de vehículo</button>
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const infoDiv = document.getElementById('info-vehiculos');
 
         document.getElementById('ver-todos-vehiculos').onclick = async () => {
-            infoDiv.innerHTML = '<h3>Todos los vehículos</h3>';
+            infoDiv.innerHTML = '<hr><h3>Todos los vehículos</h3>';
             const res = await fetch('/api/admin/getAllVehiculosInfo');
             const vehiculos = await res.json();
             if (!Array.isArray(vehiculos) || vehiculos.length === 0) {
@@ -61,12 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         document.getElementById('ver-solicitudes-cambio').onclick = async () => {
-            infoDiv.innerHTML = '<h3>Solicitudes de cambio de vehículo</h3>';
+            infoDiv.innerHTML = '<hr><h3>Solicitudes de cambio de vehículo</h3>';
             const res = await fetch('/api/admin/solicitudesCambioVehiculo');
             const solicitudes = await res.json();
 
             if (!Array.isArray(solicitudes) || solicitudes.length === 0) {
-                infoDiv.innerHTML += '<p>No hay solicitudes pendientes.</p>';
+                infoDiv.innerHTML += '<p id="psoli">No hay solicitudes pendientes.</p>';
                 return;
             }
 

@@ -260,7 +260,7 @@ export async function generarRuta(paquetes) {
     list.innerHTML = `
       <h3>Ruta optimizada (ETA: ${!modoDemo ? dur : total} min)</h3>
       <p>Duración total estimada: ${!modoDemo ? dur : total} min</p>
-      <p style="font-weight:bold;color:#007bff;">
+      <p> 
         Orden de entrega sugerido (sigue los números en la lista y en el mapa):
       </p>
     `;

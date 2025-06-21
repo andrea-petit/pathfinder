@@ -76,7 +76,7 @@ body {
     font-size: 1rem;
     padding: 0.7rem 1rem;
     border-radius: 7px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #888a8d80;
     outline: none;
     transition: border 0.2s;
 }

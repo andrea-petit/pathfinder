@@ -52,7 +52,7 @@ nav .list {
     float: right;
     padding: 0;
     margin: 0;
-    width: 60%;
+    width: 50%;
     height: 100%;
     display: flex;
     justify-content: space-between;
@@ -71,12 +71,22 @@ nav .list button {
 }
 
 
+nav .list button:hover {
+    border-bottom: 4px solid;
+    transition: all .1s ease-in-out;
+    margin-bottom: 2px;
+}
+
+
+
 main {
     margin-top: 45px;
 }
 
 main h1 {
+    color: #003d63;
     font-size: 40px;
+
 }
 
 main p {
@@ -97,17 +107,23 @@ main p {
 
 #empleados-container hr {
     border: none;
-    background-color: #4682B4;
+    background-color: #c02d4f;
     margin-top: 1rem;
     padding: 3px;
 }
 
 
 #empleados-container .card{
-    display:block;
     font-size: 20px;
     text-align: justify;
     padding: 0 1rem 0 1rem;
+}
+
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
 }
 
 
@@ -309,6 +325,80 @@ main p {
     display: flex;
     padding: 3rem 3rem;
     font-family: "Roboto", sans-serif;
+}
+
+#paquetes-container h1 {
+    color: #003d63;
+    font-size: 40px;
+}
+
+
+#reportes-container {
+    display: flex;
+    padding: 3rem 3rem;
+    font-family: "Roboto", sans-serif;
+}
+
+
+#reportes-container h1 {
+    color: #003d63;
+    font-size: 40px;
+}
+
+
+#vehiculos-container {
+    display: flex;
+    padding: 3rem 3rem;
+    font-family: "Roboto", sans-serif;
+}
+
+
+#vehiculos-container h1 {
+    color: #003d63;
+    font-size: 40px;
+}
+
+
+#vehiculos-container button {
+    background-color: #01558a;
+    color: white;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+    margin-right: 10px;
+}
+
+
+#vehiculos-container button:hover {
+    border: none;
+    transform: scale(1.06);
+}
+
+
+#vehiculos-container h3 {
+    font-size: 24px;
+}
+
+
+#vehiculos-container #psoli{
+    font-size: 20px;
+    margin-top: 1rem;
+}
+
+
+#vehiculos-container hr {
+    border: none;
+    background-color: #c02d4f;
+    margin-top: 8px;
+    margin-bottom: 1rem;
+    padding: 3px;
 }
 
 
