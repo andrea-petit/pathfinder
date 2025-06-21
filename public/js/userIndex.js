@@ -58,8 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('generar-viajes-btn').addEventListener('click', () => {
-        document.querySelector('#info-repartidor').style.display = 'none';
-        document.querySelector('#info-vehiculo').style.display = 'none';
+        document.getElementById('contenedor-paquetes').style.display = 'block';
+        document.getElementById('update-data').style.display = 'none';
+        document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
+        document.getElementById('main-sections').style.display = 'none';
         mostrarSeleccionPaquetes(paquetes);
     });
 });
@@ -70,7 +72,8 @@ function mostrarSeleccionPaquetes(paquetes) {
 
     contenedor = document.createElement('div');
     contenedor.id = 'seleccion-paquetes';
-    contenedor.innerHTML = '<h3>Selecciona hasta 5 paquetes para el viaje</h3>';
+
+    const contenedorPaquetes = document.getElementById('contenedor-paquetes');
 
     const seleccionados = new Set();
 
@@ -101,7 +104,7 @@ function mostrarSeleccionPaquetes(paquetes) {
     btnCancelar.textContent = 'Cancelar';
     contenedor.appendChild(btnCancelar);
 
-    document.body.appendChild(contenedor);
+    contenedorPaquetes.appendChild(contenedor);
 
     const checkboxes = contenedor.querySelectorAll('.paquete-checkbox');
     checkboxes.forEach(cb => {
@@ -138,8 +141,7 @@ function mostrarSeleccionPaquetes(paquetes) {
 
     btnCancelar.addEventListener('click', () => {
         contenedor.remove();
-        document.querySelector('#info-repartidor').style.display = 'block';
-        document.querySelector('#info-vehiculo').style.display = 'block';
+        document.getElementById('main-sections').style.display = 'block';
     });
 }
 
@@ -149,6 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function mostrarFormularioActualizar() {
+    document.getElementById('update-data').style.display = 'block';
+    document.getElementById('main-sections').style.display = 'block';
+    document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
+
     if (document.getElementById('form-actualizar-datos')) return;
 
     const updateDiv= document.getElementById('update-data');
@@ -213,16 +219,29 @@ function mostrarFormularioActualizar() {
         }
     });
 
-    form.querySelector('#cancelar-actualizar').addEventListener('click', () => form.remove());
+    form.querySelector('#cancelar-actualizar').addEventListener('click', () => {
+        form.remove();
+        document.getElementById('main-sections').style.display = 'block';
+        document.getElementById('info-repartidor').style.display = 'block';
+        document.getElementById('info-vehiculo').style.display = 'block';
+        document.getElementById('paquetes-contenedor').style.display = 'block';
+    });
 }
 
-document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {
+document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {;
+    document.getElementById('main-sections').style.display = 'block';
+    document.getElementById('info-repartidor').style.display = 'block';
+    document.getElementById('info-vehiculo').style.display = 'block';
+    document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'block';
+    document.getElementById('update-data').style.display = 'none';
+
     const seleccionPaquetes = document.getElementById('seleccion-paquetes');
     if (seleccionPaquetes) seleccionPaquetes.remove();
 
-    const contenedor = document.createElement('div');
-    contenedor.id = 'form-cambio-vehiculo';
+    const solicitudContainer = document.getElementById('contenedor-form-cambio-vehiculo');
 
+    const contenedor= document.createElement('div');
+    contenedor.id = 'form-cambio-vehiculo';
     const existente = document.getElementById('form-cambio-vehiculo');
     if (existente) existente.remove();
 
@@ -234,7 +253,8 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
         <button id="enviar-solicitud-cambio">Enviar solicitud</button>
         <button id="cancelar-solicitud-cambio">Cancelar</button>
     `;
-    document.body.appendChild(contenedor);
+
+    solicitudContainer.appendChild(contenedor);
 
     const res = await fetch('/api/admin/vehiculos');
     const vehiculos = await res.json();
@@ -281,6 +301,10 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
     document.getElementById('cancelar-solicitud-cambio').onclick = function() {
         const contenedor = document.getElementById('form-cambio-vehiculo');
         if (contenedor) contenedor.remove();
+        document.getElementById('main-sections').style.display = 'block';
+        document.getElementById('info-repartidor').style.display = 'block';
+        document.getElementById('info-vehiculo').style.display = 'block';
+        document.getElementById('paquetes-contenedor').style.display = 'block';
     };
 });
 

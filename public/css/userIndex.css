@@ -83,6 +83,7 @@ nav .list button {
 .section-rep {
     display: flex;
     flex-direction: column;
+    width: 600px; /*hola esta es la linea que te dije, acomodala como tu quieras, no le se al rem*/
     margin-left: 50px;
     padding: 50px;
     box-shadow: 0 0 10px 1px #000033;
