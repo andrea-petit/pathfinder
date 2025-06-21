@@ -134,7 +134,8 @@ function mostrarSeleccionPaquetes(paquetes) {
         );
         const confirmacion = window.confirm(`¿Estás seguro de generar un viaje con ${seleccionadosArray.length} paquetes?`);
         if (!confirmacion) return;
-        document.querySelector('#info-repartidor').style.display = 'none'
+        document.getElementById('nav-bar').style.display = 'block';
+        document.getElementById('main-sections').style.display = 'none';
         generarRuta(seleccionadosArray);
         contenedor.remove();
     });
