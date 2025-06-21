@@ -191,8 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="tel" id="telefono" name="telefono" required value="${empleado ? empleado.telefono : ''}">
                 <label for="correo">Correo:</label>
                 <input type="email" id="correo" name="correo" required value="${empleado ? empleado.correo : ''}">
-                <label for="id_vehiculo">Vehículo (opcional):</label>
-                <select id="id_vehiculo" name="id_vehiculo">
+                <label for="id_vehiculo">Vehículo:</label>
+                <select id="id_vehiculo" name="id_vehiculo" >
                 </select>
                 <button type="submit">${empleado ? 'Actualizar' : 'Agregar'} Empleado</button>
             </form>
@@ -265,13 +265,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 Swal.fire({
-                            title: "Empleado actualizado",
+                            title: "Empleado agregado exitosamente",
                             icon: "success",
                             });
                 mostrarListaEmpleados();
             } catch (error) {
                 Swal.fire({
-                            title: "Error al actualizar empleado",
+                            title: "Error al agregar empleado",
                             text: error.message || 'Error desconocido',
                             icon: "error",
                             });;

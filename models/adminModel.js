@@ -191,6 +191,7 @@ const adminModel = {
             });
         });
     });
+
     },
 
     getSolicitudesCambioVehiculo: () => {
@@ -228,9 +229,18 @@ const adminModel = {
     getAllVehiculosInfo: () => {
         return new Promise((resolve, reject) => {
             const sql = `
-                SELECT v.*, ev.id_empleado, e.nombre1, e.apellido1
+                SELECT v.*, 
+                       CASE WHEN v.estado = 'asignado' THEN ev.id_empleado ELSE NULL END as id_empleado,
+                       CASE WHEN v.estado = 'asignado' THEN e.nombre1 ELSE NULL END as nombre1,
+                       CASE WHEN v.estado = 'asignado' THEN e.apellido1 ELSE NULL END as apellido1
                 FROM vehiculos v
-                LEFT JOIN empleado_vehiculo ev ON v.id_vehiculo = ev.id_vehiculo
+                LEFT JOIN empleado_vehiculo ev
+                    ON v.id_vehiculo = ev.id_vehiculo
+                    AND ev.id = (
+                        SELECT MAX(ev2.id)
+                        FROM empleado_vehiculo ev2
+                        WHERE ev2.id_vehiculo = v.id_vehiculo
+                    )
                 LEFT JOIN empleados e ON ev.id_empleado = e.id_empleado
                 ORDER BY v.placa
             `;
@@ -242,7 +252,7 @@ const adminModel = {
                 resolve(rows);
             });
         });
-    }
+    },
 };
 
 module.exports = adminModel;

@@ -9,12 +9,13 @@ const empleadoRoutes = require('./routes/empleadoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const paquetesRoutes = require('./routes/paquetesRoutes'); 
 const openrRoutes = require('./routes/openrRoutes');
+const reporteRoutes = require('./routes/reporteRoutes');
 
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 app.use(session({
     secret: 'secret-key',
     resave: false,
@@ -26,6 +27,7 @@ app.use('/api/empleados', empleadoRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/paquetes', paquetesRoutes);
 app.use('/api/openr', openrRoutes);
+app.use('/api/reporte', reporteRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));

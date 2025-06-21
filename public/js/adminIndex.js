@@ -136,4 +136,55 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
     }
+
+    const generarReporteBtn = document.getElementById('generar-reporte-btn');
+    if (generarReporteBtn) {
+        generarReporteBtn.addEventListener('click', async () => {
+            const fechaInicio = document.getElementById('fecha-inicio').value;
+            const fechaFin = document.getElementById('fecha-fin').value;
+
+            if (!fechaInicio || !fechaFin) {
+                Swal.fire({
+                    title: "Fechas requeridas",
+                    text: "Debes seleccionar la fecha de inicio y fin.",
+                    icon: "warning"
+                });
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/reporte/reporteViajes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fechaInicio, fechaFin })
+                });
+
+                if (!res.ok) {
+                    throw new Error('No se pudo generar el reporte');
+                }
+
+                Swal.fire({
+                    title: "Reporte generado",
+                    text: "La descarga del reporte ha comenzado",
+                    icon: "success"
+                });
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_viajes_${fechaInicio}_al_${fechaFin}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                Swal.fire({
+                    title: "Error",
+                    text: "No se pudo generar el reporte.",
+                    icon: "error"
+                });
+            }
+        });
+    }
 });

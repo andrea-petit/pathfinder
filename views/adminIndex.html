@@ -34,7 +34,21 @@
         </section>
         <section id="reportes-container" style="display: none;">
             <h1>Reportes</h1>
-            <p>Visualización y generación de reportes.</p>
+            <div id="seleccion-reporte">
+                <label for="tipo-reporte">Seleccione el tipo de reporte:</label>
+                <select id="tipo-reporte">
+                    <option value="viajes">Reporte General de Viajes</option>
+                    <option value="empleados">Reporte de Viajes por Empleado</option>
+                    <option value="vehiculos">Reporte de Estado de Vehículos</option>
+                </select>
+                <div id="seleccion-fecha">
+                    <label for="fecha-inicio">Fecha de Inicio:</label>
+                    <input type="date" id="fecha-inicio">
+                    <label for="fecha-fin">Fecha de Fin:</label>
+                    <input type="date" id="fecha-fin">
+                </div>
+                <button id="generar-reporte-btn">Generar Reporte</button>
+            </div>
         </section>
         <section id="vehiculos-container" style="display: none;">
             <h1>Vehiculos</h1>

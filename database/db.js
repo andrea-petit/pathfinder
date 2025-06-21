@@ -203,39 +203,40 @@ db.serialize(() => {
     );
   `);
 
-  db.run(`
-    INSERT OR IGNORE INTO direccion (calle, sector, estado, pais, numero_casa, referencia, LAT, LON) VALUES
-    ('Calle Progreso', 'Punto Fijo', 'Falcón', 'Venezuela', '12', 'Casa roja con azul', 11.68889634103253, -70.20155342048898),
-    ('C. los Jabillos', 'Punto Fijo', 'Falcón', 'Venezuela', '8', 'Frente a la panadería', 11.70816182734095, -70.19445410030877),
-    ('Libertador', 'Punto Fijo', 'Falcón', 'Venezuela', '15', 'Al lado del banco', 11.713557623227912, -70.20077224029568),
-    ('Urbanización Las Adjuntas', 'Punto Fijo', 'Falcón', 'Venezuela', '21', 'Cerca del parque infantil', 11.703281441303954, -70.17263772586142),
-    ('Urdaneta', 'Punto Fijo', 'Falcón', 'Venezuela', '7', 'Frente a la iglesia', 11.676346986012781, -70.18296797411423),
-    ('C. Falcón', 'Punto Fijo', 'Falcón', 'Venezuela', '19', 'Casa esquina', 11.676004786247187, -70.18741777596908),
-    ('Miranda', 'Punto Fijo', 'Falcón', 'Venezuela', '10', 'Cerca del colegio', 11.72633192390973, -70.17412064895362),
-    ('Av. 2', 'Punto Fijo', 'Falcón', 'Venezuela', '5', 'Frente a la plaza Bolívar', 11.721848539873028, -70.19020493713694),
-    ('Libertad', 'Punto Fijo', 'Falcón', 'Venezuela', '18', 'Detrás del centro comercial', 11.727546660514237, -70.17500958596737),
-    ('Sector Universitario', 'Punto Fijo', 'Falcón', 'Venezuela', '3', 'Cerca de la universidad', 11.695096327115184, -70.16559732806195),
-    ('Urbanización Las Adjuntas', 'Punto Fijo', 'Falcón', 'Venezuela', '14', 'Frente a la cancha', 11.703803559768144, -70.17156064156553),
-    ('C. Adaure', 'Punto Fijo', 'Falcón', 'Venezuela', '6', 'Cerca del hospital', 11.71262051539352, -70.20247993171283),
-    ('Miranda', 'Punto Fijo', 'Falcón', 'Venezuela', '9', 'Al lado de la iglesia', 11.718127231398007, -70.21999059448902),
-    ('Av. Los Claveles', 'Punto Fijo', 'Falcón', 'Venezuela', '11', 'Frente al mercado', 11.693287821041661, -70.19392926015813),
-    ('Calle Brisas del Nte.', 'Punto Fijo', 'Falcón', 'Venezuela', '16', 'Casa con mural', 11.67868738027452, -70.21205177880064),
-    ('Calle Arismendi', 'Punto Fijo', 'Falcón', 'Venezuela', '4', 'Esquina con calle principal', 11.694055320711232, -70.20385303991368),
-    ('C. Garces', 'Punto Fijo', 'Falcón', 'Venezuela', '13', 'Casa con árbol grande', 11.690940311028909, -70.2153863368299),
-    ('Calle Altagracia', 'Punto Fijo', 'Falcón', 'Venezuela', '2', 'Cerca del ambulatorio', 11.689052351932386, -70.2154432411277),
-    ('Calle Uruguay', 'Punto Fijo', 'Falcón', 'Venezuela', '20', 'Casa con cerca blanca', 11.68803499890612, -70.21472643007304),
-    ('Calle Peninsular', 'Punto Fijo', 'Falcón', 'Venezuela', '17', 'Portón marrón', 11.686498991824662, -70.2115615767036),
-    ('Calle Democracia', 'Punto Fijo', 'Falcón', 'Venezuela', '22', 'Frente al banco', 11.68444802137291, -70.2126663930996),
-    ('C. Chile', 'Punto Fijo', 'Falcón', 'Venezuela', '1', 'Casa con balcón', 11.680463799974344, -70.21546869020385),
-    ('Bolvar', 'Punto Fijo', 'Falcón', 'Venezuela', '23', 'Diagonal a la plaza', 11.702197264234933, -70.18324032456225),
-    ('Comercio', 'Punto Fijo', 'Falcón', 'Venezuela', '24', 'Frente al centro comercial', 11.700107314945651, -70.18438324112262),
-    ('Av. 11', 'Comunidad Cardon', 'Falcón', 'Venezuela', '25', 'Cerca de la estación de servicio', 11.651646309461134, -70.21897769148272),
-    ('Av. 14', 'Punta Cardón', 'Falcón', 'Venezuela', '26', 'Al lado del colegio', 11.642962188920313, -70.22501603319091),
-    ('Av. 3', 'Punta Cardón', 'Falcón', 'Venezuela', '27', 'Frente a la plaza', 11.658572221180126, -70.21680994666299),
-    ('Avenida 2', 'Punta Cardón', 'Falcón', 'Venezuela', '28', 'Cerca del abasto', 11.657875735380916, -70.21982017797819),
-    ('C. Sta. Bárbara', 'Punta Cardón', 'Falcón', 'Venezuela', '29', 'Detrás de la iglesia', 11.645835312564985, -70.19362508119504),
-    ('Los Rosales', 'Punta Cardón', 'Falcón', 'Venezuela', '30', 'Cerca del parque', 11.624056102965021, -70.21039690703799)`
-  );
+  // db.run(`
+  //   INSERT OR IGNORE INTO direccion (calle, sector, estado, pais, numero_casa, referencia, LAT, LON) VALUES
+  //   ('Av. 14', 'Comunidad Cardon', 'Falcón', 'Venezuela', '101', 'Frente a la cancha comunitaria', 11.650002055199668, -70.21932362969456),
+  //   ('Av. 12', 'Comunidad Cardon', 'Falcón', 'Venezuela', '102', 'Casa amarilla cerca de la bodega', 11.6499923563871, -70.22194628651313),
+  //   ('Av. 6', 'Comunidad Cardon', 'Falcón', 'Venezuela', '103', 'Frente al CDI de la zona', 11.65172086808045, -70.21991048008732),
+  //   ('Av. 11', 'Comunidad Cardon', 'Falcón', 'Venezuela', '104', 'Cerca de la estación de servicio', 11.65097244786617, -70.21428912883599),
+  //   ('Av. 15', 'Comunidad Cardon', 'Falcón', 'Venezuela', '105', 'Casa blanca con portón negro', 11.64899845713972, -70.21681938651359),
+  //   ('20 Av. 12', 'Comunidad Cardon', 'Falcón', 'Venezuela', '106', 'Esquina con callejón sin salida', 11.646087911525546, -70.225211842328),
+  //   ('Avenida 8', 'Comunidad Cardon', 'Falcón', 'Venezuela', '107', 'Casa azul, frente a la iglesia', 11.65285390023109, -70.21431325092604),
+  //   ('Av. 13', 'Comunidad Cardon', 'Falcón', 'Venezuela', '108', 'Casa con mata de mango al frente', 11.64962482532468, -70.21430102883603),
+  //   ('Avenida 9', 'Comunidad Cardon', 'Falcón', 'Venezuela', '109', 'Diagonal al abasto Maraven', 11.65278083884915, -70.21678329999996),
+  //   ('Av. 16', 'Comunidad Cardon', 'Falcón', 'Venezuela', '110', 'Frente al módulo policial', 11.648429696993162, -70.21894567117174),
+  //   ('Av. 18', 'Punta Cardón', 'Falcón', 'Venezuela', '111', 'Al lado del centro vecinal', 11.644631916637174, -70.22184433069205),
+  //   ('23 De Enero', 'Punta Cardón', 'Falcón', 'Venezuela', '112', 'Casa con rejas verdes', 11.63669816671115, -70.2070716153455),
+  //   ('Av. Ollarvides', 'Punta Cardón', 'Falcón', 'Venezuela', '113', 'Frente a la cancha deportiva', 11.634655225972786, -70.20690110186027),
+  //   ('C. Bobare', 'Punta Cardón', 'Falcón', 'Venezuela', '114', 'Casa con mural patriótico', 11.64147066511533, -70.2004431558254),
+  //   ('Callejon Uribante', 'Punta Cardón', 'Falcón', 'Venezuela', '115', 'Casa blanca con portón azul', 11.643291072636986, -70.20199878651079),
+  //   ('Puerta Maraven', 'Punta Cardón', 'Falcón', 'Venezuela', '116', 'Frente a la plaza Bolívar', 11.645289579955264, -70.20253174907762),
+  //   ('Av. Gral. Pelayo', 'Punta Cardón', 'Falcón', 'Venezuela', '117', 'Casa con jardín amplio', 11.64953083226877, -70.20126215092891),
+  //   ('C. Tinaco', 'Punta Cardón', 'Falcón', 'Venezuela', '118', 'Detrás del ambulatorio', 11.641987338067946, -70.20535422209457),
+  //   ('C. Bucaral', 'Punta Cardón', 'Falcón', 'Venezuela', '119', 'Frente al mercadito local', 11.639282738560189, -70.20550075952933),
+  //   ('Urb. España', 'Punta Cardón', 'Falcón', 'Venezuela', '120', 'Casa de techo rojo', 11.639691203573198, -70.20240456418641),
+  //   ('C. Adícora', 'Punta Cardón', 'Falcón', 'Venezuela', '121', 'Cerca del Simoncito', 11.651356600962187, -70.19029302699091),
+  //   ('C. Tocuyo', 'Punta Cardón', 'Falcón', 'Venezuela', '122', 'Frente al galpón abandonado', 11.650472601400217, -70.19236793069521),
+  //   ('C. Sta. Bárbara', 'Punta Cardón', 'Falcón', 'Venezuela', '123', 'Casa de esquina con grafiti', 11.648889988689975, -70.19234348651592),
+  //   ('C. Trompillo', 'Punta Cardón', 'Falcón', 'Venezuela', '124', 'Cerca del kiosko de empanadas', 11.65136545535353, -70.19423977302102),
+  //   ('Av. España', 'Punta Cardón', 'Falcón', 'Venezuela', '125', 'Casa frente a la iglesia cristiana', 11.652782338687086, -70.19624970000267),
+  //   ('Av. Tucacas', 'Punta Cardón', 'Falcón', 'Venezuela', '126', 'Diagonal al liceo técnico', 11.655535514667287, -70.19154443558526),
+  //   ('C. Las Vegas', 'Punta Cardón', 'Falcón', 'Venezuela', '127', 'Casa con portón verde', 11.656454399221708, -70.19193030000227),
+  //   ('Puerta Maraven', 'Punta Cardón', 'Falcón', 'Venezuela', '128', 'Casa esquinera frente al abasto', 11.649107542662149, -70.18805896441994),
+  //   ('C. Dabajuro', 'Punta Cardón', 'Falcón', 'Venezuela', '129', 'Casa con fachada de ladrillos', 11.651897184850666, -70.18793300674841),
+  //   ('Av. Gral. Pelayo', 'Punta Cardón', 'Falcón', 'Venezuela', '130', 'Al lado del centro cultural', 11.658788452390677, -70.19703787116401);
+  //   `);
+
 
 
 
@@ -317,6 +318,6 @@ function generarPaquetesAleatorios(cantidad = 30) {
 
 }
 
-// generarPaquetesAleatorios(10);
+// generarPaquetesAleatorios(20);
 
 module.exports = db;

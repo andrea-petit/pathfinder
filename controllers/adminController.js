@@ -130,7 +130,7 @@ const adminController = {
                 console.error('Error al obtener información de vehículos:', err.message);
                 res.status(500).json({ error: 'Error al obtener información de vehículos' });
             });
-    }
+    },
 };
 
 module.exports = adminController;

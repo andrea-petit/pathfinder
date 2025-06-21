@@ -85,8 +85,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             Swal.fire({
                     title: "Registro exitoso!",
                     icon: "success",
-                    });
-            window.location.href = '/login';
+                    confirmButtonText: 'Aceptar'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    window.location.href = '/login';
+                }
+            })
         } catch (err) {
             Swal.fire({
                 title: "Error de conexión",

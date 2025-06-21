@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <h3>Vehículo Asignado</h3>
                 <p><strong>Placa:</strong> ${vehiculo.placa}</p>
                 <p><strong>Modelo:</strong> ${vehiculo.modelo}</p>
-                <p><strong>Tipo:</strong> ${vehiculo.marca}</p>
+                <p><strong>Marca:</strong> ${vehiculo.marca}</p>
             `;
         } else {
             document.querySelector('#info-vehiculo').innerHTML = `<p>No tiene vehículo asignado.</p>`;
@@ -287,8 +287,10 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
                 title: "Solicitud enviada",
                 text: "Su solicitud de cambio de vehículo ha sido enviada exitosamente.",
                 icon: "success",
+                confirmButtonText: "Aceptar" 
+            }).then(result => {
+                window.location.href = '/home';
             });
-            contenedor.remove();
         } else {
             Swal.fire({
                 title: "Error al enviar solicitud",

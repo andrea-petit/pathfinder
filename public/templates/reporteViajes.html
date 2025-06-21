@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reporte de Viajes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
+
+    body {
+      font-family: "Roboto", sans-serif;
+      margin: 30px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .empresa-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Anton", sans-serif;
+      letter-spacing: 2px;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .logo-title h1 {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      font-size: 2.5rem;
+      font-family: "Anton", sans-serif;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    .logo-title h1 span:first-child {
+      color: #EF3962;
+      word-spacing: -10px;
+    }
+
+    .logo-title h1 span:last-child {
+      color: #0172B6;
+      font-size: 45px;
+    }
+
+    .logo-title img {
+      margin-left: 10px;
+      width: 70px;
+      display: block;
+    }
+
+    .empresa-detalle {
+      color: #444;
+      font-size: 1rem;
+      margin-bottom: 3px;
+      text-align: center;
+    }
+
+    .reporte-titulo {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #0172B6;
+      font-family: "Anton", sans-serif;
+      margin-top: 10px;
+      margin-bottom: 0;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 0 #bfc3e6;
+      font-weight: 400;
+    }
+
+    .reporte-fechas {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #01558a;
+      margin-bottom: 25px;
+      margin-top: 0;
+    }
+
+    .viaje {
+      border: 1px solid #ccc;
+      margin-bottom: 25px;
+      padding: 15px;
+      border-radius: 6px;
+    }
+
+    .info {
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    p.no-data {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="empresa-info">
+    <div class="logo-title">
+      <h1>
+        <span style="color: #EF3962;">Next</span>
+        <span style="color: #0172B6; font-size: 45px;">PACKAGE</span>
+      </h1>
+      <img src="http://localhost:3000/icons/entrega (1).png" alt="Logo NextPackage" />
+    </div>
+    <div class="empresa-detalle">RIF J-3082850-7</div>
+    <div class="empresa-detalle">Dirección: Punto Fijo, Falcón, Venezuela</div>
+    <div class="empresa-detalle">Teléfono: +58 424-6304319</div>
+    <div class="empresa-detalle">Correo: info@nextpackage.com</div>
+  </div>
+  <div class="reporte-titulo">Reporte de Viajes</div>
+  <div class="reporte-fechas">Desde {{fechaInicio}} hasta {{fechaFin}}</div>
+
+  {{#if viajes.length}}
+    {{#each viajes}}
+      <div class="viaje">
+        <div class="info"><strong>Fecha:</strong> {{fecha}}</div>
+        <div class="info"><strong>Empleado:</strong> {{empleado}}</div>
+        <div class="info"><strong>Vehículo:</strong> {{vehiculo}}</div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Paquete</th>
+              <th>Cliente</th>
+              <th>Dirección</th>
+              <th>Orden</th>
+              <th>Estado</th>
+              <th>ETA</th>
+              <th>Observación</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each entregas}}
+              <tr>
+                <td>{{paquete}}</td>
+                <td>{{cliente}}</td>
+                <td>{{direccion}}</td>
+                <td>{{orden}}</td>
+                <td>{{estado}}</td>
+                <td>{{eta}}</td>
+                <td>{{observacion}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{/each}}
+  {{else}}
+    <p class="no-data">No hay viajes registrados en este rango de fechas.</p>
+  {{/if}}
+
+</body>
+</html>

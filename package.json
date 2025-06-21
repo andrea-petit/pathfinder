@@ -4,9 +4,11 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "handlebars": "^4.7.8",
     "node": "^24.2.0",
     "node-fetch": "^3.3.2",
     "openrouteservice-js": "^0.4.1",
+    "puppeteer": "^24.10.2",
     "sqlite3": "^5.1.7",
     "sweetalert2": "^11.22.0"
   }

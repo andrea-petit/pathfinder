@@ -151,8 +151,11 @@ export async function generarRuta(paquetes) {
             title: "Viaje completado",
             icon: "success",
             confirmButtonText: 'Aceptar'
+          }).then(result => {
+            if (result.isConfirmed) {
+              window.location.href = '/home';
+            }
           });
-          window.location.href = '/home';
         }, 500);
       }
     };
@@ -237,8 +240,8 @@ export async function generarRuta(paquetes) {
       ];
       geoLayer = L.polyline(latlngs, { color: 'red', weight: 4, dashArray: '5,10' }).addTo(map);
       map.fitBounds(geoLayer.getBounds());
-      // Calcular duraciones y total en modo demo
-      const VELOCIDAD_PROMEDIO = 30000 / 60; // 30 km/h en m/min
+      
+      const VELOCIDAD_PROMEDIO = 30000 / 60;
       for (let i = 0; i < ordenIndices.length - 1; i++) {
         const d = distMatrix[ordenIndices[i]][ordenIndices[i + 1]];
         const minutos = Math.round(d / VELOCIDAD_PROMEDIO);
@@ -350,8 +353,11 @@ export async function generarRuta(paquetes) {
               title: "Viaje completado",
               icon: "success",
               confirmButtonText: 'Aceptar'
+            }).then(result => {
+              if (result.isConfirmed) {
+                window.location.href = '/home';
+              }
             });
-            window.location.href = '/home';
           }, 500);
         }
       };
