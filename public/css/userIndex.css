@@ -8,7 +8,6 @@
 
 
 body {
-    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -24,8 +23,6 @@ nav .logo-title h1, img {
 
 
 nav {
-    position: absolute;
-    z-index: 10;
     left: 0;
     right: 0;
     top: 0;
@@ -81,7 +78,7 @@ nav .list button:hover {
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 100%;
+    width: 99%;
     margin-top: 110px;
     gap: 40px;
 }
@@ -90,11 +87,7 @@ nav .list button:hover {
 .section-rep {
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    width: 600px; /*hola esta es la linea que te dije, acomodala como tu quieras, no le se al rem*/
-=======
     width: 60%;
->>>>>>> c10eea3532a2f46752013dbae875e3d93ee9e129
     margin-left: 50px;
     padding: 50px;
     box-shadow: 0 0 10px 1px #000033;
@@ -105,19 +98,13 @@ nav .list button:hover {
 .section-paq {
     display: flex;
     flex-direction: column;
+    width: 310px;
     justify-content: center;
     margin-left: 80px;
     padding: 50px;
     box-shadow: 0 0 10px 1px #000033;
     border-radius: 38px;
 }
-
-
-#form-actualizar-datos {
-}
-
-
-
 
 
 footer{

@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function mostrarFormularioActualizar() {
     document.getElementById('update-data').style.display = 'block';
-    document.getElementById('main-sections').style.display = 'block';
+    document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
 
     if (document.getElementById('form-actualizar-datos')) return;
@@ -230,11 +230,10 @@ function mostrarFormularioActualizar() {
 }
 
 document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {;
-    document.getElementById('main-sections').style.display = 'block';
-    document.getElementById('info-repartidor').style.display = 'block';
-    document.getElementById('info-vehiculo').style.display = 'block';
+    document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'block';
     document.getElementById('update-data').style.display = 'none';
+
 
     const seleccionPaquetes = document.getElementById('seleccion-paquetes');
     if (seleccionPaquetes) seleccionPaquetes.remove();
@@ -303,9 +302,6 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
         const contenedor = document.getElementById('form-cambio-vehiculo');
         if (contenedor) contenedor.remove();
         document.getElementById('main-sections').style.display = 'block';
-        document.getElementById('info-repartidor').style.display = 'block';
-        document.getElementById('info-vehiculo').style.display = 'block';
-        document.getElementById('paquetes-contenedor').style.display = 'block';
     };
 });
 
