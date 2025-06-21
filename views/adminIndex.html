@@ -39,7 +39,6 @@
                 <select id="tipo-reporte">
                     <option value="viajes">Reporte General de Viajes</option>
                     <option value="empleados">Reporte de Viajes por Empleado</option>
-                    <option value="vehiculos">Reporte de Estado de Vehículos</option>
                 </select>
                 <div id="seleccion-fecha">
                     <label for="fecha-inicio">Fecha de Inicio:</label>
@@ -47,8 +46,15 @@
                     <label for="fecha-fin">Fecha de Fin:</label>
                     <input type="date" id="fecha-fin">
                 </div>
+                <div id="reporte-individual" style="display:none;">
+                <label for="select-empleado">Empleado:</label>
+                    <select id="select-empleado">
+                    <option value="">Seleccione un empleado</option>
+                    </select>
+                </div>
                 <button id="generar-reporte-btn">Generar Reporte</button>
             </div>
+            
         </section>
         <section id="vehiculos-container" style="display: none;">
             <h1>Vehiculos</h1>

@@ -137,53 +137,129 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    const tipoReporte = document.getElementById('tipo-reporte');
+    const reporteIndividualDiv = document.getElementById('reporte-individual');
+    const selectEmpleado = document.getElementById('select-empleado');
     const generarReporteBtn = document.getElementById('generar-reporte-btn');
+
+    reporteIndividualDiv.style.display = 'none';
+
+    tipoReporte.addEventListener('change', () => {
+        if (tipoReporte.value === 'empleados') {
+            reporteIndividualDiv.style.display = 'block';
+            cargarEmpleados();
+        } else {
+            reporteIndividualDiv.style.display = 'none';
+        }
+    });
+
+    async function cargarEmpleados() {
+        try {
+            const res = await fetch('/api/admin/getEmpleados');
+            const empleados = await res.json();
+            selectEmpleado.innerHTML = '<option value="">Seleccione un empleado</option>';
+            empleados.forEach(emp => {
+                if (emp.id_empleado == 1) return;
+                const option = document.createElement('option');
+                option.value = emp.id_empleado;
+                option.textContent = `${emp.nombre1} ${emp.apellido1} (${emp.id_empleado})`;
+                selectEmpleado.appendChild(option);
+            });
+        } catch (err) {
+            console.error('Error al cargar empleados:', err);
+        }
+    }
+
     if (generarReporteBtn) {
         generarReporteBtn.addEventListener('click', async () => {
             const fechaInicio = document.getElementById('fecha-inicio').value;
             const fechaFin = document.getElementById('fecha-fin').value;
 
-            if (!fechaInicio || !fechaFin) {
-                Swal.fire({
-                    title: "Fechas requeridas",
-                    text: "Debes seleccionar la fecha de inicio y fin.",
-                    icon: "warning"
-                });
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/reporte/reporteViajes', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fechaInicio, fechaFin })
-                });
-
-                if (!res.ok) {
-                    throw new Error('No se pudo generar el reporte');
+            if (tipoReporte.value === 'viajes') {
+                if (!fechaInicio || !fechaFin) {
+                    Swal.fire({
+                        title: "Fechas requeridas",
+                        text: "Debes seleccionar la fecha de inicio y fin.",
+                        icon: "warning"
+                    });
+                    return;
                 }
+                try {
+                    const res = await fetch('/api/reporte/reporteViajes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fechaInicio, fechaFin })
+                    });
 
-                Swal.fire({
-                    title: "Reporte generado",
-                    text: "La descarga del reporte ha comenzado",
-                    icon: "success"
-                });
-                const blob = await res.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `reporte_viajes_${fechaInicio}_al_${fechaFin}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-                
-            } catch (error) {
-                Swal.fire({
-                    title: "Error",
-                    text: "No se pudo generar el reporte.",
-                    icon: "error"
-                });
+                    if (!res.ok) {
+                        throw new Error('No se pudo generar el reporte');
+                    }
+
+                    Swal.fire({
+                        title: "Reporte generado",
+                        text: "La descarga del reporte ha comenzado",
+                        icon: "success"
+                    });
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `reporte_viajes_${fechaInicio}_al_${fechaFin}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "No se pudo generar el reporte.",
+                        icon: "error"
+                    });
+                }
+            } else if (tipoReporte.value === 'empleados') {
+                const id_empleado = selectEmpleado.value;
+                if (!id_empleado || !fechaInicio || !fechaFin) {
+                    Swal.fire({
+                        title: "Campos requeridos",
+                        text: "Selecciona un empleado y el rango de fechas.",
+                        icon: "warning"
+                    });
+                    return;
+                }
+                try {
+                    const res = await fetch('/api/reporte/reporteIndividual', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_empleado, fechaInicio, fechaFin })
+                    });
+
+                    if (!res.ok) {
+                        throw new Error('No se pudo generar el reporte');
+                    }
+
+                    Swal.fire({
+                        title: "Reporte generado",
+                        text: "La descarga del reporte ha comenzado",
+                        icon: "success"
+                    });
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `reporte_individual_${id_empleado}_${fechaInicio}_al_${fechaFin}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "No se pudo generar el reporte.",
+                        icon: "error"
+                    });
+                }
             }
         });
     }

@@ -101,6 +101,7 @@ const reporteModel = {
             });
         });
     },
+    
 };
 
 module.exports = reporteModel;

@@ -2,22 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Reporte de Viajes</title>
+  <title>Reporte Individual de Viajes</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
-
     body {
       font-family: "Roboto", sans-serif;
       margin: 30px;
       font-size: 14px;
       color: #333;
     }
-
     .empresa-info {
       text-align: center;
       margin-bottom: 20px;
     }
-
     .logo-title {
       display: flex;
       justify-content: center;
@@ -27,7 +24,6 @@
       gap: 10px;
       margin-bottom: 10px;
     }
-
     .logo-title h1 {
       display: flex;
       align-items: center;
@@ -37,30 +33,25 @@
       font-weight: 400;
       letter-spacing: 2px;
     }
-
     .logo-title h1 span:first-child {
       color: #EF3962;
       word-spacing: -10px;
     }
-
     .logo-title h1 span:last-child {
       color: #0172B6;
       font-size: 45px;
     }
-
     .logo-title img {
       margin-left: 10px;
       width: 70px;
       display: block;
     }
-
     .empresa-detalle {
       color: #444;
       font-size: 1rem;
       margin-bottom: 3px;
       text-align: center;
     }
-
     .reporte-titulo {
       text-align: center;
       font-size: 2.5rem;
@@ -72,7 +63,6 @@
       text-shadow: 1px 1px 0 #bfc3e6;
       font-weight: 400;
     }
-
     .reporte-fechas {
       text-align: center;
       font-size: 1.2rem;
@@ -80,34 +70,38 @@
       margin-bottom: 25px;
       margin-top: 0;
     }
-
+    .info-empleado {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
     .viaje {
       border: 1px solid #ccc;
       margin-bottom: 25px;
       padding: 15px;
       border-radius: 6px;
     }
-
     .info {
       margin-bottom: 10px;
     }
-
+    .info-empleado{
+        text-align: left;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
     }
-
     th, td {
       border: 1px solid #aaa;
       padding: 6px;
       text-align: left;
     }
-
     th {
       background-color: #eee;
     }
-
     p.no-data {
       text-align: center;
       color: #888;
@@ -116,12 +110,11 @@
   </style>
 </head>
 <body>
-
   <div class="empresa-info">
     <div class="logo-title">
       <h1>
-        <span style="color: #EF3962;">Next</span>
-        <span style="color: #0172B6; font-size: 45px;">PACKAGE</span>
+        <span>Next</span>
+        <span>PACKAGE</span>
       </h1>
       <img src="http://localhost:3000/icons/entrega (1).png" alt="Logo NextPackage" />
     </div>
@@ -130,16 +123,14 @@
     <p class="empresa-detalle">Teléfono: +58 424-6304319</p>
     <p class="empresa-detalle">Correo: info@nextpackage.com</p>
   </div>
-  <div class="reporte-titulo">Reporte General de Viajes</div>
+  <div class="reporte-titulo">Reporte Individual de Viajes</div>
   <div class="reporte-fechas">Desde {{fechaInicio}} hasta {{fechaFin}}</div>
-
   {{#if viajes.length}}
+    <div class="info-empleado"><strong>Empleado:</strong> {{empleadoNombre}}</div>
     {{#each viajes}}
       <div class="viaje">
         <div class="info"><strong>Fecha:</strong> {{fecha}}</div>
-        <div class="info"><strong>Empleado:</strong> {{empleado}}</div>
         <div class="info"><strong>Vehículo:</strong> {{vehiculo}}</div>
-
         <table>
           <thead>
             <tr>
@@ -169,8 +160,7 @@
       </div>
     {{/each}}
   {{else}}
-    <p class="no-data">No hay viajes registrados en este rango de fechas.</p>
+    <p class="no-data">No hay viajes registrados en este periodo.</p>
   {{/if}}
-
 </body>
 </html>

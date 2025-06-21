@@ -1,6 +1,14 @@
 document.getElementById('recuperar-form').addEventListener('submit', async function(e) {
     e.preventDefault();
+
     const usuario = document.getElementById('usuario').value;
+    if(usuario === 'admin'){
+        Swal.fire({
+            title: "No puedes recuperar la contraseña del administrador",
+            icon: "error",
+        });
+        return;
+    }
     const mensaje = document.getElementById('mensaje');
     mensaje.textContent = '';
     try {

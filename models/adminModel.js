@@ -169,7 +169,6 @@ const adminModel = {
                             console.error('Error al actualizar estado del vehículo nuevo:', err3.message);
                             return reject(err3);
                         }
-                        // Cambia el estado de la solicitud a 'aprobada'
                         db.run(`UPDATE solicitudCambioVehiculo SET estado = 'aprobada' WHERE id = ?`, [id_solicitud], (err5) => {
                             if (err5) {
                                 console.error('Error al actualizar estado de la solicitud:', err5.message);
