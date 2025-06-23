@@ -18,19 +18,42 @@
         </div>
         <div class="list">
             <button id="empleados-button">Empleados</button>
-            <button>Paquetes</button>
-            <button>Reportes</button>
-            <button>Vehículos</button>
+            <button id="paquetes-button">Paquetes</button>
+            <button id="reportes-button">Reportes</button>
+            <button id="vehiculos-button">Vehículos</button>
         </div>
     </nav>
     <main>
-        <section id="empleados-container" style:"display: block;">
+        <section id="empleados-container" style="display: block;">
             <h1>Empleados</h1>
             <p>Gestión y consulta de empleados.</p><hr>
         </section>
         <section id="paquetes-container" style="display: none;">
             <h1>Paquetes</h1>
-            <p>Administración y seguimiento de paquetes.</p>
+            <div id="data-container">
+                <div id="paquetes">
+                    <p>Administración y seguimiento de paquetes.</p>
+                    <div id="paquetes-contenedor">
+                        <h2>Paquetes en Almacén</h2>
+                        <p>Actualmente: <span id="cantidad-paquetes">0</span></p>
+                    </div>
+                </div>
+                <div id="grafico-container">
+                    <canvas id="grafico-paquetes"></canvas>
+                </div>
+                <div id="estadisticas-container">
+                    <div id="select-estadistica">
+                        <label for="estadistica-select">Seleccione una estadística:</label>
+                        <select id="estadistica-select">
+                            <option value="entregados">Paquetes Entregados por Dia</option>
+                            <option value="pendientes">Paquetes Entregados por Semana</option>
+                            <option value="retrasados">Paquetes Entregados por Mes</option>
+                        </select>
+                    </div>
+                    <div id="result-estadistica"></div>
+                </div>
+            </div>
+            
         </section>
         <section id="reportes-container" style="display: none;">
             <!-- <h1>Reporte</h1> -->
@@ -70,5 +93,6 @@
     </footer>
     <script src="/js/addEmpleados.js"></script>
     <script src="/js/adminIndex.js"></script>
+    <script type="module" src="/js/charts.js"></script>
 </body>
 </html>

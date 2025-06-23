@@ -135,7 +135,14 @@ function mostrarSeleccionPaquetes(paquetes) {
         const seleccionadosArray = Array.from(seleccionados).map(id =>
             paquetes.find(p => p.id_paquete == id)
         );
-        const confirmacion = window.confirm(`¿Estás seguro de generar un viaje con ${seleccionadosArray.length} paquetes?`);
+        const confirmacion = await Swal.fire({
+            title: "Confirmar viaje",
+            text: `¿Estás seguro de que deseas generar un viaje con ${seleccionadosArray.length} paquetes?`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Sí, generar viaje",
+            cancelButtonText: "Cancelar"
+        }).then(result => result.isConfirmed);
         if (!confirmacion) return;
         document.getElementById('nav-bar').style.display = 'block';
         document.getElementById('main-sections').style.display = 'none';
@@ -313,6 +320,48 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
     };
 });
 
+document.getElementById('resumen-individual-btn').addEventListener('click', async () => {
+    document.getElementById('contenedor-paquetes').style.display = 'none';
+    document.getElementById('update-data').style.display = 'none';
+    document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
+    document.getElementById('main-sections').style.display = 'none';
+    document.getElementById('resumen-indiv').style.display = 'block';
+
+    const btnResumen = document.getElementById('generar-resumen-btn');
+    btnResumen.onclick = async function () {
+        const fechaInicio = document.getElementById('fecha-inicio').value;
+        const fechaFin = document.getElementById('fecha-fin').value;
+        if (!fechaInicio || !fechaFin) {
+            Swal.fire("Fechas requeridas", "Debes seleccionar la fecha de inicio y fin.", "warning");
+            return;
+        }
+        try {
+            const res = await fetch('/api/reporte/reporteIndividual', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fechaInicio, fechaFin })
+            });
+            if (!res.ok) throw new Error('No se pudo generar el reporte');
+            Swal.fire({
+                title: "Reporte generado",
+                text: "Comenzando descarga...",
+                icon: "success",
+            });
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `reporte_individual_${fechaInicio}_al_${fechaFin}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            Swal.fire("Error", "No se pudo generar el reporte.", "error");
+        }
+    };
+});
+
 const contenedor = document.getElementById('paquetes-viaje');
 if (contenedor) {
   contenedor.style.display = '';
@@ -341,6 +390,8 @@ const info = document.getElementById('info-container');
 if (info) {
   info.style.display = 'none';
 }
+
+
 
 
 

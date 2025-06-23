@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const empleadosBtn = document.getElementById('empleados-button');
-    const paquetesBtn = document.querySelector('nav button:nth-child(2)');
-    const reportesBtn = document.querySelector('nav button:nth-child(3)');
-    const vehiculosBtn = document.querySelector('nav button:nth-child(4)');
+    const paquetesBtn = document.getElementById('paquetes-button');
+    const reportesBtn = document.getElementById('reportes-button');
+    const vehiculosBtn = document.getElementById('vehiculos-button');
 
     const empleadosContainer = document.getElementById('empleados-container');
     const paquetesContainer = document.getElementById('paquetes-container');
