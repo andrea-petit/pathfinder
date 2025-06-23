@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
         paquetesContainer.style.display = 'none';
         reportesContainer.style.display = 'none';
         vehiculosContainer.style.display = 'none';
-        seccion.style.display = 'block';
+        if(seccion == reportesContainer) {seccion.style.display = 'flex'}
+        else {seccion.style.display = 'block';}
+        
     }
 
     empleadosBtn.addEventListener('click', () => mostrarSeccion(empleadosContainer));

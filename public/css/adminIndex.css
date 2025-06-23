@@ -335,15 +335,108 @@ main p {
 
 #reportes-container {
     display: flex;
-    padding: 3rem 3rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    margin-top: 50px;
     font-family: "Roboto", sans-serif;
 }
 
 
+/*
 #reportes-container h1 {
     color: #003d63;
     font-size: 40px;
+    margin-bottom: 4rem;
 }
+*/
+
+
+#reportes-container #seleccion-reporte {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;   
+    padding: 20px;  
+    gap: 20px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 8px;
+}
+
+
+#reportes-container #seleccion-reporte label {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+
+
+#reportes-container #seleccion-reporte #seleccion-fecha {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+#reportes-container #seleccion-reporte #seleccion-fecha .dinicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#reportes-container #seleccion-reporte #seleccion-fecha .dfin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#reportes-container #seleccion-reporte input,
+#reportes-container #seleccion-reporte select {
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    transition: border 0.2s;
+}
+
+
+#reportes-container #seleccion-reporte input:focus,
+#reportes-container #seleccion-reporte select:focus {
+    background-color: lab(63.92% 27.69 -55.87 / 0.349);
+    border: solid 1px blue;
+    transition: all .2ms;
+}
+
+
+#reportes-container #seleccion-reporte button {
+    background-color: #01558a;
+    color: white;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: solid .5px #0172B6;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    width: 60%;
+    margin-top: 1rem;
+}
+
+
+#reportes-container #seleccion-reporte button:hover {
+    border: none;
+    transform: scale(1.06);
+}
+
 
 
 #vehiculos-container {
