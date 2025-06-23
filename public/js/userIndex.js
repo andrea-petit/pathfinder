@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('update-data').style.display = 'none';
         document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
         document.getElementById('main-sections').style.display = 'none';
+        document.getElementById('resumen-indiv').style.display = 'none';
+
         mostrarSeleccionPaquetes(paquetes);
     });
 });
@@ -98,11 +100,13 @@ function mostrarSeleccionPaquetes(paquetes) {
 
     const btnGenerar = document.createElement('button');
     btnGenerar.textContent = 'Confirmar viaje';
+    btnGenerar.id = 'boton-confirmar'
     btnGenerar.disabled = true;
     contenedor.appendChild(btnGenerar);
 
     const btnCancelar = document.createElement('button');
     btnCancelar.textContent = 'Cancelar';
+    btnCancelar.id = 'boton-cancelar'
     contenedor.appendChild(btnCancelar);
 
     contenedorPaquetes.appendChild(contenedor);
@@ -163,6 +167,8 @@ function mostrarFormularioActualizar() {
     document.getElementById('update-data').style.display = 'flex';
     document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
+    document.getElementById('contenedor-paquetes').style.display = 'none';
+    document.getElementById('resumen-indiv').style.display = 'none';
 
     if (document.getElementById('form-actualizar-datos')) return;
 
@@ -242,6 +248,8 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
     document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'flex';
     document.getElementById('update-data').style.display = 'none';
+    document.getElementById('resumen-indiv').style.display = 'none';
+
 
 
     const seleccionPaquetes = document.getElementById('seleccion-paquetes');
@@ -322,7 +330,7 @@ document.getElementById('resumen-individual-btn').addEventListener('click', asyn
     document.getElementById('update-data').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
     document.getElementById('main-sections').style.display = 'none';
-    document.getElementById('resumen-indiv').style.display = 'block';
+    document.getElementById('resumen-indiv').style.display = 'flex';
 
     const btnResumen = document.getElementById('generar-resumen-btn');
     btnResumen.onclick = async function () {

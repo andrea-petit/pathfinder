@@ -77,11 +77,13 @@ function matrizHaversine(puntos) {
 
 export async function generarRuta(paquetes) {
   const cont = document.getElementById('paquetes-viaje');
-  cont.style.display = 'block';
+  cont.style.display = 'flex';
   cont.innerHTML = `
-    <div id="map" style="height:400px;"></div>
-    <button id="btn-optimizar">Optimizar ruta</button>
-    <div id="lista-paquetes"></div>
+    <div class = "paquetes-rutas">
+      <div id="map"></div>
+      <button id="btn-optimizar">Optimizar ruta</button>
+      <div id="lista-paquetes"></div>
+    </div>
   `;
 
   const map = L.map('map').setView([BASE.lat, BASE.lon], 13);
@@ -110,9 +112,9 @@ export async function generarRuta(paquetes) {
     div.innerHTML = `
       <p>
         <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+        <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
         <button class="entregado-btn" data-id="${p.id_paquete}">Entregar</button>
         <button onclick="window.open('https://wa.me/${tel}')">Contactar</button>
-        <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
       </p>
       <hr>`;
     list.appendChild(div);
@@ -287,9 +289,9 @@ export async function generarRuta(paquetes) {
           <span style="font-size:1.5em;font-weight:bold;color:#007bff;">#${i + 1}</span>
           ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
           ${duracionStr}
+          <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
           <button class="entregado-btn" data-id="${p.id_paquete}" ${i !== 0 ? 'disabled' : ''}>Entregado</button>
           <button onclick="window.open('https://wa.me/${tel}')">WhatsApp</button>
-          <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
         </p>
         <hr>`;
       // if (i === 0) div.style.background = '#fffbe6';

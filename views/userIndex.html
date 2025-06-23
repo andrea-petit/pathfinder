@@ -54,17 +54,21 @@
     <div id="update-data"></div>
     <div id="paquetes-viaje" style="display:none"></div>
     <div id="resumen-indiv" style="display:none">
-        <h2>Resumen Individual</h2>
-        <p>Seleccione el rango de fechas:</p>
+        <!-- <h2>Resumen Individual</h2> -->
         <div id="seleccion-fecha">
-                    <label for="fecha-inicio">Fecha de Inicio:</label>
-                    <input type="date" id="fecha-inicio">
-                    <label for="fecha-fin">Fecha de Fin:</label>
-                    <input type="date" id="fecha-fin">
+            <p>Seleccione el rango de fechas:</p>
+            <hr>
+            <div class="finicio">
+                <label for="fecha-inicio">Fecha de Inicio:</label>
+                <input type="date" id="fecha-inicio">
+            </div>
+            <div class="ffinal">
+                <label for="fecha-fin">Fecha de Fin:</label>
+                <input type="date" id="fecha-fin">
+            </div>
+            <button id="generar-resumen-btn">Generar Resumen</button>
+            <button id="cancelar-resumen">Cancelar</button>
         </div>
-        <button id="generar-resumen-btn">Generar Resumen</button>
-        <br>
-        <button id="cancelar-resumen">Cancelar</button>
     </div>
 
     <div id="contenedor-form-cambio-vehiculo"></div>
