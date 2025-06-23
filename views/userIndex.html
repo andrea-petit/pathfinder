@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@mapbox/polyline"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 <body>
     <section id="nav-bar">
@@ -53,6 +52,20 @@
     </div>
     <div id="update-data"></div>
     <div id="paquetes-viaje" style="display:none"></div>
+    <div id="resumen-indiv" style="display:none">
+        <h2>Resumen Individual</h2>
+        <p>Seleccione el rango de fechas:</p>
+        <div id="seleccion-fecha">
+                    <label for="fecha-inicio">Fecha de Inicio:</label>
+                    <input type="date" id="fecha-inicio">
+                    <label for="fecha-fin">Fecha de Fin:</label>
+                    <input type="date" id="fecha-fin">
+        </div>
+        <button id="generar-resumen-btn">Generar Resumen</button>
+        <br>
+        <button id="cancelar-resumen">Cancelar</button>
+    </div>
+
     <div id="contenedor-form-cambio-vehiculo"></div>
     <div id="contenedor-paquetes"></div>
     

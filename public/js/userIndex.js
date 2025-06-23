@@ -64,6 +64,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('main-sections').style.display = 'none';
         mostrarSeleccionPaquetes(paquetes);
     });
+
+    const lista = document.getElementById('lista-paquetes');
+    if (lista) {
+        lista.innerHTML = '';
+        paquetes.forEach((p, i) => {
+            const tel = p.cliente_telefono.replace(/^0/, '58');
+            const div = document.createElement('div');
+            div.className = 'paquete-item';
+            div.innerHTML = `
+                <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
+                <button class="entregado-btn" data-id="${p.id_paquete}">Entregar</button>
+                <button onclick="window.open('https://wa.me/${tel}')">Contactar</button>
+                <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
+                <hr>
+            `;
+            lista.appendChild(div);
+        });
+    }
 });
 
 function mostrarSeleccionPaquetes(paquetes) {
