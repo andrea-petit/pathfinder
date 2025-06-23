@@ -77,11 +77,13 @@ function matrizHaversine(puntos) {
 
 export async function generarRuta(paquetes) {
   const cont = document.getElementById('paquetes-viaje');
-  cont.style.display = 'block';
+  cont.style.display = 'flex';
   cont.innerHTML = `
-    <div id="map" style="height:400px;"></div>
-    <button id="btn-optimizar">Optimizar ruta</button>
-    <div id="lista-paquetes"></div>
+    <div class = "paquetes-rutas">
+      <div id="map"></div>
+      <button id="btn-optimizar">Optimizar ruta</button>
+      <div id="lista-paquetes"></div>
+    </div>
   `;
 
   const map = L.map('map').setView([BASE.lat, BASE.lon], 13);
