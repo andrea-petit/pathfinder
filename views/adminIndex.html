@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/adminIndex.css">
     <link rel="shortcut icon" href="/icons/entrega.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Panel de Administrador</title>
 </head>
 <body>
@@ -42,15 +43,7 @@
                     <canvas id="grafico-paquetes"></canvas>
                 </div>
                 <div id="estadisticas-container">
-                    <div id="select-estadistica">
-                        <label for="estadistica-select">Seleccione una estadística:</label>
-                        <select id="estadistica-select">
-                            <option value="entregados">Paquetes Entregados por Dia</option>
-                            <option value="pendientes">Paquetes Entregados por Semana</option>
-                            <option value="retrasados">Paquetes Entregados por Mes</option>
-                        </select>
-                    </div>
-                    <div id="result-estadistica"></div>
+                    <canvas id="entregadosPorEmpleadoChart"></canvas>
                 </div>
             </div>
             

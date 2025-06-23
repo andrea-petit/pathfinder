@@ -10,6 +10,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const paquetesRoutes = require('./routes/paquetesRoutes'); 
 const openrRoutes = require('./routes/openrRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
+const estadisticasRoutes = require('./routes/estadisticasRoutes'); 
 
 
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/paquetes', paquetesRoutes);
 app.use('/api/openr', openrRoutes);
 app.use('/api/reporte', reporteRoutes);
+app.use('/api/estadisticas', estadisticasRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));
