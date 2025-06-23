@@ -548,3 +548,11 @@ footer{
     position: relative;
     z-index: 2;
 }
+
+#entregadosPorEmpleadoChart {
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    border-radius: 12px;
+
+}

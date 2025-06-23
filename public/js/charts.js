@@ -46,6 +46,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             const data = await res.json();
             console.log('Respuesta del backend:', data);
+
+            const estadisticasContainer = document.getElementById('estadisticas-container');
+
+            const oldP = document.getElementById('info-estadisticas');
+            if (oldP) oldP.remove();
+
+            const infoP = document.createElement('p');
+            infoP.id = 'info-estadisticas';
+            infoP.textContent = `Estadísticas de entrega desde ${fechaInicio} hasta ${fechaFin}`;
+            estadisticasContainer.prepend(infoP);
+
             graficarEntregadosPorEmpleado(data);
 
             console.log('Datos para la gráfica semanal:', data);
@@ -86,8 +97,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     borderColor: borderColors,
                     borderWidth: 2,
                     borderRadius: 8,
-                    barPercentage: 0.6,
-                    categoryPercentage: 0.7
+                    barPercentage: 0.2,        
+                    categoryPercentage: 0.5   
                 }]
             },
             options: {
