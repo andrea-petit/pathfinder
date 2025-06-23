@@ -33,7 +33,7 @@ nav {
     top: 0;
     padding: 0 3%;
     height: 80px;
-    background-color: #0172B6;
+    background-color: #EF3962;
 }
 
 
@@ -486,6 +486,47 @@ main p {
 }
 
 
+#vehiculos-container .aprobar-btn {
+    background-color: transparent;
+    color: black;
+    font-size: 1rem;
+    padding: 0.2rem .7rem;
+    border: solid 4px #01558a;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+
+#vehiculos-container .aprobar-btn:hover {
+    border: solid 4px #01558a;
+    transform: scale(1.06);
+}
+
+
+#vehiculos-container .rechazar-btn {
+    background-color: transparent;
+    color: black;
+    font-size: 1rem;
+    padding: 0.2rem .7rem;
+    border: solid 4px #EF3962;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+#vehiculos-container .rechazar-btn:hover {
+    border: solid 4px #EF3962;
+    transform: scale(1.06);
+}
+
+
 #vehiculos-container hr {
     border: none;
     background-color: #c02d4f;
@@ -496,7 +537,7 @@ main p {
 
 
 footer{
-    background-color: #EF3962;
+    background-color: #0172B6;
     color: white;
     width: 100%;
     display: flex;
