@@ -348,12 +348,19 @@ nav .list button:hover {
 #seleccion-paquetes {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 500px;
-    height: 550px;
-    overflow-y: scroll;
-    margin-top: 20px;
+    max-height: 500px;
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 10px;
+    margin-top: 30px;
+    gap: 10px;
+    box-sizing: border-box;
+}
+::-webkit-scrollbar {
+    display: none;
 }
 
 
@@ -362,22 +369,63 @@ nav .list button:hover {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    max-width: 400px;   
-    padding: 20px;  
+    max-width: 500px;   
+    padding: 40px;  
     gap: 10px;
     border: 1px solid rgb(204, 204, 204);
     border-radius: 8px;
     text-align: justify;
+    font-size: 20px;
 }
 
 
-#seleccion-paquetes button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#seleccion-paquetes div:hover {
+    background-color: #0171b610;
+    border: solid #0172B6 1px;
+    transition: all .3s;
 }
 
 
+#seleccion-paquetes #boton-confirmar{
+    background-color: #01558a;
+    color: white;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: solid .5px #0172B6;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    width: 60%;
+    margin-top: 1rem;
+}
+
+
+#seleccion-paquetes #boton-confirmar:hover {
+    transform: scale(1.06);
+}
+
+
+#seleccion-paquetes #boton-cancelar {
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: solid 4px #EF3962;
+    border-radius: 7px;
+    outline: none;
+    transition: 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    width: 60%;
+    margin-top: 2px;
+}
+
+
+#seleccion-paquetes #boton-cancelar:hover {
+    transform: scale(1.06);
+}
 
 
 

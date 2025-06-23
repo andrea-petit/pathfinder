@@ -98,11 +98,13 @@ function mostrarSeleccionPaquetes(paquetes) {
 
     const btnGenerar = document.createElement('button');
     btnGenerar.textContent = 'Confirmar viaje';
+    btnGenerar.id = 'boton-confirmar'
     btnGenerar.disabled = true;
     contenedor.appendChild(btnGenerar);
 
     const btnCancelar = document.createElement('button');
     btnCancelar.textContent = 'Cancelar';
+    btnCancelar.id = 'boton-cancelar'
     contenedor.appendChild(btnCancelar);
 
     contenedorPaquetes.appendChild(contenedor);
@@ -156,6 +158,7 @@ function mostrarFormularioActualizar() {
     document.getElementById('update-data').style.display = 'flex';
     document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
+    document.getElementById('contenedor-paquetes').style.display = 'none';
 
     if (document.getElementById('form-actualizar-datos')) return;
 
