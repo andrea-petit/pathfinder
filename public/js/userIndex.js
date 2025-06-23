@@ -330,7 +330,7 @@ document.getElementById('resumen-individual-btn').addEventListener('click', asyn
     document.getElementById('update-data').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
     document.getElementById('main-sections').style.display = 'none';
-    document.getElementById('resumen-indiv').style.display = 'block';
+    document.getElementById('resumen-indiv').style.display = 'flex';
 
     const btnResumen = document.getElementById('generar-resumen-btn');
     btnResumen.onclick = async function () {
