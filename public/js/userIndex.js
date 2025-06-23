@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('generar-viajes-btn').addEventListener('click', () => {
-        document.getElementById('contenedor-paquetes').style.display = 'block';
+        document.getElementById('contenedor-paquetes').style.display = 'flex';
         document.getElementById('update-data').style.display = 'none';
         document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
         document.getElementById('main-sections').style.display = 'none';
@@ -102,6 +102,7 @@ function mostrarSeleccionPaquetes(paquetes) {
         }
 
         const div = document.createElement('div');
+        div.className = "paquete-card"
         div.innerHTML = `
             <input type="checkbox" class="paquete-checkbox" value="${paquete.id_paquete}">
             <strong>Código:</strong> ${paquete.id_paquete}<br>
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function mostrarFormularioActualizar() {
-    document.getElementById('update-data').style.display = 'block';
+    document.getElementById('update-data').style.display = 'flex';
     document.getElementById('main-sections').style.display = 'none';
     document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'none';
 
@@ -181,6 +182,7 @@ function mostrarFormularioActualizar() {
     form.id = 'form-actualizar-datos';
     form.innerHTML = `
         <h3>Actualizar mis datos</h3>
+        <hr>
         <select name="campo" required>
             <option value="">Selecciona un campo</option>
             <option value="nombre1">Primer Nombre</option>
@@ -249,7 +251,7 @@ function mostrarFormularioActualizar() {
 
 document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click', async function() {;
     document.getElementById('main-sections').style.display = 'none';
-    document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'block';
+    document.getElementById('contenedor-form-cambio-vehiculo').style.display = 'flex';
     document.getElementById('update-data').style.display = 'none';
 
 
@@ -265,6 +267,7 @@ document.getElementById('solicitar-cambio-vehiculo-btn').addEventListener('click
 
     contenedor.innerHTML = `
         <h3>Solicitar cambio de vehículo</h3>
+        <hr>
         <select id="vehiculo-nuevo" required>
             <option value="">Seleccione un vehículo</option>
         </select>
