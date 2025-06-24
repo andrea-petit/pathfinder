@@ -73,6 +73,7 @@ function mostrarSeleccionPaquetes(paquetes) {
     if (contenedor) contenedor.remove();
 
     contenedor = document.createElement('div');
+    
     contenedor.id = 'seleccion-paquetes';
 
     const contenedorPaquetes = document.getElementById('contenedor-paquetes');

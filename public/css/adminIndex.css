@@ -554,5 +554,33 @@ footer{
     height: 400px;
     margin: 0 auto;
     border-radius: 12px;
+}
 
+
+#info-estadisticas {
+    font-size: 20px;
+    margin-top: 0px;
+    text-align: center;
+}
+
+
+#paquetes-contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+
+#paquetes-contenedor h2 {
+    font-size: 30px;
+    color: #003D63;
+}
+
+
+#paquetes-contenedor p {
+    font-size: 20px;
 }
