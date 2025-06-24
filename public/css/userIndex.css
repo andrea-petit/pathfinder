@@ -709,6 +709,22 @@ nav .list button:hover {
     transform: scale(1.06);
 }
 
+.entregado-btn:disabled {
+    background: #e0e0e0 !important;
+    color: #888 !important;
+    border: 1px solid #bdbdbd !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+}
+
+.entregado-btn.entregado-exito {
+    background: #4CAF50 !important;
+    color: #fff !important;
+    border: 1px solid #388e3c !important;
+    cursor: default !important;
+    opacity: 1 !important;
+}
+
 
 footer{
     background-color: #EF3962;

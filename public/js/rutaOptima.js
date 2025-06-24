@@ -113,7 +113,7 @@ export async function generarRuta(paquetes) {
       <p>
         <strong>#${i + 1}</strong> ${p.cliente_nombre1} ${p.cliente_apellido1} - ${tel}
         <input type="text" id="obs-${p.id_paquete}" placeholder="Observación"/>
-        <button class="entregado-btn" data-id="${p.id_paquete}">Entregar</button>
+        <button class="entregado-btn" data-id="${p.id_paquete}" disabled>Entregar</button>
         <button onclick="window.open('https://wa.me/${tel}')">Contactar</button>
       </p>
       <hr>`;
@@ -142,8 +142,8 @@ export async function generarRuta(paquetes) {
       } 
       viajeData[idx].comentario = document.getElementById(`obs-${id}`).value;
 
+      btn.classList.add('entregado-exito');
       btn.disabled = true;
-      btn.style.background = '#4caf50';
       const m = marcadores.get(parseInt(id));
       if (m) m.setIcon(iconEntregado);
 
@@ -153,10 +153,8 @@ export async function generarRuta(paquetes) {
             title: "Viaje completado",
             icon: "success",
             confirmButtonText: 'Aceptar'
-          }).then(result => {
-            if (result.isConfirmed) {
-              window.location.href = '/home';
-            }
+          }).then(() => {
+            window.location.href = '/home';
           });
         }, 500);
       }
@@ -342,8 +340,8 @@ export async function generarRuta(paquetes) {
           return;
         }
 
+        btn.classList.add('entregado-exito');
         btn.disabled = true;
-        btn.style.background = '#4caf50';
         const m = marcadores.get(parseInt(id));
         if (m) m.setIcon(iconEntregado);
 
@@ -355,10 +353,8 @@ export async function generarRuta(paquetes) {
               title: "Viaje completado",
               icon: "success",
               confirmButtonText: 'Aceptar'
-            }).then(result => {
-              if (result.isConfirmed) {
-                window.location.href = '/home';
-              }
+            }).then(() => {
+              window.location.href = '/home';
             });
           }, 500);
         }
