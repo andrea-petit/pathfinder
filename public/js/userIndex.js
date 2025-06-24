@@ -1,6 +1,7 @@
 import { generarRuta } from './rutaOptima.js';
 
 let paquetes = [];
+let tipoPlaca = null;
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -33,6 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const vehiculo = await resVehiculo.json();
 
         if (resVehiculo.ok && vehiculo) {
+            tipoPlaca = vehiculo.placa.substring(0, 3).toUpperCase();
+            console.log(tipoPlaca);
             document.querySelector('#info-vehiculo').innerHTML = `
                 <h3>Vehículo Asignado</h3>
                 <p><strong>Placa:</strong> ${vehiculo.placa}</p>
@@ -64,11 +67,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('main-sections').style.display = 'none';
         document.getElementById('resumen-indiv').style.display = 'none';
 
-        mostrarSeleccionPaquetes(paquetes);
+        mostrarSeleccionPaquetes(paquetes, tipoPlaca);
     });
 });
 
-function mostrarSeleccionPaquetes(paquetes) {
+function mostrarSeleccionPaquetes(paquetes, tipoPlaca) {
+    const limitesPorTipo = {
+        'MTO': 5,
+        'CAR': 7,
+        'CAM': 10, 
+    };
+    const limite = limitesPorTipo[tipoPlaca] || 5;
+    console.log(`Límite de paquetes para tipo de placa ${tipoPlaca}: ${limite}`);
+    Swal.fire({
+        title: "Seleccionar Paquetes",
+        text: "Selecciona hasta " + limite + " paquetes para generar un viaje.",
+        icon: "info",
+        confirmButtonText: "Continuar",
+    })
+    
     let contenedor = document.getElementById('seleccion-paquetes');
     if (contenedor) contenedor.remove();
 
@@ -116,14 +133,13 @@ function mostrarSeleccionPaquetes(paquetes) {
     checkboxes.forEach(cb => {
         cb.addEventListener('change', function () {
             if (this.checked) {
-                if (seleccionados.size >= 5) {
+                if (seleccionados.size >= limite) {
                     this.checked = false;
                     Swal.fire({
                         title: "Límite alcanzado",
-                        text: "Solo puedes seleccionar hasta 5 paquetes.",
+                        text: `Solo puedes seleccionar hasta ${limite} paquetes para este vehículo.`,
                         icon: "warning",
                     });
-                    
                 } else {
                     seleccionados.add(this.value);
                 }
@@ -396,6 +412,8 @@ const info = document.getElementById('info-container');
 if (info) {
   info.style.display = 'none';
 }
+
+
 
 
 
