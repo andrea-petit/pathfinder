@@ -45,10 +45,11 @@ const reporteController = {
       const template = hbs.compile(templateHtml);
       const htmlFinal = template({ fechaInicio, fechaFin, viajes });
 
-      const browser = await puppeteer.launch({ headless: true });
-      // const browser = await puppeteer.launch({
-      //   executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
-      // });
+      //const browser = await puppeteer.launch({ headless: true });
+      const browser = await puppeteer.launch({
+        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        //executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
+      });
       const page = await browser.newPage();
       await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
 
@@ -127,10 +128,11 @@ const reporteController = {
       const template = hbs.compile(templateHtml);
       const htmlFinal = template({ id_empleado, fechaInicio, fechaFin, viajes, empleadoNombre });
 
-      const browser = await puppeteer.launch({ headless: true });
-      // const browser = await puppeteer.launch({
-      //   executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
-      // });
+      //const browser = await puppeteer.launch({ headless: true });
+      const browser = await puppeteer.launch({
+        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        //executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
+      });
       const page = await browser.newPage();
       await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
 

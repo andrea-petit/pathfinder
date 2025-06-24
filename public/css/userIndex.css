@@ -338,51 +338,76 @@ nav .list button:hover {
 
 
 #contenedor-paquetes {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
     justify-content: center;
     align-items: center;
 }
 
 
 #seleccion-paquetes {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 450px;
-    max-height: 500px;
-    height: 100vh;
-    overflow-y: auto;
-    padding-top: 10px;
-    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 10px;
-    box-sizing: border-box;
-}
-
-
-#seleccion-paquetes div {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    max-width: 400px;   
-    padding: 40px;  
-    gap: 10px;
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    padding: 32px 16px 0 16px;
+    background: none;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #0002;
+    min-height: 300px;
+    transition: box-shadow 0.2s;
+}
+
+
+#seleccion-paquetes > div {
+    background: #fafdff;
+    box-shadow: 0 2px 12px #0172b610;
     border: 2px solid #0172B6;
-    border-radius: 8px;
-    text-align: justify;
-    font-size: 15px;
-    transition: width 0.2s ease, background-color 0.2s ease;
+    border-radius: 14px;
+    padding: 25px 52px 24px 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
 }
 
 
-#seleccion-paquetes div:hover {
-    background-color: #0171b610;
-    border: solid #0172B6 2px;
-    box-shadow: 0px 0px 5px 0px #00416980;
-    transition: all .2s ease-in-out;
+#seleccion-paquetes > div:hover {
+    background-color: #eaf6ff;
+    border: 2px solid #01558a;
+    box-shadow: 0 4px 18px #0172b640;
 }
+
+
+#seleccion-paquetes .paquete-checkbox {
+    accent-color: #0172B6;
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+
+#seleccion-paquetes strong {
+    color: #003D63;
+}
+
+
+#seleccion-paquetes #boton-confirmar,
+#seleccion-paquetes #boton-cancelar {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 50%;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
 
 
 #seleccion-paquetes #boton-confirmar{
@@ -397,7 +422,9 @@ nav .list button:hover {
     font-weight: bold;
     cursor: pointer;
     width: 60%;
-    margin-top: 1rem;
+    margin-top: 10px;
+    grid-column: 1 / -1;
+    justify-self: center;
 }
 
 
@@ -419,6 +446,9 @@ nav .list button:hover {
     cursor: pointer;
     width: 60%;
     margin-top: 2px;
+    margin-bottom: 10px;
+    grid-column: 1 / -1;
+    justify-self: center;
 }
 
 
@@ -502,7 +532,7 @@ nav .list button:hover {
     transition: all .2
 }
 
-
+ 
 #lista-paquetes button.entregado-btn {
     justify-content: center;
     align-items: center;
