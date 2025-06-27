@@ -57,15 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (empleado.id_empleado !== 1) {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    card.style.border = '1px solid #ccc';
                     card.style.borderRadius = '8px';
                     card.style.padding = '20px';
                     card.style.margin = '12px 0';
-                    card.style.boxShadow = '0 2px 6px rgba(0,0,0,0.05)';
+                    card.style.boxShadow = '0px 0px 5px rgba(0, 0, 0, 0.507);';
                     card.style.background = '#fafbfc';
 
                     card.innerHTML = `
-                        <div class="card">
+                        <div class="card1">
                         <strong>Cédula:</strong> ${empleado.id_empleado}<br>
                         <strong>Nombre:</strong> ${empleado.nombre1} ${empleado.nombre2 || ''}<br>
                         <strong>Apellido:</strong> ${empleado.apellido1} ${empleado.apellido2 || ''}<br>

@@ -12,7 +12,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: steelblue;
+    background-image: url("/img/imagen1.png");
+    background-position: center;
+    background-size: cover;
     font-family: "Roboto", sans-serif;
 }
 

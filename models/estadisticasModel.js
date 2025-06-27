@@ -11,7 +11,7 @@ const estadisticasModel = {
                 JOIN destinos d ON vd.id_destino = d.id
                 JOIN paquetes p ON d.id_paquete = p.id_paquete
                 WHERE vd.estado = 'entregado'
-                  AND DATE(v.fecha) BETWEEN ? AND ?
+                AND DATE(v.fecha) BETWEEN ? AND ?
                 GROUP BY v.id_empleado
                 ORDER BY total_entregados DESC
             `;

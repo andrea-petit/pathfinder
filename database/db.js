@@ -318,6 +318,6 @@ function generarPaquetesAleatorios(cantidad = 30) {
 
 }
 
-// generarPaquetesAleatorios(20);
+//generarPaquetesAleatorios(20);
 
 module.exports = db;

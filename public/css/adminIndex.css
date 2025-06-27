@@ -14,6 +14,10 @@ body {
     flex-direction: column;
     justify-content: center;
     font-family: "Roboto", sans-serif;
+    background-image: url("/img/imagen1.png");
+    backdrop-filter: blur(4px);
+    background-position: center;
+    background-size: cover;
 }
 
 
@@ -24,6 +28,9 @@ nav .logo-title h1, img {
     align-items: flex-start;
 }
 
+a {
+    text-decoration: none;
+}
 
 nav {
     position: absolute;
@@ -85,12 +92,20 @@ main {
 
 main h1 {
     color: #003d63;
+    text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.671),
+    -1px 1px 0 rgba(255, 255, 255, 0.671),
+    1px 1px 0 rgba(255, 255, 255, 0.671),
+    1px -1px 0 rgba(255, 255, 255, 0.671);
     font-size: 40px;
-
 }
 
 main p {
     font-size: 24px;
+    color: white;
+    text-shadow: -1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black,
+    1px -1px 0 black;
 }
 
 #empleados-container {
@@ -102,6 +117,10 @@ main p {
 
 #empleados-container h2, p {
     text-align: justify;
+    text-shadow: -1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white,
+    1px -1px 0 white;
 }
 
 
@@ -113,10 +132,11 @@ main p {
 }
 
 
-#empleados-container .card{
+#empleados-container .card1{
     font-size: 20px;
     text-align: justify;
     padding: 0 1rem 0 1rem;
+
 }
 
 
@@ -124,6 +144,12 @@ main p {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+
+}
+
+
+.card {
+    box-shadow:  0px 0px 5px rgba(0, 0, 0, 0.507);
 }
 
 
@@ -245,6 +271,9 @@ main p {
     align-items: left;
     width: 500px;
     gap: 5px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 7px;
 }
 
 
@@ -301,7 +330,7 @@ main p {
 
 
 #volverbtn {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.24);
     color: black;
     font-size: 1rem;
     padding: 0.7rem 1rem;
@@ -360,10 +389,11 @@ main p {
     align-items: center;
     width: 100%;
     max-width: 450px;   
-    padding: 20px;  
+    padding: 30px;  
     gap: 20px;
-    border: 1px solid rgb(204, 204, 204);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.507);
     border-radius: 8px;
+    background-color: white;
 }
 
 
@@ -463,8 +493,8 @@ main p {
     transition: 0.2s ease;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
-    margin-bottom: 1rem;
+    margin-top: 10px;
+    margin-bottom: .5rem;
     margin-right: 10px;
 }
 
@@ -483,6 +513,7 @@ main p {
 #vehiculos-container #psoli{
     font-size: 20px;
     margin-top: 1rem;
+    background-color: white;
 }
 
 
@@ -497,7 +528,7 @@ main p {
     transition: 0.2s ease;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 
@@ -547,13 +578,22 @@ footer{
     min-height: 30px;
     position: relative;
     z-index: 2;
+
 }
+
+
+footer p {
+    color: white;
+    text-shadow: none;
+}
+
 
 #entregadosPorEmpleadoChart {
     width: 800px;
     height: 400px;
     margin: 0 auto;
     border-radius: 12px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.507);
 }
 
 
@@ -571,16 +611,32 @@ footer{
     align-items: center;
     margin-top: 10px;
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 7px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.507);
 }
 
 
 #paquetes-contenedor h2 {
     font-size: 30px;
     color: #003D63;
+    text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.671),
+    -1px 1px 0 rgba(255, 255, 255, 0.671),
+    1px 1px 0 rgba(255, 255, 255, 0.671),
+    1px -1px 0 rgba(255, 255, 255, 0.671);
 }
 
 
 #paquetes-contenedor p {
+    color: black;
+    text-shadow: none;
     font-size: 20px;
+}
+
+#entregadosPorEmpleadoChart {
+    background-color: white;
+    padding: 30px;
+    margin-top: 20px;
 }

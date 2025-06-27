@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: {
                         display: true,
                         text: 'Entregas por Empleado',
-                        font: { size: 18 }
+                        font: { size: 25 }
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { font: { size: 14 } }
+                        ticks: { font: { size: 18 } }
                     },
                     y: {
                         beginAtZero: true,

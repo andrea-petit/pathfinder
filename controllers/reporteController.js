@@ -47,8 +47,8 @@ const reporteController = {
 
       //const browser = await puppeteer.launch({ headless: true });
       const browser = await puppeteer.launch({
-        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-        //executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
+        //executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
       });
       const page = await browser.newPage();
       await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
@@ -130,8 +130,8 @@ const reporteController = {
 
       //const browser = await puppeteer.launch({ headless: true });
       const browser = await puppeteer.launch({
-        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-        //executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
+        //executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        executablePath: 'C:\\Users\\Usuario\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'
       });
       const page = await browser.newPage();
       await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
